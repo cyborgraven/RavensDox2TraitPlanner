@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Raven’s Dox2 Trait Planner</title>
+<style>
+:root {
+  --bg-color: #f0f0f0;
+  --section-bg: #fff;
+  --result-bg: #cfe0ff;
+  --sticky-bg: #e0e0ff;
+  --text-color: #000;
+}
+
+body { 
+  font-family: Arial, sans-serif; 
+  padding: 20px; 
+  background: var(--bg-color); 
+  color: var(--text-color); 
+  margin:0; 
+}
+
+h1 { text-align:center; font-size:36px; margin-bottom:10px; }
+h2 { font-size:28px; margin-top:0; }
+
+/* Section Styling */
+.section { 
+  background: var(--section-bg); 
+  padding:20px; 
+  margin-bottom:20px; 
+  border-radius:8px; 
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+label { display:block; margin-top:10px; font-size:20px; }
+select, input[type=number] { margin:10px 0; padding:10px; width:100%; font-size:20px; }
+
+/* Sticky Header */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: var(--sticky-bg);
+  padding: 15px 20px;
+  z-index: 999;
+  border-bottom: 2px solid #999;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Result Styling */
+.result { 
+  background: var(--result-bg); 
+  padding:15px; 
+  border-radius:5px; 
+  margin-top:10px; 
+  font-weight:bold; 
+  font-size:28px; 
+}
+.warning { color:red; font-weight:bold; }
+
+/* Layout for multiple selects on same row */
+.flex-row { display:flex; gap:10px; flex-wrap:wrap; }
+.flex-row select { flex:1; }
+.flex-row input[type=number] { flex:1; }
+
+/* Responsive tweaks */
+@media(max-width:600px){
+  h1 { font-size:28px; }
+  h2 { font-size:22px; }
+  select, input[type=number] { font-size:18px; }
+  .result { font-size:22px; }
+}
+
+/* Dark mode variables */
+body.dark-mode {
+  --bg-color: #1c1c1c;
+  --section-bg: #2c2c2c;
+  --result-bg: #3a3a5c;
+  --sticky-bg: #3a3a5c;
+  --text-color: #f0f0f0;
+}
+
+/* Big mobile-friendly toggle button */
+#toggleTheme {
+  font-size: 28px;        /* Bigger text */
+  padding: 20px 40px;     /* Bigger button area */
+  border-radius: 12px;    /* Rounded edges */
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  transition: background 0.3s;
+  margin-bottom: 20px;
+}
+
+#toggleTheme:hover {
+  background-color: #357ABD;
+}
+</style>
+</head>
+<body>
+
+<h1>Raven’s Dox2 Trait Planner</h1>
+
+<!-- Theme Toggle -->
+<div style="text-align:center;">
+  <button id="toggleTheme">Switch to Dark Mode</button>
+</div>
+
+<!-- Dino Trait Power % Sticky Section -->
+<div class="section sticky-header">
+  <h2>Dino Trait Power %</h2>
+  <div class="result" id="finalResult">Stats will update as you select traits...</div>
+</div>
+
+<!-- Bonus Strings Section -->
+<div class="section">
+<h2>Corrupt and Greaters</h2>
+<label>Corrupt String Stat:
+<select id="corruptStat">
+<option value="Damage">Damage</option>
+<option value="DR">DR</option>
+<option value="Speed">Speed</option>
+</select></label>
+<label>Corrupt String Bonus (%): <input type="number" id="corruptInput" placeholder="Enter corrupt string bonus"></label>
+
+<div class="flex-row">
+<label>Greater String 1 Stat:
+<select id="geneticStat0"><option value="">--Select Stat--</option></select></label>
+<label>Bonus (%): <input type="number" id="geneticValue0" placeholder="Enter bonus"></label>
+</div>
+
+<div class="flex-row">
+<label>Greater String 2 Stat:
+<select id="geneticStat1"><option value="">--Select Stat--</option></select></label>
+<label>Bonus (%): <input type="number" id="geneticValue1" placeholder="Enter bonus"></label>
+</div>
+
+<div class="flex-row">
+<label>Greater String 3 Stat:
+<select id="geneticStat2"><option value="">--Select Stat--</option></select></label>
+<label>Bonus (%): <input type="number" id="geneticValue2" placeholder="Enter bonus"></label>
+</div>
+</div>
+
+<!-- Target HP Section -->
+<div class="section">
+<h2>Calculate Final HP</h2>
+<input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added">
+</div>
+
+<!-- Trait Sections -->
+<div class="section">
+<h2>Prime & Mega Traits</h2>
+<label>Prime Trait:
+<select id="Prime"><option value="">--Select Prime--</option></select>
+</label>
+<label>Mega Trait:
+<select id="Mega"><option value="">--Select Mega--</option></select>
+</label>
+</div>
+
+<div class="section">
+<h2>Wild Traits (W) – Max 3</h2>
+<select id="W1"><option value="">--W1--</option></select>
+<select id="W2"><option value="">--W2--</option></select>
+<select id="W3"><option value="">--W3--</option></select>
+</div>
+
+<div class="section">
+<h2>Natural Traits (N) – Max 3</h2>
+<select id="N1"><option value="">--N1--</option></select>
+<select id="N2"><option value="">--N2--</option></select>
+<select id="N3"><option value="">--N3--</option></select>
+</div>
+
+<div class="section">
+<h2>Unique Wild (UW) – Max 1</h2>
+<select id="UW"><option value="">--UW--</option></select>
+</div>
+
+<div class="section">
+<h2>Unique (U) – Max 1</h2>
+<select id="U"><option value="">--U--</option></select>
+</div>
+
+<div class="section">
+<h2>Artificial Traits (A) – Max 3</h2>
+<select id="A1"><option value="">--A1--</option></select>
+<select id="A2"><option value="">--A2--</option></select>
+<select id="A3"><option value="">--A3--</option></select>
+</div>
+
+<script>
+// ---------------------------
+// TRAIT DATABASE
+// ---------------------------
+const traitData = {
+"W":[{N:"Tough",D:10,DR:10,S:-5},{N:"Balanced",D:7.5,DR:5,S:5},{N:"Runner",D:-5,DR:0,S:15},{N:"Brawler",D:15,DR:2.5,S:-5}],
+"N":[{N:"Tough",D:0,DR:15,S:-5},{N:"Balanced",D:5,DR:0,S:5},{N:"Runner",D:-5,DR:0,S:10},{N:"Brawler",D:10,DR:5,S:-5}],
+"A":[{N:"Tough",D:0,DR:5,S:-2.5},{N:"Balanced",D:2.5,DR:0,S:2.5},{N:"Runner",D:0,DR:0,S:5},{N:"Brawler",D:5,DR:2.5,S:-2.5}],
+"UW":[{N:"Tough",D:15,DR:7.5,S:-5},{N:"Balanced",D:10,DR:5,S:5},{N:"Runner",D:-5,DR:0,S:15},{N:"Juggernaut",D:12.5,DR:10,S:-2.5}],
+"U":[{N:"Tough",D:5,DR:15,S:-2.5},{N:"Balanced",D:10,DR:0,S:10},{N:"Runner",D:-5,DR:0,S:15},{N:"Juggernaut",D:15,DR:10,S:-5}],
+"P":[{N:"Tough",D:15,DR:20,S:0},{N:"Balanced",D:20,DR:0,S:5},{N:"Runner",D:0,DR:0,S:25},{N:"Juggernaut",D:25,DR:15,S:-5}],
+"M":[{N:"Tough",D:15,DR:25,S:0},{N:"Balanced",D:25,DR:0,S:7.5},{N:"Runner",D:0,DR:0,S:15},{N:"Juggernaut",D:30,DR:20,S:-5}]
+};
+
+// ---------------------------
+// Populate dropdowns
+// ---------------------------
+function populateDropdowns(){
+  const mapping = {W:["W1","W2","W3"],N:["N1","N2","N3"],A:["A1","A2","A3"],UW:["UW"],U:["U"],P:["Prime"],M:["Mega"]};
+  for(let cat in mapping){
+    mapping[cat].forEach(id=>{
+      const select = document.getElementById(id);
+      select.innerHTML = select.options[0] ? select.options[0].outerHTML : "";
+      traitData[cat].forEach((t,i)=>{
+        const opt = document.createElement("option");
+        opt.value = cat+"-"+i;
+        let statParts = [];
+        if(t.D !== 0) statParts.push(`DMG ${t.D>0?"+":""}${t.D}`);
+        if(t.DR !== 0) statParts.push(`DR ${t.DR>0?"+":""}${t.DR}`);
+        if(t.S !== 0) statParts.push(`SPD ${t.S>0?"+":""}${t.S}`);
+        opt.text = `${t.N}${statParts.length>0 ? " ("+statParts.join(", ")+")" : ""}`;
+        select.add(opt);
+      });
+    });
+  }
+
+  for(let i=0;i<3;i++){
+    const select = document.getElementById("geneticStat"+i);
+    select.innerHTML = '<option value="">--Select Stat--</option><option value="Damage">Damage</option><option value="DR">DR</option><option value="Speed">Speed</option>';
+  }
+}
+
+// ---------------------------
+// CALCULATION
+// ---------------------------
+function calculateFinalStats(){
+  let totalBonus = {Damage:0, DR:0, Speed:0};
+  const allSelects = ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"];
+  
+  allSelects.forEach(id=>{
+    const val = document.getElementById(id).value;
+    if(val){
+      const [cat,i] = val.split("-");
+      const t = traitData[cat][i];
+      totalBonus.Damage += t.D;
+      totalBonus.DR += t.DR;
+      totalBonus.Speed += t.S;
+    }
+  });
+
+  const corruptStat = document.getElementById("corruptStat").value;
+  const corruptValue = parseFloat(document.getElementById("corruptInput").value) || 0;
+  totalBonus[corruptStat] += corruptValue;
+
+  for(let i=0;i<3;i++){
+    const stat = document.getElementById("geneticStat"+i).value;
+    const value = parseFloat(document.getElementById("geneticValue"+i).value) || 0;
+    if(stat) totalBonus[stat] += value;
+  }
+
+  // DR Cap logic with over-cap warning
+  let drPercent = totalBonus.DR;
+  let drWarning = "";
+  if(drPercent > 75){
+    const over = (drPercent - 75).toFixed(2);
+    drWarning = ` (Currently ${over} over the 75% cap)`;
+    drPercent = 75;
+  }
+
+  const finalMultiplier = {
+    Damage: 1 + totalBonus.Damage/100,
+    DR: 1 - drPercent/100,
+    Speed: 1 + totalBonus.Speed/100
+  };
+
+  const primeMultiplier = 1.25;
+  const megaMultiplier = 1.40;
+
+  const targetHPInput = parseFloat(document.getElementById("targetHP").value);
+  let levelHP = null;
+  if(targetHPInput){
+    levelHP = targetHPInput / (primeMultiplier * megaMultiplier);
+  }
+
+  let output = `
+    <b>Multipliers:</b> Damage: ${finalMultiplier.Damage.toFixed(1)}, DR: ${finalMultiplier.DR.toFixed(2)}${drWarning}, Speed: ${finalMultiplier.Speed.toFixed(1)}<br>
+  `;
+  if(levelHP){
+    output += `<b>Level HP to ~</b>${Math.round(levelHP)}<b> before feeding Prime & Mega traits</b><br>`;
+  }
+
+  document.getElementById("finalResult").innerHTML = output;
+}
+
+// ---------------------------
+// Live listeners
+// ---------------------------
+document.querySelectorAll('select, input[type=number]').forEach(el => {
+  el.addEventListener('input', calculateFinalStats);
+});
+
+// ---------------------------
+// Theme Toggle
+// ---------------------------
+document.getElementById("toggleTheme").addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const btn = document.getElementById("toggleTheme");
+  if(document.body.classList.contains("dark-mode")){
+    btn.textContent = "Switch to Light Mode";
+  } else {
+    btn.textContent = "Switch to Dark Mode";
+  }
+});
+
+// ---------------------------
+// Initialize
+// ---------------------------
+window.onload = function(){
+  populateDropdowns();
+  calculateFinalStats();
+}
+</script>
+</body>
+</html>
