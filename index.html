@@ -11,132 +11,46 @@
   --sticky-bg: #e0e0ff;
   --text-color: #000;
 }
-
-body { 
-  font-family: Arial, sans-serif; 
-  padding: 20px; 
-  background: var(--bg-color); 
-  color: var(--text-color); 
-  margin:0; 
-}
-
-h1 { text-align:center; font-size:36px; margin-bottom:10px; }
-h2 { font-size:28px; margin-top:0; }
-
-.section { 
-  background: var(--section-bg); 
-  padding:20px; 
-  margin-bottom:20px; 
-  border-radius:8px; 
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
+body { font-family: Arial, sans-serif; padding:20px; background: var(--bg-color); color: var(--text-color); margin:0;}
+h1 {text-align:center; font-size:36px; margin-bottom:10px;}
+h2 { font-size:28px; margin-top:0;}
+.section { background: var(--section-bg); padding:20px; margin-bottom:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
 label { display:block; margin-top:10px; font-size:20px; }
-select, input[type=number] { margin:10px 0; padding:10px; width:100%; font-size:20px; }
-
-.sticky-header {
-  position: sticky;
-  top: 0;
-  background: var(--sticky-bg);
-  padding: 15px 20px;
-  z-index: 999;
-  border-bottom: 2px solid #999;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.result { 
-  background: var(--result-bg); 
-  padding:15px; 
-  border-radius:5px; 
-  margin-top:10px; 
-  font-weight:bold; 
-  font-size:24px; 
-}
+select, input[type=number], input[type=text] { margin:10px 0; padding:10px; width:100%; font-size:20px;}
+.sticky-header { position: sticky; top:0; background: var(--sticky-bg); padding:15px 20px; z-index:999; border-bottom:2px solid #999; box-shadow:0 4px 6px rgba(0,0,0,0.1);}
+.result { background: var(--result-bg); padding:15px; border-radius:5px; margin-top:10px; font-weight:bold; font-size:24px;}
 .warning { color:red; font-weight:bold; }
-
 .flex-row { display:flex; gap:10px; flex-wrap:wrap; }
 .flex-row select, .flex-row input[type=number] { flex:1; }
+@media(max-width:600px){h1{font-size:28px;}h2{font-size:22px;} select,input[type=number],input[type=text]{font-size:18px;}}
+body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--sticky-bg:#3a3a5c;--text-color:#f0f0f0;}
+#toggleTheme {font-size:28px; padding:20px 40px; border-radius:12px; cursor:pointer; background-color:#4a90e2; color:#fff; border:none; margin-bottom:20px;}
 
-@media(max-width:600px){
-  h1 { font-size:28px; }
-  h2 { font-size:22px; }
-  select, input[type=number] { font-size:18px; }
-}
+/* Collapsible Calculator */
+.calc-widget { position: fixed; bottom: 10px; right: 10px; width: 220px; background: var(--section-bg); box-shadow:0 4px 10px rgba(0,0,0,0.2); border-radius:10px; padding:10px; z-index:2000; display:none;}
+.calc-display { width:100%; height:40px; font-size:20px; margin-bottom:8px; text-align:right; padding:5px;}
+.calc-buttons { display:grid; grid-template-columns: repeat(4,1fr); gap:5px;}
+.calc-buttons button { padding:12px; font-size:18px; border-radius:6px; border:none; cursor:pointer;}
+#toggleCalc {position: fixed; bottom: 10px; right: 10px; z-index:3000; background:#4a90e2; color:#fff; border:none; border-radius:10px; padding:10px 15px; font-size:16px; cursor:pointer;}
+@media(max-width:900px){.calc-widget{width:180px; right:10px; bottom:50px;}}
 
-body.dark-mode {
-  --bg-color: #1c1c1c;
-  --section-bg: #2c2c2c;
-  --result-bg: #3a3a5c;
-  --sticky-bg: #3a3a5c;
-  --text-color: #f0f0f0;
-}
+/* Exclusions */
+.exclusions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.exclusions label { font-size: 16px; }
+.exclusions select { height: 100px; } /* Smaller height */
 
-#toggleTheme {
-  font-size: 28px;
-  padding: 20px 40px;
-  border-radius: 12px;
-  cursor: pointer;
-  background-color: #4a90e2;
-  color: #fff;
-  border: none;
-  margin-bottom: 20px;
-}
-
-/* Floating Calculator Widget at bottom */
-.calc-widget {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 220px;
-  background: var(--section-bg);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  border-radius: 10px;
-  padding: 10px;
-  z-index: 2000;
-}
-
-.calc-display {
-  width: 100%;
-  height: 40px;
-  font-size: 20px;
-  margin-bottom: 8px;
-  text-align: right;
-  padding: 5px;
-}
-
-.calc-buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
-}
-
-.calc-buttons button {
-  padding: 12px;
-  font-size: 18px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
-
-@media(max-width:900px){
-  .calc-widget {
-    width: 180px;
-    right: 10px;
-    bottom: 10px;
-  }
-}
+/* Optimize buttons */
+.section button[id^="opt"] { font-size: 24px; padding: 15px 30px; } /* Bigger buttons */
 </style>
 </head>
 <body>
 
 <h1>Raven’s Dox2 Trait Planner</h1>
-
-<div style="text-align:center;">
-  <button id="toggleTheme">Switch to Dark Mode</button>
-</div>
+<div style="text-align:center;"><button id="toggleTheme">Switch to Dark Mode</button></div>
 
 <div class="section sticky-header">
-  <h2>Dino Trait Power %</h2>
-  <div class="result" id="finalResult">Damage: 1.0, DR: 1.0, SPD: 1.0</div>
+<h2>Dino Trait Power %</h2>
+<div class="result" id="finalResult">Damage: 1.0, DR: 1.0, SPD: 1.0</div>
 </div>
 
 <div class="section">
@@ -148,19 +62,16 @@ body.dark-mode {
 <option value="Speed">Speed</option>
 </select></label>
 <label>Corrupt String Bonus (%): <input type="number" id="corruptInput"></label>
-
 <div class="flex-row">
 <label>Greater String 1 Stat:
 <select id="geneticStat0"></select></label>
 <label>Bonus (%): <input type="number" id="geneticValue0"></label>
 </div>
-
 <div class="flex-row">
 <label>Greater String 2 Stat:
 <select id="geneticStat1"></select></label>
 <label>Bonus (%): <input type="number" id="geneticValue1"></label>
 </div>
-
 <div class="flex-row">
 <label>Greater String 3 Stat:
 <select id="geneticStat2"></select></label>
@@ -210,37 +121,50 @@ body.dark-mode {
 <select id="A3"></select>
 </div>
 
-<!-- Floating Calculator at bottom -->
-<div class="calc-widget">
-  <input type="text" class="calc-display" id="calcDisplay" readonly>
-  <div class="calc-buttons">
-    <button onclick="calcPress('7')">7</button>
-    <button onclick="calcPress('8')">8</button>
-    <button onclick="calcPress('9')">9</button>
-    <button onclick="calcPress('/')">÷</button>
+<div class="section">
+<h2>Build Management</h2>
+<input type="text" id="buildName" placeholder="Build Name">
+<button id="saveBuild">Save Build</button>
+<select id="savedBuilds"></select>
+<button id="loadBuild">Load Build</button>
+<button id="deleteBuild">Delete Build</button>
+</div>
 
-    <button onclick="calcPress('4')">4</button>
-    <button onclick="calcPress('5')">5</button>
-    <button onclick="calcPress('6')">6</button>
-    <button onclick="calcPress('*')">×</button>
+<div class="section">
+<h2>Optimize Build</h2>
+<label>Min Speed % for Damage Opt: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" value="0"></label>
+<div class="exclusions">
+<label>Exclude W: <select id="excludeW" multiple></select></label>
+<label>Exclude N: <select id="excludeN" multiple></select></label>
+<label>Exclude A: <select id="excludeA" multiple></select></label>
+<label>Exclude UW: <select id="excludeUW" multiple></select></label>
+<label>Exclude U: <select id="excludeU" multiple></select></label>
+<label>Exclude Prime: <select id="excludeP" multiple></select></label>
+<label>Exclude Mega: <select id="excludeM" multiple></select></label>
+</div>
+<button id="optDamage">Optimize Damage</button>
+<button id="optSpeed">Optimize Speed</button>
+<button id="optAll">Optimize All-Around</button>
+</div>
 
-    <button onclick="calcPress('1')">1</button>
-    <button onclick="calcPress('2')">2</button>
-    <button onclick="calcPress('3')">3</button>
-    <button onclick="calcPress('-')">−</button>
-
-    <button onclick="calcPress('0')">0</button>
-    <button onclick="calcPress('.')">.</button>
-    <button onclick="calcClear()">C</button>
-    <button onclick="calcPress('+')">+</button>
-
-    <button style="grid-column: span 4; background:#4a90e2; color:white;" onclick="calcEquals()">=</button>
-  </div>
+<!-- Collapsible Calculator -->
+<button id="toggleCalc">Show Calculator</button>
+<div class="calc-widget" id="calcWidget">
+<input type="text" class="calc-display" id="calcDisplay" readonly>
+<div class="calc-buttons">
+<button onclick="calcPress('7')">7</button><button onclick="calcPress('8')">8</button><button onclick="calcPress('9')">9</button><button onclick="calcPress('/')">÷</button>
+<button onclick="calcPress('4')">4</button><button onclick="calcPress('5')">5</button><button onclick="calcPress('6')">6</button><button onclick="calcPress('*')">×</button>
+<button onclick="calcPress('1')">1</button><button onclick="calcPress('2')">2</button><button onclick="calcPress('3')">3</button><button onclick="calcPress('-')">−</button>
+<button onclick="calcPress('0')">0</button><button onclick="calcPress('.')">.</button><button onclick="calcClear()">C</button><button onclick="calcPress('+')">+</button>
+<button style="grid-column: span 4; background:#4a90e2; color:white;" onclick="calcEquals()">=</button>
+</div>
 </div>
 
 <script>
-// Trait Database
-const traitData = {
+// ---------------------------
+// TRAIT DATABASE
+// ---------------------------
+const traitData={
 "W":[{N:"Tough",D:10,DR:10,S:-5},{N:"Balanced",D:7.5,DR:5,S:5},{N:"Runner",D:-5,DR:0,S:15},{N:"Brawler",D:15,DR:2.5,S:-5}],
 "N":[{N:"Tough",D:0,DR:15,S:-5},{N:"Balanced",D:5,DR:0,S:5},{N:"Runner",D:-5,DR:0,S:10},{N:"Brawler",D:10,DR:5,S:-5}],
 "A":[{N:"Tough",D:0,DR:5,S:-2.5},{N:"Balanced",D:2.5,DR:0,S:2.5},{N:"Runner",D:0,DR:0,S:5},{N:"Brawler",D:5,DR:2.5,S:-2.5}],
@@ -250,89 +174,324 @@ const traitData = {
 "M":[{N:"Tough",D:15,DR:25,S:0},{N:"Balanced",D:25,DR:0,S:7.5},{N:"Runner",D:0,DR:0,S:15},{N:"Juggernaut",D:30,DR:20,S:-5}]
 };
 
-// Populate Dropdowns
+// ---------------------------
+// POPULATE DROPDOWNS
+// ---------------------------
 function populateDropdowns(){
-  const mapping = {W:["W1","W2","W3"],N:["N1","N2","N3"],A:["A1","A2","A3"],UW:["UW"],U:["U"],P:["Prime"],M:["Mega"]};
-  for(let cat in mapping){
+  const mapping={W:["W1","W2","W3"],N:["N1","N2","N3"],A:["A1","A2","A3"],UW:["UW"],U:["U"],P:["Prime"],M:["Mega"]};
+  for(const cat in mapping){
     mapping[cat].forEach(id=>{
-      const select = document.getElementById(id);
-      select.innerHTML = '<option value="">--Select--</option>';
+      const select=document.getElementById(id);
+      select.innerHTML="";
+      const empty=document.createElement("option");
+      empty.value=""; empty.textContent="--Select--"; select.appendChild(empty);
       traitData[cat].forEach((t,i)=>{
-        let stats=[];
-        if(t.D) stats.push(`DMG ${t.D>0?"+":""}${t.D}`);
-        if(t.DR) stats.push(`DR ${t.DR>0?"+":""}${t.DR}`);
-        if(t.S) stats.push(`SPD ${t.S>0?"+":""}${t.S}`);
-        select.add(new Option(`${t.N} (${stats.join(", ")})`,cat+"-"+i));
+        const opt=document.createElement("option");
+        opt.value=`${cat}-${i}`;
+        let parts=[];
+        if(t.D!==0) parts.push(`DMG ${t.D>0?"+":""}${t.D}`);
+        if(t.DR!==0) parts.push(`DR ${t.DR>0?"+":""}${t.DR}`);
+        if(t.S!==0) parts.push(`SPD ${t.S>0?"+":""}${t.S}`);
+        opt.text=`${t.N}${parts.length>0?` (${parts.join(", ")})`:""}`;
+        select.appendChild(opt);
       });
     });
   }
+
   for(let i=0;i<3;i++){
-    document.getElementById("geneticStat"+i).innerHTML =
-      '<option value="">--Select Stat--</option><option value="Damage">Damage</option><option value="DR">DR</option><option value="Speed">Speed</option>';
+    const select=document.getElementById("geneticStat"+i);
+    select.innerHTML="";
+    const empty=document.createElement("option"); empty.value=""; empty.textContent="--Select Stat--"; select.appendChild(empty);
+    ["Damage","DR","Speed"].forEach(stat=>{
+      const opt=document.createElement("option"); opt.value=stat; opt.textContent=stat; select.appendChild(opt);
+    });
+  }
+
+  // Populate exclude selects
+  for(const cat in traitData){
+    const excludeSelect = document.getElementById(`exclude${cat}`);
+    if(excludeSelect) {
+      excludeSelect.innerHTML = "";
+      traitData[cat].forEach((t, i) => {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = t.N;
+        excludeSelect.appendChild(opt);
+      });
+    }
   }
 }
 
-// Calculate Dino Trait Power
+// ---------------------------
+// CALCULATE DINO TRAIT POWER
+// ---------------------------
 function calculateFinalStats(){
-  let totalBonus={Damage:0,DR:0,Speed:0};
-  document.querySelectorAll("select").forEach(el=>{
-    if(el.value.includes("-")){
-      const [cat,i]=el.value.split("-");
-      const t=traitData[cat][i];
-      totalBonus.Damage+=t.D;
-      totalBonus.DR+=t.DR;
-      totalBonus.Speed+=t.S;
+  let total={Damage:0,DR:0,Speed:0};
+  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"].forEach(id=>{
+    const val=document.getElementById(id).value;
+    if(val.includes("-")){
+      const [cat,i]=val.split("-");
+      const t=traitData[cat][parseInt(i)];
+      total.Damage+=t.D || 0;
+      total.DR+=t.DR || 0;
+      total.Speed+=t.S || 0;
+    }
+  });
+  const corrupt=document.getElementById("corruptStat").value;
+  total[corrupt]+=parseFloat(document.getElementById("corruptInput").value)||0;
+  for(let i=0;i<3;i++){
+    const stat=document.getElementById("geneticStat"+i).value;
+    const val=parseFloat(document.getElementById("geneticValue"+i).value)||0;
+    if(stat) total[stat]+=val;
+  }
+  let drPercent=total.DR;
+  let drWarning="";
+  if(drPercent>75){ drWarning=` <span class="warning">(${(drPercent-75).toFixed(1)}% over cap)</span>`; drPercent=Math.min(drPercent,75);}
+  const dmg=1+total.Damage/100, dr=1-drPercent/100, spd=1+total.Speed/100;
+  let out=`Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`;
+  const target=parseFloat(document.getElementById("targetHP").value);
+  if(target){const prime=1.25, mega=1.40; out+=`<br><b>Level HP to ~</b>${Math.round(target/(prime*mega))} before Prime & Mega`;}
+  document.getElementById("finalResult").innerHTML=out;
+}
+
+// ---------------------------
+// SIMPLE CALCULATOR
+// ---------------------------
+const calcDisplay=document.getElementById("calcDisplay");
+function calcPress(v){calcDisplay.value+=v;}
+function calcClear(){calcDisplay.value="";}
+function calcEquals(){try{calcDisplay.value=eval(calcDisplay.value);}catch{calcDisplay.value="Error";}}
+document.getElementById("toggleCalc").onclick=()=>{
+  const w=document.getElementById("calcWidget");
+  const btn=document.getElementById("toggleCalc");
+  if(w.style.display==="block"){w.style.display="none"; btn.textContent="Show Calculator";}
+  else{w.style.display="block"; btn.textContent="Hide Calculator";}
+};
+
+// ---------------------------
+// SAVE/LOAD BUILDS
+// ---------------------------
+let savedBuilds = JSON.parse(localStorage.getItem("savedBuilds")) || {};
+function saveBuild(){
+  const name=document.getElementById("buildName").value.trim();
+  if(!name)return alert("Enter build name!");
+  savedBuilds[name]={};
+  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega","corruptStat","corruptInput","geneticStat0","geneticStat1","geneticStat2","geneticValue0","geneticValue1","geneticValue2","targetHP"].forEach(id=>{
+    savedBuilds[name][id]=document.getElementById(id).value;
+  });
+  localStorage.setItem("savedBuilds", JSON.stringify(savedBuilds));
+  updateSavedDropdown();
+}
+function updateSavedDropdown(){
+  const sel=document.getElementById("savedBuilds"); sel.innerHTML="";
+  Object.keys(savedBuilds).forEach(name=>{
+    const opt=document.createElement("option"); opt.value=name; opt.textContent=name; sel.appendChild(opt);
+  });
+}
+function loadBuild(){
+  const name=document.getElementById("savedBuilds").value; if(!name)return;
+  const data=savedBuilds[name];
+  Object.keys(data).forEach(id=>{if(document.getElementById(id)) document.getElementById(id).value=data[id];});
+  calculateFinalStats();
+}
+function deleteBuild(){
+  const name=document.getElementById("savedBuilds").value; if(!name)return;
+  delete savedBuilds[name];
+  localStorage.setItem("savedBuilds", JSON.stringify(savedBuilds));
+  updateSavedDropdown();
+}
+
+// ---------------------------
+// OPTIMIZE FUNCTIONS
+// ---------------------------
+const groups = [
+  {cat: 'W', num_slots: 3, ids: ['W1', 'W2', 'W3']},
+  {cat: 'N', num_slots: 3, ids: ['N1', 'N2', 'N3']},
+  {cat: 'A', num_slots: 3, ids: ['A1', 'A2', 'A3']},
+  {cat: 'UW', num_slots: 1, ids: ['UW']},
+  {cat: 'U', num_slots: 1, ids: ['U']},
+  {cat: 'P', num_slots: 1, ids: ['Prime']},
+  {cat: 'M', num_slots: 1, ids: ['Mega']}
+];
+
+function getOptions(cat, unfixedCount, excluded) {
+  const traits = traitData[cat].filter((t, i) => !excluded.includes(i));
+  const len = traits.length;
+  if (len === 0 || len < unfixedCount) return [];
+  const opts = [];
+  const generateCombo = (count, current = [], start = 0) => {
+    if (current.length === count) {
+      let d = 0, dr = 0, s = 0;
+      const origCombo = current.map(filteredI => traitData[cat].findIndex(origT => origT.N === traits[filteredI].N)).sort((a, b) => a - b);
+      current.forEach(filteredI => {
+        const t = traits[filteredI];
+        d += t.D || 0;
+        dr += t.DR || 0;
+        s += t.S || 0;
+      });
+      opts.push({ d, dr, s, combo: origCombo });
+      return;
+    }
+    for (let i = start; i < len; i++) {
+      generateCombo(count, [...current, i], i + 1);
+    }
+  };
+  generateCombo(unfixedCount);
+  return opts;
+}
+
+function optimize(mode) {
+  const minDR = 75;
+  const userMinS = parseFloat(document.getElementById('minSpeed').value) || 0;
+  const wd = (mode === 'damage' || mode === 'all') ? 1 : 0;
+  const ws = (mode === 'speed' || mode === 'all') ? 1 : 0;
+  const useSConstraint = (mode === 'damage' && userMinS > 0);
+
+  let fixedD = 0, fixedDR = 0, fixedS = 0;
+  let fixedObj = wd * fixedD + ws * fixedS;
+
+  // Fixed from traits
+  groups.forEach(g => {
+    let groupFixedD = 0, groupFixedDR = 0, groupFixedS = 0;
+    g.ids.forEach(id => {
+      const val = document.getElementById(id).value;
+      if (val && val.includes("-")) {
+        const [, i] = val.split("-");
+        const t = traitData[g.cat][parseInt(i)];
+        groupFixedD += t.D || 0;
+        groupFixedDR += t.DR || 0;
+        groupFixedS += t.S || 0;
+      }
+    });
+    fixedD += groupFixedD;
+    fixedDR += groupFixedDR;
+    fixedS += groupFixedS;
+    fixedObj += wd * groupFixedD + ws * groupFixedS;
+  });
+
+  // Fixed from corrupt and greaters
+  const corruptStat = document.getElementById("corruptStat").value;
+  const corruptVal = parseFloat(document.getElementById("corruptInput").value) || 0;
+  if (corruptStat === "Damage") fixedD += corruptVal;
+  else if (corruptStat === "DR") fixedDR += corruptVal;
+  else if (corruptStat === "Speed") fixedS += corruptVal;
+  fixedObj += wd * (corruptStat === "Damage" ? corruptVal : 0) + ws * (corruptStat === "Speed" ? corruptVal : 0);
+
+  for (let i = 0; i < 3; i++) {
+    const stat = document.getElementById("geneticStat" + i).value;
+    const val = parseFloat(document.getElementById("geneticValue" + i).value) || 0;
+    if (stat === "Damage") fixedD += val;
+    else if (stat === "DR") fixedDR += val;
+    else if (stat === "Speed") fixedS += val;
+    fixedObj += wd * (stat === "Damage" ? val : 0) + ws * (stat === "Speed" ? val : 0);
+  }
+
+  // Unfixed groups
+  let unfixedGroups = [];
+  groups.forEach(g => {
+    const excluded = Array.from(document.getElementById(`exclude${g.cat}`)?.selectedOptions || []).map(opt => parseInt(opt.value));
+    let unfixedIds = [];
+    g.ids.forEach((id, slotIndex) => {
+      const val = document.getElementById(id).value;
+      if (!val || !val.includes("-")) {
+        unfixedIds.push({ id, slotIndex });
+      }
+    });
+    const unfixedCount = unfixedIds.length;
+    if (unfixedCount > 0) {
+      unfixedGroups.push({ ...g, unfixedIds, unfixedCount, excluded });
     }
   });
 
-  totalBonus[corruptStat.value]+=parseFloat(corruptInput.value)||0;
-
-  for(let i=0;i<3;i++){
-    const stat=document.getElementById("geneticStat"+i).value;
-    if(stat) totalBonus[stat]+=parseFloat(document.getElementById("geneticValue"+i).value)||0;
+  if (unfixedGroups.length === 0) {
+    calculateFinalStats();
+    return;
   }
 
-  let drPercent=totalBonus.DR, drWarning="";
-  if(drPercent>75){
-    const over=(drPercent-75).toFixed(1);
-    drWarning=` <span class="warning">(${over}% over cap)</span>`;
-    drPercent=75;
+  let bestWithBoth = { val: -Infinity, choices: null };
+  let bestWithDR = { val: -Infinity, choices: null };
+  let bestAny = { val: -Infinity, choices: null };
+
+  function recurse(groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) {
+    if (groupIndex === unfixedGroups.length) {
+      const totalD = fixedD + accD;
+      const totalDR = fixedDR + accDR;
+      const totalS = fixedS + accS;
+      const obj = wd * totalD + ws * totalS;
+      if (totalDR >= minDR && (!useSConstraint || totalS >= userMinS)) {
+        if (obj > bestWithBoth.val) {
+          bestWithBoth = { val: obj, choices: { ...choices } };
+        }
+      }
+      if (totalDR >= minDR) {
+        if (obj > bestWithDR.val) {
+          bestWithDR = { val: obj, choices: { ...choices } };
+        }
+      }
+      if (obj > bestAny.val) {
+        bestAny = { val: obj, choices: { ...choices } };
+      }
+      return;
+    }
+    const g = unfixedGroups[groupIndex];
+    const options = getOptions(g.cat, g.unfixedCount, g.excluded);
+    if (options.length === 0) {
+      recurse(groupIndex + 1, accD, accDR, accS, choices);
+      return;
+    }
+    options.forEach(opt => {
+      recurse(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s, { ...choices, [g.cat]: opt.combo });
+    });
   }
 
-  // The multipliers (Dino Trait Power) — start at 1.0
-  const dmgMult = 1 + totalBonus.Damage/100;
-  const drMult = 1 - drPercent/100;
-  const spdMult = 1 + totalBonus.Speed/100;
+  recurse();
 
-  // Target HP calculation
-  const primeMultiplier=1.25, megaMultiplier=1.40;
-  const targetHPInput=parseFloat(targetHP.value);
-  let levelHP=null;
-  if(targetHPInput) levelHP=targetHPInput/(primeMultiplier*megaMultiplier);
+  let best;
+  if (bestWithBoth.val > -Infinity) best = bestWithBoth;
+  else if (bestWithDR.val > -Infinity) best = bestWithDR;
+  else best = bestAny;
 
-  // Update the result box
-  let output=`Damage: ${dmgMult.toFixed(3)}, DR: ${drMult.toFixed(3)}${drWarning}, SPD: ${spdMult.toFixed(3)}`;
-  if(levelHP) output+=`<br><b>Level HP to ~</b>${Math.round(levelHP)} before Prime & Mega`;
-  finalResult.innerHTML=output;
+  if (best.choices) {
+    unfixedGroups.forEach(g => {
+      const combo = best.choices[g.cat];
+      if (combo) {
+        const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
+        combo.forEach((index, idx) => {
+          document.getElementById(sortedUnfixed[idx].id).value = `${g.cat}-${index}`;
+        });
+      }
+    });
+  }
+  calculateFinalStats();
 }
 
-// Event Listeners
-document.querySelectorAll("select").forEach(el=>el.addEventListener("change",calculateFinalStats));
-document.querySelectorAll("input[type=number]").forEach(el=>el.addEventListener("input",calculateFinalStats));
-
-// Theme Toggle
-toggleTheme.onclick=()=>{
-  document.body.classList.toggle("dark-mode");
-  toggleTheme.textContent=document.body.classList.contains("dark-mode")?"Switch to Light Mode":"Switch to Dark Mode";
-};
-
-// Mini Calculator
-function calcPress(val){calcDisplay.value+=val;}
-function calcClear(){calcDisplay.value="";}
-function calcEquals(){try{calcDisplay.value=eval(calcDisplay.value);}catch{calcDisplay.value="Error";}}
+function optimizeDamage() { optimize('damage'); }
+function optimizeSpeed() { optimize('speed'); }
+function optimizeAll() { optimize('all'); }
 
 // Initialize
-window.onload=()=>{populateDropdowns();calculateFinalStats();}
+populateDropdowns();
+updateSavedDropdown();
+calculateFinalStats();
+
+// Event Listeners
+document.getElementById("toggleTheme").onclick = function(){
+  document.body.classList.toggle("dark-mode");
+  this.textContent = document.body.classList.contains("dark-mode") ? "Switch to Light Mode" : "Switch to Dark Mode";
+};
+document.getElementById("saveBuild").onclick = saveBuild;
+document.getElementById("loadBuild").onclick = loadBuild;
+document.getElementById("deleteBuild").onclick = deleteBuild;
+document.getElementById("optDamage").onclick = optimizeDamage;
+document.getElementById("optSpeed").onclick = optimizeSpeed;
+document.getElementById("optAll").onclick = optimizeAll;
+
+// Auto-calculate on changes
+const autoCalcElements = document.querySelectorAll('select:not(#savedBuilds):not([id^="exclude"]), input[type="number"]');
+autoCalcElements.forEach(el => {
+  el.addEventListener('change', calculateFinalStats);
+  el.addEventListener('input', calculateFinalStats);
+});
 </script>
 </body>
 </html>
