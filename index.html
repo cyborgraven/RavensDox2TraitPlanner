@@ -23,7 +23,6 @@ body {
 h1 { text-align:center; font-size:36px; margin-bottom:10px; }
 h2 { font-size:28px; margin-top:0; }
 
-/* Section Styling */
 .section { 
   background: var(--section-bg); 
   padding:20px; 
@@ -34,7 +33,6 @@ h2 { font-size:28px; margin-top:0; }
 label { display:block; margin-top:10px; font-size:20px; }
 select, input[type=number] { margin:10px 0; padding:10px; width:100%; font-size:20px; }
 
-/* Sticky Header */
 .sticky-header {
   position: sticky;
   top: 0;
@@ -45,31 +43,25 @@ select, input[type=number] { margin:10px 0; padding:10px; width:100%; font-size:
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Result Styling */
 .result { 
   background: var(--result-bg); 
   padding:15px; 
   border-radius:5px; 
   margin-top:10px; 
   font-weight:bold; 
-  font-size:28px; 
+  font-size:24px; 
 }
 .warning { color:red; font-weight:bold; }
 
-/* Layout for multiple selects on same row */
 .flex-row { display:flex; gap:10px; flex-wrap:wrap; }
-.flex-row select { flex:1; }
-.flex-row input[type=number] { flex:1; }
+.flex-row select, .flex-row input[type=number] { flex:1; }
 
-/* Responsive tweaks */
 @media(max-width:600px){
   h1 { font-size:28px; }
   h2 { font-size:22px; }
   select, input[type=number] { font-size:18px; }
-  .result { font-size:22px; }
 }
 
-/* Dark mode variables */
 body.dark-mode {
   --bg-color: #1c1c1c;
   --section-bg: #2c2c2c;
@@ -78,21 +70,59 @@ body.dark-mode {
   --text-color: #f0f0f0;
 }
 
-/* Big mobile-friendly toggle button */
 #toggleTheme {
-  font-size: 28px;        /* Bigger text */
-  padding: 20px 40px;     /* Bigger button area */
-  border-radius: 12px;    /* Rounded edges */
+  font-size: 28px;
+  padding: 20px 40px;
+  border-radius: 12px;
   cursor: pointer;
   background-color: #4a90e2;
   color: #fff;
   border: none;
-  transition: background 0.3s;
   margin-bottom: 20px;
 }
 
-#toggleTheme:hover {
-  background-color: #357ABD;
+/* Floating Calculator Widget at bottom */
+.calc-widget {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 220px;
+  background: var(--section-bg);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 2000;
+}
+
+.calc-display {
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  margin-bottom: 8px;
+  text-align: right;
+  padding: 5px;
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.calc-buttons button {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+@media(max-width:900px){
+  .calc-widget {
+    width: 180px;
+    right: 10px;
+    bottom: 10px;
+  }
 }
 </style>
 </head>
@@ -100,18 +130,15 @@ body.dark-mode {
 
 <h1>Raven’s Dox2 Trait Planner</h1>
 
-<!-- Theme Toggle -->
 <div style="text-align:center;">
   <button id="toggleTheme">Switch to Dark Mode</button>
 </div>
 
-<!-- Dino Trait Power % Sticky Section -->
 <div class="section sticky-header">
   <h2>Dino Trait Power %</h2>
-  <div class="result" id="finalResult">Stats will update as you select traits...</div>
+  <div class="result" id="finalResult">Damage: 1.0, DR: 1.0, SPD: 1.0</div>
 </div>
 
-<!-- Bonus Strings Section -->
 <div class="section">
 <h2>Corrupt and Greaters</h2>
 <label>Corrupt String Stat:
@@ -120,79 +147,99 @@ body.dark-mode {
 <option value="DR">DR</option>
 <option value="Speed">Speed</option>
 </select></label>
-<label>Corrupt String Bonus (%): <input type="number" id="corruptInput" placeholder="Enter corrupt string bonus"></label>
+<label>Corrupt String Bonus (%): <input type="number" id="corruptInput"></label>
 
 <div class="flex-row">
 <label>Greater String 1 Stat:
-<select id="geneticStat0"><option value="">--Select Stat--</option></select></label>
-<label>Bonus (%): <input type="number" id="geneticValue0" placeholder="Enter bonus"></label>
+<select id="geneticStat0"></select></label>
+<label>Bonus (%): <input type="number" id="geneticValue0"></label>
 </div>
 
 <div class="flex-row">
 <label>Greater String 2 Stat:
-<select id="geneticStat1"><option value="">--Select Stat--</option></select></label>
-<label>Bonus (%): <input type="number" id="geneticValue1" placeholder="Enter bonus"></label>
+<select id="geneticStat1"></select></label>
+<label>Bonus (%): <input type="number" id="geneticValue1"></label>
 </div>
 
 <div class="flex-row">
 <label>Greater String 3 Stat:
-<select id="geneticStat2"><option value="">--Select Stat--</option></select></label>
-<label>Bonus (%): <input type="number" id="geneticValue2" placeholder="Enter bonus"></label>
+<select id="geneticStat2"></select></label>
+<label>Bonus (%): <input type="number" id="geneticValue2"></label>
 </div>
 </div>
 
-<!-- Target HP Section -->
 <div class="section">
 <h2>Calculate Final HP</h2>
 <input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added">
 </div>
 
-<!-- Trait Sections -->
 <div class="section">
 <h2>Prime & Mega Traits</h2>
-<label>Prime Trait:
-<select id="Prime"><option value="">--Select Prime--</option></select>
-</label>
-<label>Mega Trait:
-<select id="Mega"><option value="">--Select Mega--</option></select>
-</label>
+<label>Prime Trait:<select id="Prime"></select></label>
+<label>Mega Trait:<select id="Mega"></select></label>
 </div>
 
 <div class="section">
 <h2>Wild Traits (W) – Max 3</h2>
-<select id="W1"><option value="">--W1--</option></select>
-<select id="W2"><option value="">--W2--</option></select>
-<select id="W3"><option value="">--W3--</option></select>
+<select id="W1"></select>
+<select id="W2"></select>
+<select id="W3"></select>
 </div>
 
 <div class="section">
 <h2>Natural Traits (N) – Max 3</h2>
-<select id="N1"><option value="">--N1--</option></select>
-<select id="N2"><option value="">--N2--</option></select>
-<select id="N3"><option value="">--N3--</option></select>
+<select id="N1"></select>
+<select id="N2"></select>
+<select id="N3"></select>
 </div>
 
 <div class="section">
-<h2>Unique Wild (UW) – Max 1</h2>
-<select id="UW"><option value="">--UW--</option></select>
+<h2>Unique Wild (UW)</h2>
+<select id="UW"></select>
 </div>
 
 <div class="section">
-<h2>Unique (U) – Max 1</h2>
-<select id="U"><option value="">--U--</option></select>
+<h2>Unique (U)</h2>
+<select id="U"></select>
 </div>
 
 <div class="section">
 <h2>Artificial Traits (A) – Max 3</h2>
-<select id="A1"><option value="">--A1--</option></select>
-<select id="A2"><option value="">--A2--</option></select>
-<select id="A3"><option value="">--A3--</option></select>
+<select id="A1"></select>
+<select id="A2"></select>
+<select id="A3"></select>
+</div>
+
+<!-- Floating Calculator at bottom -->
+<div class="calc-widget">
+  <input type="text" class="calc-display" id="calcDisplay" readonly>
+  <div class="calc-buttons">
+    <button onclick="calcPress('7')">7</button>
+    <button onclick="calcPress('8')">8</button>
+    <button onclick="calcPress('9')">9</button>
+    <button onclick="calcPress('/')">÷</button>
+
+    <button onclick="calcPress('4')">4</button>
+    <button onclick="calcPress('5')">5</button>
+    <button onclick="calcPress('6')">6</button>
+    <button onclick="calcPress('*')">×</button>
+
+    <button onclick="calcPress('1')">1</button>
+    <button onclick="calcPress('2')">2</button>
+    <button onclick="calcPress('3')">3</button>
+    <button onclick="calcPress('-')">−</button>
+
+    <button onclick="calcPress('0')">0</button>
+    <button onclick="calcPress('.')">.</button>
+    <button onclick="calcClear()">C</button>
+    <button onclick="calcPress('+')">+</button>
+
+    <button style="grid-column: span 4; background:#4a90e2; color:white;" onclick="calcEquals()">=</button>
+  </div>
 </div>
 
 <script>
-// ---------------------------
-// TRAIT DATABASE
-// ---------------------------
+// Trait Database
 const traitData = {
 "W":[{N:"Tough",D:10,DR:10,S:-5},{N:"Balanced",D:7.5,DR:5,S:5},{N:"Runner",D:-5,DR:0,S:15},{N:"Brawler",D:15,DR:2.5,S:-5}],
 "N":[{N:"Tough",D:0,DR:15,S:-5},{N:"Balanced",D:5,DR:0,S:5},{N:"Runner",D:-5,DR:0,S:10},{N:"Brawler",D:10,DR:5,S:-5}],
@@ -203,123 +250,89 @@ const traitData = {
 "M":[{N:"Tough",D:15,DR:25,S:0},{N:"Balanced",D:25,DR:0,S:7.5},{N:"Runner",D:0,DR:0,S:15},{N:"Juggernaut",D:30,DR:20,S:-5}]
 };
 
-// ---------------------------
-// Populate dropdowns
-// ---------------------------
+// Populate Dropdowns
 function populateDropdowns(){
   const mapping = {W:["W1","W2","W3"],N:["N1","N2","N3"],A:["A1","A2","A3"],UW:["UW"],U:["U"],P:["Prime"],M:["Mega"]};
   for(let cat in mapping){
     mapping[cat].forEach(id=>{
       const select = document.getElementById(id);
-      select.innerHTML = select.options[0] ? select.options[0].outerHTML : "";
+      select.innerHTML = '<option value="">--Select--</option>';
       traitData[cat].forEach((t,i)=>{
-        const opt = document.createElement("option");
-        opt.value = cat+"-"+i;
-        let statParts = [];
-        if(t.D !== 0) statParts.push(`DMG ${t.D>0?"+":""}${t.D}`);
-        if(t.DR !== 0) statParts.push(`DR ${t.DR>0?"+":""}${t.DR}`);
-        if(t.S !== 0) statParts.push(`SPD ${t.S>0?"+":""}${t.S}`);
-        opt.text = `${t.N}${statParts.length>0 ? " ("+statParts.join(", ")+")" : ""}`;
-        select.add(opt);
+        let stats=[];
+        if(t.D) stats.push(`DMG ${t.D>0?"+":""}${t.D}`);
+        if(t.DR) stats.push(`DR ${t.DR>0?"+":""}${t.DR}`);
+        if(t.S) stats.push(`SPD ${t.S>0?"+":""}${t.S}`);
+        select.add(new Option(`${t.N} (${stats.join(", ")})`,cat+"-"+i));
       });
     });
   }
-
   for(let i=0;i<3;i++){
-    const select = document.getElementById("geneticStat"+i);
-    select.innerHTML = '<option value="">--Select Stat--</option><option value="Damage">Damage</option><option value="DR">DR</option><option value="Speed">Speed</option>';
+    document.getElementById("geneticStat"+i).innerHTML =
+      '<option value="">--Select Stat--</option><option value="Damage">Damage</option><option value="DR">DR</option><option value="Speed">Speed</option>';
   }
 }
 
-// ---------------------------
-// CALCULATION
-// ---------------------------
+// Calculate Dino Trait Power
 function calculateFinalStats(){
-  let totalBonus = {Damage:0, DR:0, Speed:0};
-  const allSelects = ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"];
-  
-  allSelects.forEach(id=>{
-    const val = document.getElementById(id).value;
-    if(val){
-      const [cat,i] = val.split("-");
-      const t = traitData[cat][i];
-      totalBonus.Damage += t.D;
-      totalBonus.DR += t.DR;
-      totalBonus.Speed += t.S;
+  let totalBonus={Damage:0,DR:0,Speed:0};
+  document.querySelectorAll("select").forEach(el=>{
+    if(el.value.includes("-")){
+      const [cat,i]=el.value.split("-");
+      const t=traitData[cat][i];
+      totalBonus.Damage+=t.D;
+      totalBonus.DR+=t.DR;
+      totalBonus.Speed+=t.S;
     }
   });
 
-  const corruptStat = document.getElementById("corruptStat").value;
-  const corruptValue = parseFloat(document.getElementById("corruptInput").value) || 0;
-  totalBonus[corruptStat] += corruptValue;
+  totalBonus[corruptStat.value]+=parseFloat(corruptInput.value)||0;
 
   for(let i=0;i<3;i++){
-    const stat = document.getElementById("geneticStat"+i).value;
-    const value = parseFloat(document.getElementById("geneticValue"+i).value) || 0;
-    if(stat) totalBonus[stat] += value;
+    const stat=document.getElementById("geneticStat"+i).value;
+    if(stat) totalBonus[stat]+=parseFloat(document.getElementById("geneticValue"+i).value)||0;
   }
 
-  // DR Cap logic with over-cap warning
-  let drPercent = totalBonus.DR;
-  let drWarning = "";
-  if(drPercent > 75){
-    const over = (drPercent - 75).toFixed(2);
-    drWarning = ` (Currently ${over} over the 75% cap)`;
-    drPercent = 75;
+  let drPercent=totalBonus.DR, drWarning="";
+  if(drPercent>75){
+    const over=(drPercent-75).toFixed(1);
+    drWarning=` <span class="warning">(${over}% over cap)</span>`;
+    drPercent=75;
   }
 
-  const finalMultiplier = {
-    Damage: 1 + totalBonus.Damage/100,
-    DR: 1 - drPercent/100,
-    Speed: 1 + totalBonus.Speed/100
-  };
+  // The multipliers (Dino Trait Power) — start at 1.0
+  const dmgMult = 1 + totalBonus.Damage/100;
+  const drMult = 1 - drPercent/100;
+  const spdMult = 1 + totalBonus.Speed/100;
 
-  const primeMultiplier = 1.25;
-  const megaMultiplier = 1.40;
+  // Target HP calculation
+  const primeMultiplier=1.25, megaMultiplier=1.40;
+  const targetHPInput=parseFloat(targetHP.value);
+  let levelHP=null;
+  if(targetHPInput) levelHP=targetHPInput/(primeMultiplier*megaMultiplier);
 
-  const targetHPInput = parseFloat(document.getElementById("targetHP").value);
-  let levelHP = null;
-  if(targetHPInput){
-    levelHP = targetHPInput / (primeMultiplier * megaMultiplier);
-  }
-
-  let output = `
-    <b>Multipliers:</b> Damage: ${finalMultiplier.Damage.toFixed(1)}, DR: ${finalMultiplier.DR.toFixed(2)}${drWarning}, Speed: ${finalMultiplier.Speed.toFixed(1)}<br>
-  `;
-  if(levelHP){
-    output += `<b>Level HP to ~</b>${Math.round(levelHP)}<b> before feeding Prime & Mega traits</b><br>`;
-  }
-
-  document.getElementById("finalResult").innerHTML = output;
+  // Update the result box
+  let output=`Damage: ${dmgMult.toFixed(3)}, DR: ${drMult.toFixed(3)}${drWarning}, SPD: ${spdMult.toFixed(3)}`;
+  if(levelHP) output+=`<br><b>Level HP to ~</b>${Math.round(levelHP)} before Prime & Mega`;
+  finalResult.innerHTML=output;
 }
 
-// ---------------------------
-// Live listeners
-// ---------------------------
-document.querySelectorAll('select, input[type=number]').forEach(el => {
-  el.addEventListener('input', calculateFinalStats);
-});
+// Event Listeners
+document.querySelectorAll("select").forEach(el=>el.addEventListener("change",calculateFinalStats));
+document.querySelectorAll("input[type=number]").forEach(el=>el.addEventListener("input",calculateFinalStats));
 
-// ---------------------------
 // Theme Toggle
-// ---------------------------
-document.getElementById("toggleTheme").addEventListener("click", () => {
+toggleTheme.onclick=()=>{
   document.body.classList.toggle("dark-mode");
-  const btn = document.getElementById("toggleTheme");
-  if(document.body.classList.contains("dark-mode")){
-    btn.textContent = "Switch to Light Mode";
-  } else {
-    btn.textContent = "Switch to Dark Mode";
-  }
-});
+  toggleTheme.textContent=document.body.classList.contains("dark-mode")?"Switch to Light Mode":"Switch to Dark Mode";
+};
 
-// ---------------------------
+// Mini Calculator
+function calcPress(val){calcDisplay.value+=val;}
+function calcClear(){calcDisplay.value="";}
+function calcEquals(){try{calcDisplay.value=eval(calcDisplay.value);}catch{calcDisplay.value="Error";}}
+
 // Initialize
-// ---------------------------
-window.onload = function(){
-  populateDropdowns();
-  calculateFinalStats();
-}
+window.onload=()=>{populateDropdowns();calculateFinalStats();}
 </script>
 </body>
 </html>
