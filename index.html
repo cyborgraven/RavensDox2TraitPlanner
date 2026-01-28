@@ -17,14 +17,21 @@ h2 { font-size:28px; margin-top:0;}
 .section { background: var(--section-bg); padding:20px; margin-bottom:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
 label { display:block; margin-top:10px; font-size:20px; }
 select, input[type=number], input[type=text] { margin:10px 0; padding:10px; width:100%; font-size:20px;}
-.sticky-header { position: sticky; top:0; background: var(--sticky-bg); padding:15px 20px; z-index:999; border-bottom:2px solid #999; box-shadow:0 4px 6px rgba(0,0,0,0.1);}
+.sticky-header { position: sticky; top:0; background: var(--sticky-bg); padding:15px 20px; z-index:999; border-bottom:2px solid #999; box-shadow:0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px;}
+.header-top { display: flex; align-items: center; gap: 10px; }
+.header-top h2 { margin: 0; }
+.header-top .result { flex-grow: 1; margin: 0; font-size: 20px; padding: 10px; } /* Adjusted padding */
+.header-bottom { display: flex; justify-content: flex-end; gap: 10px; }
+.header-bottom .clear-buttons { display: flex; gap: 5px; }
+.header-bottom .clear-buttons button, .header-bottom button#toggleView { font-size: 16px; padding: 8px 16px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+body.dark-mode .header-bottom .clear-buttons button, body.dark-mode .header-bottom button#toggleView { background-color: #495057; }
 .result { background: var(--result-bg); padding:15px; border-radius:5px; margin-top:10px; font-weight:bold; font-size:24px;}
 .warning { color:red; font-weight:bold; }
 .flex-row { display:flex; gap:10px; flex-wrap:wrap; }
 .flex-row select, .flex-row input[type=number] { flex:1; }
 @media(max-width:600px){h1{font-size:28px;}h2{font-size:22px;} select,input[type=number],input[type=text]{font-size:18px;}}
 body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--sticky-bg:#3a3a5c;--text-color:#f0f0f0;}
-#toggleTheme {font-size:28px; padding:20px 40px; border-radius:12px; cursor:pointer; background-color:#4a90e2; color:#fff; border:none; margin-bottom:20px;}
+#toggleTheme {font-size:20px; padding:14px 28px; border-radius:12px; cursor:pointer; background-color:#4a90e2; color:#fff; border:none; margin-bottom:20px;}
 
 /* Collapsible Calculator */
 .calc-widget { position: fixed; bottom: 10px; right: 10px; width: 220px; background: var(--section-bg); box-shadow:0 4px 10px rgba(0,0,0,0.2); border-radius:10px; padding:10px; z-index:2000; display:none;}
@@ -36,34 +43,15 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 
 /* Exclusions */
 .exclusions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-.exclusions label { font-size: 16px; }
-.exclusions select { height: 75px; } /* 25% smaller than 100px */
+.exclusions label { font-size: 18px; }
+.exclusions select { height: 120px; font-size: 16px; } /* Bigger box, smaller font */
 
 /* Optimize buttons */
-.section button[id^="opt"] { font-size: 30px; padding: 19px 38px; } /* 25% bigger */
-
-/* Sticky clear buttons */
-.sticky-clear-buttons {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 1000;
-}
-.sticky-clear-buttons button {
-  font-size: 30px;
-  padding: 19px 38px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-body.dark-mode .sticky-clear-buttons button {
-  background-color: #a52a2a;
+.optimize-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: nowrap; margin-top: 20px; }
+.optimize-buttons button[id^="opt"] { font-size: 30px; padding: 19px 38px; } /* 25% bigger */
+@media (max-width: 1200px) {
+  .optimize-buttons { flex-wrap: wrap; justify-content: center; }
+  .optimize-buttons button[id^="opt"] { font-size: 24px; padding: 15px 30px; }
 }
 </style>
 </head>
@@ -73,8 +61,17 @@ body.dark-mode .sticky-clear-buttons button {
 <div style="text-align:center;"><button id="toggleTheme">Switch to Dark Mode</button></div>
 
 <div class="section sticky-header">
-<h2>Dino Trait Power %</h2>
+<div class="header-top">
+<h2>Trait Power %</h2>
 <div class="result" id="finalResult">Damage: 1.0, DR: 1.0, SPD: 1.0</div>
+</div>
+<div class="header-bottom">
+<div class="clear-buttons">
+<button id="clearOptimized">Clear Optimized</button>
+<button id="clearAll">Clear All</button>
+</div>
+<button id="toggleView">Swap to Buff screen style view</button>
+</div>
 </div>
 
 <div class="section">
@@ -166,9 +163,11 @@ body.dark-mode .sticky-clear-buttons button {
 <label>Exclude Prime: <select id="excludeP" multiple></select></label>
 <label>Exclude Mega: <select id="excludeM" multiple></select></label>
 </div>
-<button id="optDamage">Optimize Damage</button>
-<button id="optSpeed">Optimize Speed</button>
-<button id="optAll">Optimize All-Around</button>
+<div class="optimize-buttons">
+<button id="optDamage">Optimize for Damage</button>
+<button id="optSpeed">Optimize for Speed</button>
+<button id="optAll">Optimize for Least Waste</button>
+</div>
 </div>
 
 <!-- Collapsible Calculator -->
@@ -182,12 +181,6 @@ body.dark-mode .sticky-clear-buttons button {
 <button onclick="calcPress('0')">0</button><button onclick="calcPress('.')">.</button><button onclick="calcClear()">C</button><button onclick="calcPress('+')">+</button>
 <button style="grid-column: span 4; background:#4a90e2; color:white;" onclick="calcEquals()">=</button>
 </div>
-</div>
-
-<!-- Sticky Clear Buttons -->
-<div class="sticky-clear-buttons">
-<button id="clearOptimized">Clear Optimized Traits</button>
-<button id="clearAll">Clear All</button>
 </div>
 
 <script>
@@ -243,7 +236,7 @@ function populateDropdowns(){
     if(excludeSelect) {
       excludeSelect.innerHTML = "";
       traitData[cat].forEach((t, i) => {
-        const opt = document.createElement("option");
+        const opt=document.createElement("option");
         opt.value = i;
         opt.textContent = t.N;
         excludeSelect.appendChild(opt);
@@ -255,6 +248,7 @@ function populateDropdowns(){
 // ---------------------------
 // CALCULATE DINO TRAIT POWER
 // ---------------------------
+let isMultiplierView = true;
 function calculateFinalStats(){
   let total={Damage:0,DR:0,Speed:0};
   ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"].forEach(id=>{
@@ -278,7 +272,12 @@ function calculateFinalStats(){
   let drWarning="";
   if(drPercent>75){ drWarning=` <span class="warning">(${(drPercent-75).toFixed(1)}% over cap)</span>`; drPercent=Math.min(drPercent,75);}
   const dmg=1+total.Damage/100, dr=1-drPercent/100, spd=1+total.Speed/100;
-  let out=`Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`;
+  let out;
+  if(isMultiplierView){
+    out=`Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`;
+  }else{
+    out=`Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
+  }
   const target=parseFloat(document.getElementById("targetHP").value);
   if(target){const prime=1.25, mega=1.40; out+=`<br><b>Level HP to ~</b>${Math.round(target/(prime*mega))} before Prime & Mega`;}
   document.getElementById("finalResult").innerHTML=out;
@@ -475,9 +474,7 @@ function optimize(mode) {
     return;
   }
 
-  let bestWithBoth = { val: -Infinity, choices: null };
-  let bestWithDR = { val: -Infinity, choices: null };
-  let bestAny = { val: -Infinity, choices: null };
+  let best = { val: -Infinity, choices: null };
 
   function recurse(groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) {
     if (groupIndex === unfixedGroups.length) {
@@ -485,18 +482,11 @@ function optimize(mode) {
       const totalDR = fixedDR + accDR;
       const totalS = fixedS + accS;
       const obj = wd * totalD + ws * totalS;
-      if (totalDR >= minDR && (!useSConstraint || totalS >= userMinS)) {
-        if (obj > bestWithBoth.val) {
-          bestWithBoth = { val: obj, choices: { ...choices } };
-        }
-      }
-      if (totalDR >= minDR) {
-        if (obj > bestWithDR.val) {
-          bestWithDR = { val: obj, choices: { ...choices } };
-        }
-      }
-      if (obj > bestAny.val) {
-        bestAny = { val: obj, choices: { ...choices } };
+      const requireDR = (mode !== 'damage' && mode !== 'speed');
+      if (requireDR && totalDR < minDR) return;
+      if (useSConstraint && totalS < userMinS) return;
+      if (obj > best.val) {
+        best = { val: obj, choices: { ...choices } };
       }
       return;
     }
@@ -512,11 +502,6 @@ function optimize(mode) {
   }
 
   recurse();
-
-  let best;
-  if (bestWithBoth.val > -Infinity) best = bestWithBoth;
-  else if (bestWithDR.val > -Infinity) best = bestWithDR;
-  else best = bestAny;
 
   if (best.choices) {
     unfixedGroups.forEach(g => {
@@ -582,7 +567,14 @@ enforceRange(document.getElementById('corruptInput'), -25, 25);
 enforceRange(document.getElementById('geneticValue0'), 5, 10);
 enforceRange(document.getElementById('geneticValue1'), 5, 10);
 enforceRange(document.getElementById('geneticValue2'), 5, 10);
+
+// Toggle view
+document.getElementById('toggleView').addEventListener('click', () => {
+  isMultiplierView = !isMultiplierView;
+  document.getElementById('toggleView').textContent = isMultiplierView ? 'Swap to Buff screen style view' : 'Swap to Dino trait power% view';
+  calculateFinalStats();
+});
 </script>
 </body>
 </html>
-``` const traits
+``` wd *
