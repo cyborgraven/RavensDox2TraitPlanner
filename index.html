@@ -37,10 +37,34 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 /* Exclusions */
 .exclusions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
 .exclusions label { font-size: 16px; }
-.exclusions select { height: 100px; } /* Smaller height */
+.exclusions select { height: 75px; } /* 25% smaller than 100px */
 
 /* Optimize buttons */
-.section button[id^="opt"] { font-size: 24px; padding: 15px 30px; } /* Bigger buttons */
+.section button[id^="opt"] { font-size: 30px; padding: 19px 38px; } /* 25% bigger */
+
+/* Sticky clear buttons */
+.sticky-clear-buttons {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+.sticky-clear-buttons button {
+  font-size: 30px;
+  padding: 19px 38px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+body.dark-mode .sticky-clear-buttons button {
+  background-color: #a52a2a;
+}
 </style>
 </head>
 <body>
@@ -61,21 +85,21 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <option value="DR">DR</option>
 <option value="Speed">Speed</option>
 </select></label>
-<label>Corrupt String Bonus (%): <input type="number" id="corruptInput"></label>
+<label>Corrupt String Bonus (%): <input type="number" id="corruptInput" min="-25" max="25" placeholder="Enter -25 to 25%"></label>
 <div class="flex-row">
 <label>Greater String 1 Stat:
 <select id="geneticStat0"></select></label>
-<label>Bonus (%): <input type="number" id="geneticValue0"></label>
+<label>Bonus (%): <input type="number" id="geneticValue0" min="5" max="10" placeholder="Enter 5-10%"></label>
 </div>
 <div class="flex-row">
 <label>Greater String 2 Stat:
 <select id="geneticStat1"></select></label>
-<label>Bonus (%): <input type="number" id="geneticValue1"></label>
+<label>Bonus (%): <input type="number" id="geneticValue1" min="5" max="10" placeholder="Enter 5-10%"></label>
 </div>
 <div class="flex-row">
 <label>Greater String 3 Stat:
 <select id="geneticStat2"></select></label>
-<label>Bonus (%): <input type="number" id="geneticValue2"></label>
+<label>Bonus (%): <input type="number" id="geneticValue2" min="5" max="10" placeholder="Enter 5-10%"></label>
 </div>
 </div>
 
@@ -158,6 +182,12 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <button onclick="calcPress('0')">0</button><button onclick="calcPress('.')">.</button><button onclick="calcClear()">C</button><button onclick="calcPress('+')">+</button>
 <button style="grid-column: span 4; background:#4a90e2; color:white;" onclick="calcEquals()">=</button>
 </div>
+</div>
+
+<!-- Sticky Clear Buttons -->
+<div class="sticky-clear-buttons">
+<button id="clearOptimized">Clear Optimized Traits</button>
+<button id="clearAll">Clear All</button>
 </div>
 
 <script>
@@ -314,10 +344,9 @@ const groups = [
   {cat: 'M', num_slots: 1, ids: ['Mega']}
 ];
 
-function getOptions(cat, unfixedCount, excluded) {
+function getOptions(cat, maxCount, excluded) {
   const traits = traitData[cat].filter((t, i) => !excluded.includes(i));
   const len = traits.length;
-  if (len === 0 || len < unfixedCount) return [];
   const opts = [];
   const generateCombo = (count, current = [], start = 0) => {
     if (current.length === count) {
@@ -336,8 +365,46 @@ function getOptions(cat, unfixedCount, excluded) {
       generateCombo(count, [...current, i], i + 1);
     }
   };
-  generateCombo(unfixedCount);
+  for (let count = 0; count <= maxCount; count++) {
+    generateCombo(count);
+  }
   return opts;
+}
+
+function clearOptimizedTraits() {
+  groups.forEach(g => {
+    if (g.cat !== 'P' && g.cat !== 'M') {
+      g.ids.forEach(id => {
+        document.getElementById(id).value = "";
+      });
+    }
+  });
+  calculateFinalStats();
+}
+
+function clearAll() {
+  groups.forEach(g => {
+    g.ids.forEach(id => {
+      document.getElementById(id).value = "";
+    });
+  });
+  document.getElementById("corruptStat").value = "Damage";
+  document.getElementById("corruptInput").value = "";
+  for (let i = 0; i < 3; i++) {
+    document.getElementById("geneticStat" + i).value = "";
+    document.getElementById("geneticValue" + i).value = "";
+  }
+  document.getElementById("targetHP").value = "";
+  document.getElementById("minSpeed").value = "0";
+  for (const cat in traitData) {
+    const excludeSelect = document.getElementById(`exclude${cat}`);
+    if (excludeSelect) {
+      for (let opt of excludeSelect.options) {
+        opt.selected = false;
+      }
+    }
+  }
+  calculateFinalStats();
 }
 
 function optimize(mode) {
@@ -453,12 +520,15 @@ function optimize(mode) {
 
   if (best.choices) {
     unfixedGroups.forEach(g => {
-      const combo = best.choices[g.cat];
-      if (combo) {
-        const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
-        combo.forEach((index, idx) => {
-          document.getElementById(sortedUnfixed[idx].id).value = `${g.cat}-${index}`;
-        });
+      let combo = best.choices[g.cat] || [];
+      const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
+      for (let idx = 0; idx < sortedUnfixed.length; idx++) {
+        const id = sortedUnfixed[idx].id;
+        if (idx < combo.length) {
+          document.getElementById(id).value = `${g.cat}-${combo[idx]}`;
+        } else {
+          document.getElementById(id).value = "";
+        }
       }
     });
   }
@@ -485,6 +555,8 @@ document.getElementById("deleteBuild").onclick = deleteBuild;
 document.getElementById("optDamage").onclick = optimizeDamage;
 document.getElementById("optSpeed").onclick = optimizeSpeed;
 document.getElementById("optAll").onclick = optimizeAll;
+document.getElementById("clearOptimized").onclick = clearOptimizedTraits;
+document.getElementById("clearAll").onclick = clearAll;
 
 // Auto-calculate on changes
 const autoCalcElements = document.querySelectorAll('select:not(#savedBuilds):not([id^="exclude"]), input[type="number"]');
@@ -492,6 +564,25 @@ autoCalcElements.forEach(el => {
   el.addEventListener('change', calculateFinalStats);
   el.addEventListener('input', calculateFinalStats);
 });
+
+// Enforce min/max on specific inputs
+function enforceRange(input, min, max) {
+  input.addEventListener('input', function() {
+    let val = parseFloat(this.value);
+    if (isNaN(val)) {
+      this.value = '';
+    } else {
+      if (val < min) this.value = min;
+      if (val > max) this.value = max;
+    }
+  });
+}
+
+enforceRange(document.getElementById('corruptInput'), -25, 25);
+enforceRange(document.getElementById('geneticValue0'), 5, 10);
+enforceRange(document.getElementById('geneticValue1'), 5, 10);
+enforceRange(document.getElementById('geneticValue2'), 5, 10);
 </script>
 </body>
 </html>
+``` const traits
