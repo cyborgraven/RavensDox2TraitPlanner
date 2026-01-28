@@ -70,7 +70,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <button id="clearOptimized">Clear Optimized</button>
 <button id="clearAll">Clear All</button>
 </div>
-<button id="toggleView">Swap to Buff screen style view</button>
+<button id="toggleView">Swap Trait Power View</button>
 </div>
 </div>
 
@@ -571,10 +571,8 @@ enforceRange(document.getElementById('geneticValue2'), 5, 10);
 // Toggle view
 document.getElementById('toggleView').addEventListener('click', () => {
   isMultiplierView = !isMultiplierView;
-  document.getElementById('toggleView').textContent = isMultiplierView ? 'Swap to Buff screen style view' : 'Swap to Dino trait power% view';
   calculateFinalStats();
 });
 </script>
 </body>
 </html>
-``` wd *
