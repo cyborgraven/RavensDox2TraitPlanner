@@ -153,7 +153,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 
 <div class="section">
 <h2>Optimize Build</h2>
-<label>Min Speed % for Damage Opt: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" value="0"></label>
+<label>Min Speed % for Damage Opt: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" value="0"><span id="speed-context"></span></label>
 <div class="exclusions">
 <label>Exclude W: <select id="excludeW" multiple></select></label>
 <label>Exclude N: <select id="excludeN" multiple></select></label>
@@ -246,28 +246,36 @@ function populateDropdowns(){
 }
 
 // ---------------------------
+// GET CURRENT TOTALS
+// ---------------------------
+function getCurrentTotals() {
+  let total = {Damage: 0, DR: 0, Speed: 0};
+  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"].forEach(id => {
+    const val = document.getElementById(id).value;
+    if (val.includes("-")) {
+      const [cat, i] = val.split("-");
+      const t = traitData[cat][parseInt(i)];
+      total.Damage += t.D || 0;
+      total.DR += t.DR || 0;
+      total.Speed += t.S || 0;
+    }
+  });
+  const corrupt = document.getElementById("corruptStat").value;
+  total[corrupt] += parseFloat(document.getElementById("corruptInput").value) || 0;
+  for (let i = 0; i < 3; i++) {
+    const stat = document.getElementById("geneticStat" + i).value;
+    const val = parseFloat(document.getElementById("geneticValue" + i).value) || 0;
+    if (stat) total[stat] += val;
+  }
+  return total;
+}
+
+// ---------------------------
 // CALCULATE DINO TRAIT POWER
 // ---------------------------
 let isMultiplierView = true;
 function calculateFinalStats(){
-  let total={Damage:0,DR:0,Speed:0};
-  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"].forEach(id=>{
-    const val=document.getElementById(id).value;
-    if(val.includes("-")){
-      const [cat,i]=val.split("-");
-      const t=traitData[cat][parseInt(i)];
-      total.Damage+=t.D || 0;
-      total.DR+=t.DR || 0;
-      total.Speed+=t.S || 0;
-    }
-  });
-  const corrupt=document.getElementById("corruptStat").value;
-  total[corrupt]+=parseFloat(document.getElementById("corruptInput").value)||0;
-  for(let i=0;i<3;i++){
-    const stat=document.getElementById("geneticStat"+i).value;
-    const val=parseFloat(document.getElementById("geneticValue"+i).value)||0;
-    if(stat) total[stat]+=val;
-  }
+  const total = getCurrentTotals();
   let drPercent=total.DR;
   let drWarning="";
   if(drPercent>75){ drWarning=` <span class="warning">(${(drPercent-75).toFixed(1)}% over cap)</span>`; drPercent=Math.min(drPercent,75);}
@@ -361,12 +369,11 @@ function getOptions(cat, maxCount, excluded) {
       return;
     }
     for (let i = start; i < len; i++) {
-      generateCombo(count, [...current, i], i + 1);
+      generateCombo(count, [...current, i], i); // Allow repetitions
     }
   };
-  for (let count = 0; count <= maxCount; count++) {
-    generateCombo(count);
-  }
+  // Force full slots only
+  generateCombo(maxCount);
   return opts;
 }
 
@@ -407,11 +414,13 @@ function clearAll() {
 }
 
 function optimize(mode) {
+  document.getElementById('speed-context').innerHTML = '';
   const minDR = 75;
   const userMinS = parseFloat(document.getElementById('minSpeed').value) || 0;
   const wd = (mode === 'damage' || mode === 'all') ? 1 : 0;
   const ws = (mode === 'speed' || mode === 'all') ? 1 : 0;
   const useSConstraint = (mode === 'damage' && userMinS > 0);
+  const requireDR = (mode === 'damage' || mode === 'all');
 
   let fixedD = 0, fixedDR = 0, fixedS = 0;
   let fixedObj = wd * fixedD + ws * fixedS;
@@ -474,7 +483,7 @@ function optimize(mode) {
     return;
   }
 
-  let best = { val: -Infinity, choices: null };
+  let candidates = [];
 
   function recurse(groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) {
     if (groupIndex === unfixedGroups.length) {
@@ -482,12 +491,9 @@ function optimize(mode) {
       const totalDR = fixedDR + accDR;
       const totalS = fixedS + accS;
       const obj = wd * totalD + ws * totalS;
-      const requireDR = (mode !== 'damage' && mode !== 'speed');
       if (requireDR && totalDR < minDR) return;
-      if (useSConstraint && totalS < userMinS) return;
-      if (obj > best.val) {
-        best = { val: obj, choices: { ...choices } };
-      }
+      if (mode !== 'damage' && useSConstraint && totalS < userMinS) return;
+      candidates.push({ d: totalD, dr: totalDR, s: totalS, obj, choices: { ...choices } });
       return;
     }
     const g = unfixedGroups[groupIndex];
@@ -503,19 +509,61 @@ function optimize(mode) {
 
   recurse();
 
-  if (best.choices) {
-    unfixedGroups.forEach(g => {
-      let combo = best.choices[g.cat] || [];
-      const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
-      for (let idx = 0; idx < sortedUnfixed.length; idx++) {
-        const id = sortedUnfixed[idx].id;
-        if (idx < combo.length) {
-          document.getElementById(id).value = `${g.cat}-${combo[idx]}`;
-        } else {
-          document.getElementById(id).value = "";
+  if (candidates.length > 0) {
+    let best;
+    if (mode === 'damage') {
+      if (!useSConstraint) {
+        candidates.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s); // Max damage, then max DR, then min speed
+        best = candidates[0];
+      } else {
+        const tolerancePercent = 0.03;
+        const tolerance = tolerancePercent * userMinS;
+        const damageThreshold = 1.05; // 5% more damage to override
+        let above = candidates.filter(c => c.s >= userMinS);
+        let below = candidates.filter(c => c.s < userMinS && c.s >= userMinS - tolerance);
+        let maxD_above = above.length > 0 ? Math.max(...above.map(c => c.d)) : -Infinity;
+        let qualified_below = below.filter(c => c.d > maxD_above * damageThreshold);
+        let all_considered = [...above, ...qualified_below];
+        if (all_considered.length === 0) {
+          all_considered = candidates; // Fallback
         }
+        all_considered.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s); // Same multi-sort
+        best = all_considered[0];
       }
-    });
+    } else {
+      candidates.sort((a, b) => b.obj - a.obj);
+      best = candidates[0];
+    }
+
+    if (best && best.choices) {
+      unfixedGroups.forEach(g => {
+        let combo = best.choices[g.cat] || [];
+        const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
+        for (let idx = 0; idx < sortedUnfixed.length; idx++) {
+          const id = sortedUnfixed[idx].id;
+          if (idx < combo.length) {
+            document.getElementById(id).value = `${g.cat}-${combo[idx]}`;
+          } else {
+            document.getElementById(id).value = "";
+          }
+        }
+      });
+
+      if (mode === 'damage' && useSConstraint) {
+        const actualS = best.s;
+        let msg = '';
+        const tolerancePercent = 0.03;
+        const tolerance = tolerancePercent * userMinS;
+        if (actualS >= userMinS) {
+          msg = ' (achieved or exceeded)';
+        } else if (actualS >= userMinS - tolerance) {
+          msg = ` (within 3% of desired: actual ${actualS.toFixed(1)}%)`;
+        } else {
+          msg = ' (below desired; no better options found)';
+        }
+        document.getElementById('speed-context').innerHTML = msg;
+      }
+    }
   }
   calculateFinalStats();
 }
