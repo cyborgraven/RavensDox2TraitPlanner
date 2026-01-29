@@ -153,7 +153,9 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 
 <div class="section">
 <h2>Optimize Build</h2>
-<label>Min Speed % for Damage Opt: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" value="0"><span id="speed-context"></span></label>
+<label>Minimum Desired Speed %: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1"><span id="speed-context"></span></label>
+<h2>Exclusions</h2>
+<p>Use exclusions if you are missing some traits and don’t want them to be considered</p>
 <div class="exclusions">
 <label>Exclude W: <select id="excludeW" multiple></select></label>
 <label>Exclude N: <select id="excludeN" multiple></select></label>
@@ -369,10 +371,9 @@ function getOptions(cat, maxCount, excluded) {
       return;
     }
     for (let i = start; i < len; i++) {
-      generateCombo(count, [...current, i], i); // Allow repetitions
+      generateCombo(count, [...current, i], i + 1);
     }
   };
-  // Force full slots only
   generateCombo(maxCount);
   return opts;
 }
@@ -401,7 +402,7 @@ function clearAll() {
     document.getElementById("geneticValue" + i).value = "";
   }
   document.getElementById("targetHP").value = "";
-  document.getElementById("minSpeed").value = "0";
+  document.getElementById("minSpeed").value = "";
   for (const cat in traitData) {
     const excludeSelect = document.getElementById(`exclude${cat}`);
     if (excludeSelect) {
@@ -420,10 +421,11 @@ function optimize(mode) {
   const wd = (mode === 'damage' || mode === 'all') ? 1 : 0;
   const ws = (mode === 'speed' || mode === 'all') ? 1 : 0;
   const useSConstraint = (mode === 'damage' && userMinS > 0);
-  const requireDR = (mode === 'damage' || mode === 'all');
+  const tolerancePercent = 0.03;
+  const tolerance = tolerancePercent * userMinS;
+  const damageThreshold = 1.05;
 
   let fixedD = 0, fixedDR = 0, fixedS = 0;
-  let fixedObj = wd * fixedD + ws * fixedS;
 
   // Fixed from traits
   groups.forEach(g => {
@@ -441,7 +443,6 @@ function optimize(mode) {
     fixedD += groupFixedD;
     fixedDR += groupFixedDR;
     fixedS += groupFixedS;
-    fixedObj += wd * groupFixedD + ws * groupFixedS;
   });
 
   // Fixed from corrupt and greaters
@@ -450,7 +451,6 @@ function optimize(mode) {
   if (corruptStat === "Damage") fixedD += corruptVal;
   else if (corruptStat === "DR") fixedDR += corruptVal;
   else if (corruptStat === "Speed") fixedS += corruptVal;
-  fixedObj += wd * (corruptStat === "Damage" ? corruptVal : 0) + ws * (corruptStat === "Speed" ? corruptVal : 0);
 
   for (let i = 0; i < 3; i++) {
     const stat = document.getElementById("geneticStat" + i).value;
@@ -458,7 +458,6 @@ function optimize(mode) {
     if (stat === "Damage") fixedD += val;
     else if (stat === "DR") fixedDR += val;
     else if (stat === "Speed") fixedS += val;
-    fixedObj += wd * (stat === "Damage" ? val : 0) + ws * (stat === "Speed" ? val : 0);
   }
 
   // Unfixed groups
@@ -491,8 +490,6 @@ function optimize(mode) {
       const totalDR = fixedDR + accDR;
       const totalS = fixedS + accS;
       const obj = wd * totalD + ws * totalS;
-      if (requireDR && totalDR < minDR) return;
-      if (mode !== 'damage' && useSConstraint && totalS < userMinS) return;
       candidates.push({ d: totalD, dr: totalDR, s: totalS, obj, choices: { ...choices } });
       return;
     }
@@ -510,30 +507,54 @@ function optimize(mode) {
   recurse();
 
   if (candidates.length > 0) {
-    let best;
-    if (mode === 'damage') {
-      if (!useSConstraint) {
-        candidates.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s); // Max damage, then max DR, then min speed
-        best = candidates[0];
-      } else {
-        const tolerancePercent = 0.03;
-        const tolerance = tolerancePercent * userMinS;
-        const damageThreshold = 1.05; // 5% more damage to override
-        let above = candidates.filter(c => c.s >= userMinS);
-        let below = candidates.filter(c => c.s < userMinS && c.s >= userMinS - tolerance);
-        let maxD_above = above.length > 0 ? Math.max(...above.map(c => c.d)) : -Infinity;
-        let qualified_below = below.filter(c => c.d > maxD_above * damageThreshold);
-        let all_considered = [...above, ...qualified_below];
-        if (all_considered.length === 0) {
-          all_considered = candidates; // Fallback
-        }
-        all_considered.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s); // Same multi-sort
-        best = all_considered[0];
+    let dr_filtered = candidates.filter(c => c.dr >= minDR);
+    let dr_fallback = dr_filtered.length === 0;
+    let considered = dr_fallback ? candidates : dr_filtered;
+    let dr_msg = dr_fallback ? ' (DR below 75%; could not reach with available traits)' : '';
+    let msg = '';
+    let best = null;
+
+    const drSortDir = dr_fallback ? (a, b) => b.dr - a.dr : (a, b) => a.dr - b.dr;
+
+    if (mode === 'damage' && useSConstraint) {
+      let above = considered.filter(c => c.s >= userMinS);
+      let maxD_above = above.length > 0 ? Math.max(...above.map(c => c.d)) : -Infinity;
+      let below = considered.filter(c => c.s < userMinS && c.s >= userMinS - tolerance);
+      let qualified_below = below.filter(c => c.d > maxD_above * damageThreshold);
+      let s_considered = [...above, ...qualified_below];
+      let s_fallback = s_considered.length === 0;
+      if (s_fallback) {
+        s_considered = considered;
       }
+      s_considered.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s);
+      best = s_considered[0];
+      let s_msg = '';
+      if (!s_fallback && best) {
+        const actualS = best.s;
+        if (actualS >= userMinS) {
+          s_msg = ' (achieved or exceeded)';
+        } else if (actualS >= userMinS - tolerance) {
+          s_msg = ` (within 3% of desired: actual ${actualS.toFixed(1)}%)`;
+        }
+      } else {
+        s_msg = ' (below desired; no better options found)';
+      }
+      msg = s_msg + dr_msg;
     } else {
-      candidates.sort((a, b) => b.obj - a.obj);
-      best = candidates[0];
+      let sortFunc;
+      if (mode === 'damage') {
+        sortFunc = (a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s;
+      } else if (mode === 'speed') {
+        sortFunc = (a, b) => b.s - a.s || drSortDir(a, b);
+      } else if (mode === 'all') {
+        sortFunc = (a, b) => (b.d + b.s) - (a.d + a.s) || drSortDir(a, b);
+      }
+      considered.sort(sortFunc);
+      best = considered[0];
+      msg = dr_msg;
     }
+
+    document.getElementById('speed-context').innerHTML = msg;
 
     if (best && best.choices) {
       unfixedGroups.forEach(g => {
@@ -548,21 +569,6 @@ function optimize(mode) {
           }
         }
       });
-
-      if (mode === 'damage' && useSConstraint) {
-        const actualS = best.s;
-        let msg = '';
-        const tolerancePercent = 0.03;
-        const tolerance = tolerancePercent * userMinS;
-        if (actualS >= userMinS) {
-          msg = ' (achieved or exceeded)';
-        } else if (actualS >= userMinS - tolerance) {
-          msg = ` (within 3% of desired: actual ${actualS.toFixed(1)}%)`;
-        } else {
-          msg = ' (below desired; no better options found)';
-        }
-        document.getElementById('speed-context').innerHTML = msg;
-      }
     }
   }
   calculateFinalStats();
