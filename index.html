@@ -21,7 +21,7 @@ select, input[type=number], input[type=text] { margin:10px 0; padding:10px; widt
 .header-top { display: flex; align-items: center; gap: 10px; }
 .header-top h2 { margin: 0; }
 .header-top .result { flex-grow: 1; margin: 0; font-size: 20px; padding: 10px; } /* Adjusted padding */
-.header-bottom { display: flex; justify-content: flex-end; gap: 10px; }
+.header-bottom { display: flex; justify-content: center; gap: 10px; }
 .header-bottom .clear-buttons { display: flex; gap: 5px; }
 .header-bottom .clear-buttons button, .header-bottom button#toggleView { font-size: 16px; padding: 8px 16px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; white-space: nowrap; }
 body.dark-mode .header-bottom .clear-buttons button, body.dark-mode .header-bottom button#toggleView { background-color: #495057; }
@@ -55,10 +55,10 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 }
 </style>
 </head>
-<body>
+<body class="dark-mode">
 
 <h1>Raven’s Dox2 Trait Planner</h1>
-<div style="text-align:center;"><button id="toggleTheme">Switch to Dark Mode</button></div>
+<div style="text-align:center;"><button id="toggleTheme">Switch to Light Mode</button></div>
 
 <div class="section sticky-header">
 <div class="header-top">
@@ -66,11 +66,11 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <div class="result" id="finalResult">Damage: 1.0, DR: 1.0, SPD: 1.0</div>
 </div>
 <div class="header-bottom">
+<button id="toggleView">Swap Trait Power View</button>
 <div class="clear-buttons">
 <button id="clearOptimized">Clear Optimized</button>
 <button id="clearAll">Clear All</button>
 </div>
-<button id="toggleView">Swap Trait Power View</button>
 </div>
 </div>
 
