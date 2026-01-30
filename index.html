@@ -83,7 +83,8 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </div>
 </div>
 
-<div class="section">
+<div class="section combined-section">
+<div>
 <h2>Corrupt and Greaters</h2>
 <div class="flex-row">
 <label>Corrupt String Stat:
@@ -104,6 +105,18 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <label>Greater String 3 Stat:
 <select id="geneticStat2"></select></label>
 <label>Bonus (%): <input type="number" id="geneticValue2" min="5" max="10" placeholder="Enter 5-10%"></label>
+</div>
+</div>
+<div>
+<h2>Cleanse Counters</h2>
+<div class="flex-row">
+<label>Trait Cleanse Counter:
+<input type="number" id="traitCleanseCounter" min="1" max="5" placeholder="Enter 1-5"></label>
+</div>
+<div class="flex-row">
+<label>Absolute Trait Cleanse Counter:
+<input type="number" id="absoluteTraitCleanseCounter" min="1" max="3" placeholder="Enter 1-3"></label>
+</div>
 </div>
 </div>
 
@@ -265,7 +278,29 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </div>
 </div>
 
+<!-- Debug Log Section -->
+<div class="section">
+<h2>Debug Log</h2>
+<textarea id="debugLog" readonly style="width:100%; height:200px; font-size:14px;"></textarea>
+<div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+<button id="refreshLog">Refresh Log</button>
+<button id="copyLog">Copy Log to Clipboard</button>
+<button id="clearLog">Clear Log</button>
+</div>
+</div>
+
 <script>
+// Debug Log Setup
+let debugLogs = [];
+function logDebug(message) {
+  const timestamp = new Date().toLocaleString();
+  debugLogs.push(`[${timestamp}] ${message}`);
+}
+window.onerror = function(message, source, lineno, colno, error) {
+  logDebug(`Error: ${message} at line ${lineno}:${colno}`);
+  return false; // Allow default handling if desired
+};
+
 // ---------------------------
 // TRAIT DATABASE
 // ---------------------------
@@ -283,6 +318,7 @@ const traitData={
 // POPULATE DROPDOWNS
 // ---------------------------
 function populateDropdowns(){
+  logDebug("Populating dropdowns");
   const mapping={W:["W1","W2","W3"],N:["N1","N2","N3"],A:["A1","A2","A3"],UW:["UW"],U:["U"],P:["Prime"],M:["Mega"]};
   for(const cat in mapping){
     mapping[cat].forEach(id=>{
@@ -338,6 +374,7 @@ function populateDropdowns(){
 // GET CURRENT TOTALS
 // ---------------------------
 function getCurrentTotals() {
+  logDebug("Calculating current totals");
   let total = {Damage: 0, DR: 0, Speed: 0};
   ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega"].forEach(id => {
     const val = document.getElementById(id).value;
@@ -364,6 +401,7 @@ function getCurrentTotals() {
 // ---------------------------
 let isMultiplierView = true;
 function calculateFinalStats(){
+  logDebug("Calculating final stats");
   const total = getCurrentTotals();
   let drPercent=total.DR;
   let drWarning="";
@@ -399,10 +437,11 @@ document.getElementById("toggleCalc").onclick=()=>{
 // ---------------------------
 let savedBuilds = JSON.parse(localStorage.getItem("savedBuilds")) || {};
 function saveBuild(){
+  logDebug("Saving build");
   const name=document.getElementById("buildName").value.trim();
   if(!name)return alert("Enter build name!");
   savedBuilds[name]={};
-  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega","corruptStat","corruptInput","geneticStat0","geneticStat1","geneticStat2","geneticValue0","geneticValue1","geneticValue2","targetHP"].forEach(id=>{
+  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega","corruptStat","corruptInput","geneticStat0","geneticStat1","geneticStat2","geneticValue0","geneticValue1","geneticValue2","targetHP","traitCleanseCounter","absoluteTraitCleanseCounter"].forEach(id=>{
     savedBuilds[name][id]=document.getElementById(id).value;
   });
   localStorage.setItem("savedBuilds", JSON.stringify(savedBuilds));
@@ -415,12 +454,14 @@ function updateSavedDropdown(){
   });
 }
 function loadBuild(){
+  logDebug("Loading build");
   const name=document.getElementById("savedBuilds").value; if(!name)return;
   const data=savedBuilds[name];
   Object.keys(data).forEach(id=>{if(document.getElementById(id)) document.getElementById(id).value=data[id];});
   calculateFinalStats();
 }
 function deleteBuild(){
+  logDebug("Deleting build");
   const name=document.getElementById("savedBuilds").value; if(!name)return;
   delete savedBuilds[name];
   localStorage.setItem("savedBuilds", JSON.stringify(savedBuilds));
@@ -431,8 +472,9 @@ function deleteBuild(){
 // SHARE BUILD
 // ---------------------------
 document.getElementById("shareBuild").onclick = function() {
+  logDebug("Sharing build");
   let buildData = {};
-  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega","corruptStat","corruptInput","geneticStat0","geneticStat1","geneticStat2","geneticValue0","geneticValue1","geneticValue2","targetHP"].forEach(id => {
+  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega","corruptStat","corruptInput","geneticStat0","geneticStat1","geneticStat2","geneticValue0","geneticValue1","geneticValue2","targetHP","traitCleanseCounter","absoluteTraitCleanseCounter"].forEach(id => {
     buildData[id] = document.getElementById(id).value;
   });
   
@@ -451,6 +493,7 @@ document.getElementById("shareBuild").onclick = function() {
 // LOAD SHARED BUILD FROM URL
 // ---------------------------
 function loadFromUrl() {
+  logDebug("Loading from URL");
   const urlParams = new URLSearchParams(window.location.search);
   const buildParam = urlParams.get('build');
   if (buildParam) {
@@ -464,6 +507,7 @@ function loadFromUrl() {
       calculateFinalStats();
       alert("Build loaded from shared URL!");
     } catch (e) {
+      logDebug("Error loading shared build: " + e.message);
       console.error("Invalid shared build data:", e);
     }
   }
@@ -483,6 +527,7 @@ const groups = [
 ];
 
 function getOptions(cat, maxCount, excluded) {
+  logDebug(`Getting options for ${cat} with max ${maxCount}, excluded: ${excluded}`);
   const traits = traitData[cat].filter((t, i) => !excluded.includes(i));
   const len = traits.length;
   const opts = [];
@@ -504,10 +549,12 @@ function getOptions(cat, maxCount, excluded) {
     }
   };
   generateCombo(maxCount);
+  logDebug(`Generated ${opts.length} options for ${cat}`);
   return opts;
 }
 
 function clearOptimizedTraits() {
+  logDebug("Clearing optimized traits");
   groups.forEach(g => {
     if (g.cat !== 'P' && g.cat !== 'M') {
       g.ids.forEach(id => {
@@ -519,6 +566,7 @@ function clearOptimizedTraits() {
 }
 
 function clearAll() {
+  logDebug("Clearing all");
   groups.forEach(g => {
     g.ids.forEach(id => {
       document.getElementById(id).value = "";
@@ -532,6 +580,8 @@ function clearAll() {
   }
   document.getElementById("targetHP").value = "";
   document.getElementById("minSpeed").value = "";
+  document.getElementById("traitCleanseCounter").value = "";
+  document.getElementById("absoluteTraitCleanseCounter").value = "";
   for (const cat in traitData) {
     const excludeSelect = document.getElementById(`exclude${cat}`);
     if (excludeSelect) {
@@ -544,6 +594,7 @@ function clearAll() {
 }
 
 function optimize(mode) {
+  logDebug(`Starting optimization for mode: ${mode}`);
   document.getElementById('speed-context').innerHTML = '';
   const minDR = 75;
   const userMinS = parseFloat(document.getElementById('minSpeed').value) || 0;
@@ -597,6 +648,7 @@ function optimize(mode) {
       fixedS += val;
     }
   }
+  logDebug(`Fixed values: D=${fixedD}, DR=${fixedDR}, S=${fixedS}`);
 
   // Unfixed groups
   let unfixedGroups = [];
@@ -614,15 +666,23 @@ function optimize(mode) {
       unfixedGroups.push({ ...g, unfixedIds, unfixedCount, excluded });
     }
   });
+  logDebug(`Unfixed groups: ${unfixedGroups.map(g => g.cat).join(", ")}`);
 
   if (unfixedGroups.length === 0) {
+    logDebug("No unfixed groups, skipping optimization");
     calculateFinalStats();
     return;
   }
 
   let candidates = [];
+  let recursionDepth = 0;
 
   function recurse(groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) {
+    recursionDepth++;
+    if (recursionDepth > 10000) { // Safety limit
+      logDebug("Recursion depth exceeded, possible infinite loop");
+      return;
+    }
     if (groupIndex === unfixedGroups.length) {
       const totalD = fixedD + accD;
       const totalDR = fixedDR + accDR;
@@ -642,7 +702,12 @@ function optimize(mode) {
     });
   }
 
-  recurse();
+  try {
+    recurse();
+    logDebug(`Generated ${candidates.length} candidates`);
+  } catch (e) {
+    logDebug("Error during recursion: " + e.message);
+  }
 
   if (candidates.length > 0) {
     let dr_filtered = candidates.filter(c => c.dr >= minDR);
@@ -690,8 +755,10 @@ function optimize(mode) {
     }
 
     document.getElementById('speed-context').innerHTML = msg;
+    logDebug(`Optimization message: ${msg}`);
 
     if (best && best.choices) {
+      logDebug("Applying best choices");
       unfixedGroups.forEach(g => {
         let combo = best.choices[g.cat] || [];
         const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
@@ -704,9 +771,14 @@ function optimize(mode) {
           }
         }
       });
+    } else {
+      logDebug("No best candidate found");
     }
+  } else {
+    logDebug("No candidates generated");
   }
   calculateFinalStats();
+  logDebug("Optimization completed");
 }
 
 function optimizeDamage() { optimize('damage'); }
@@ -757,6 +829,8 @@ enforceRange(document.getElementById('corruptInput'), -25, 25);
 enforceRange(document.getElementById('geneticValue0'), 5, 10);
 enforceRange(document.getElementById('geneticValue1'), 5, 10);
 enforceRange(document.getElementById('geneticValue2'), 5, 10);
+enforceRange(document.getElementById('traitCleanseCounter'), 1, 5);
+enforceRange(document.getElementById('absoluteTraitCleanseCounter'), 1, 3);
 
 // Toggle view
 document.getElementById('toggleView').addEventListener('click', () => {
@@ -777,6 +851,7 @@ const pygmyGroups = [
 
 // Populate Pygmy Dropdowns (call in populateDropdowns())
 function populatePygmyDropdowns() {
+  logDebug("Populating pygmy dropdowns");
   pygmyGroups.forEach(g => {
     g.startingIds.forEach(id => {
       const select = document.getElementById(id);
@@ -812,6 +887,7 @@ populatePygmyDropdowns();
 
 // Dynamic Addable Slots
 function updatePygmyAddableSlots() {
+  logDebug("Updating pygmy addable slots");
   const container = document.getElementById('pygmyAddableTraits');
   container.innerHTML = '';
   let hasPrime = document.getElementById('pygmyStartingPrime').value !== '';
@@ -861,6 +937,7 @@ function updatePygmyAddableSlots() {
 
 // Get Pygmy Totals
 function getPygmyCurrentTotals() {
+  logDebug("Getting pygmy current totals");
   let total = {
     Damage: parseFloat(document.getElementById('pygmyStartingDmg').value) || 0,
     DR: parseFloat(document.getElementById('pygmyStartingDR').value) || 0,
@@ -888,6 +965,7 @@ function getPygmyCurrentTotals() {
 // Calculate Pygmy Stats (similar to main)
 let pygmyIsMultiplierView = true;
 function calculatePygmyFinalStats() {
+  logDebug("Calculating pygmy final stats");
   const total = getPygmyCurrentTotals();
   let drPercent = total.DR;
   let drWarning = '';
@@ -904,6 +982,7 @@ function calculatePygmyFinalStats() {
 
 // Pygmy Optimize (adapted from main)
 function pygmyOptimize(mode) {
+  logDebug(`Starting pygmy optimization for mode: ${mode}`);
   document.getElementById('pygmySpeedContext').innerHTML = '';
   const minDR = 75;
   const userMinS = parseFloat(document.getElementById('pygmyMinSpeed').value) || 0;
@@ -1041,6 +1120,23 @@ document.getElementById('pygmyToggleView').addEventListener('click', () => {
 
 // Initial call
 updatePygmyAddableSlots();
+
+// Debug Log Controls
+document.getElementById("refreshLog").onclick = () => {
+  document.getElementById("debugLog").value = debugLogs.join("\n");
+};
+document.getElementById("copyLog").onclick = () => {
+  navigator.clipboard.writeText(debugLogs.join("\n")).then(() => {
+    alert("Debug log copied to clipboard!");
+  }).catch(() => {
+    alert("Failed to copy log. Please copy from the textarea manually.");
+  });
+};
+document.getElementById("clearLog").onclick = () => {
+  debugLogs = [];
+  document.getElementById("debugLog").value = "";
+};
 </script>
 </body>
 </html>
+``` font-size
