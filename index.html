@@ -574,13 +574,28 @@ function optimize(mode) {
     fixedS += groupFixedS;
   });
 
-  // Fixed from corrupt and greaters
-  const corrupt = document.getElementById("corruptStat").value;
-  total[corrupt] += parseFloat(document.getElementById("corruptInput").value) || 0;
+  // Add fixed from corrupt
+  const corruptStat = document.getElementById("corruptStat").value;
+  const corruptValue = parseFloat(document.getElementById("corruptInput").value) || 0;
+  if (corruptStat === "Damage") {
+    fixedD += corruptValue;
+  } else if (corruptStat === "DR") {
+    fixedDR += corruptValue;
+  } else if (corruptStat === "Speed") {
+    fixedS += corruptValue;
+  }
+
+  // Add fixed from greaters
   for (let i = 0; i < 3; i++) {
     const stat = document.getElementById("geneticStat" + i).value;
     const val = parseFloat(document.getElementById("geneticValue" + i).value) || 0;
-    if (stat) total[stat] += val;
+    if (stat === "Damage") {
+      fixedD += val;
+    } else if (stat === "DR") {
+      fixedDR += val;
+    } else if (stat === "Speed") {
+      fixedS += val;
+    }
   }
 
   // Unfixed groups
@@ -1029,4 +1044,3 @@ updatePygmyAddableSlots();
 </script>
 </body>
 </html>
-```pyg
