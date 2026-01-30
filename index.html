@@ -149,6 +149,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <select id="savedBuilds"></select>
 <button id="loadBuild">Load Build</button>
 <button id="deleteBuild">Delete Build</button>
+<button id="shareBuild">Share Build</button>
 </div>
 
 <div class="section">
@@ -338,6 +339,48 @@ function deleteBuild(){
   delete savedBuilds[name];
   localStorage.setItem("savedBuilds", JSON.stringify(savedBuilds));
   updateSavedDropdown();
+}
+
+// ---------------------------
+// SHARE BUILD
+// ---------------------------
+document.getElementById("shareBuild").onclick = function() {
+  let buildData = {};
+  ["W1","W2","W3","N1","N2","N3","A1","A2","A3","UW","U","Prime","Mega","corruptStat","corruptInput","geneticStat0","geneticStat1","geneticStat2","geneticValue0","geneticValue1","geneticValue2","targetHP"].forEach(id => {
+    buildData[id] = document.getElementById(id).value;
+  });
+  
+  const encoded = btoa(JSON.stringify(buildData)); // Base64 encode for URL safety
+  const shareUrl = `${window.location.origin}${window.location.pathname}?build=${encoded}`;
+  
+  // Copy to clipboard (fallback to prompt if copy fails)
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    alert("Shareable URL copied to clipboard! Paste it to someone else.");
+  }).catch(() => {
+    prompt("Copy this shareable URL:", shareUrl);
+  });
+};
+
+// ---------------------------
+// LOAD SHARED BUILD FROM URL
+// ---------------------------
+function loadFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const buildParam = urlParams.get('build');
+  if (buildParam) {
+    try {
+      const data = JSON.parse(atob(buildParam));
+      Object.keys(data).forEach(id => {
+        if (document.getElementById(id)) {
+          document.getElementById(id).value = data[id];
+        }
+      });
+      calculateFinalStats();
+      alert("Build loaded from shared URL!");
+    } catch (e) {
+      console.error("Invalid shared build data:", e);
+    }
+  }
 }
 
 // ---------------------------
@@ -582,6 +625,7 @@ function optimizeAll() { optimize('all'); }
 populateDropdowns();
 updateSavedDropdown();
 calculateFinalStats();
+loadFromUrl();
 
 // Event Listeners
 document.getElementById("toggleTheme").onclick = function(){
