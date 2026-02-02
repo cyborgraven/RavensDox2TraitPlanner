@@ -27,7 +27,7 @@ select, input[type=number], input[type=text] { margin:10px 0; padding:10px; widt
 body.dark-mode .header-bottom .clear-buttons button, body.dark-mode .header-bottom button#toggleView { background-color: #495057; }
 .result { background: var(--result-bg); padding:15px; border-radius:5px; margin-top:10px; font-weight:bold; font-size:30px;}
 .warning { color:red; font-weight:bold; }
-.flex-row { display:flex; gap:10px; flex-wrap:wrap; }
+.flex-row { display:flex; gap:5px; flex-wrap:wrap; }
 .flex-row select, .flex-row input[type=number] { flex:1; }
 @media(max-width:600px){h1{font-size:28px;}h2{font-size:22px;} select,input[type=number],input[type=text]{font-size:18px;}}
 body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--sticky-bg:#3a3a5c;--text-color:#f0f0f0;}
@@ -58,7 +58,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 .combined-section { display: flex; gap: 20px; flex-wrap: wrap; }
 .combined-section > div { flex: 1; min-width: 200px; }
 .combined-section select { width: 100%; padding: 5px; font-size: 16px; }
-.combined-section label { font-size: 18px; }
+.combined-section label { font-size: 16px; margin-top:5px; }
 .combined-section input[type=number] { width: 100%; padding: 5px; font-size: 16px; }
 .combined-section h4 { font-size: 20px; margin-bottom: 10px; }
 .combined-section .addable-column { flex: 1; min-width: 200px; }
@@ -101,6 +101,30 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </div>
 </div>
 
+<div class="section">
+<h2>Optimize Build</h2>
+<div class="optimize-buttons">
+<button id="optDamage">Optimize for Damage</button>
+<button id="optSpeed">Optimize for Speed</button>
+<button id="optAll">Optimize for Least Waste</button>
+<button id="optDamageLegendary">Optimize for Damage w/ Selected Legendary</button>
+</div>
+<p>all optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed</p>
+<label>Minimum Desired Speed %: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="speed-context"></span></label>
+<h2>Exclusions</h2>
+<p>Use exclusions if you are missing some traits and don’t want them to be considered</p>
+<div class="exclusions">
+<label>Exclude W: <select id="excludeW" multiple></select></label>
+<label>Exclude N: <select id="excludeN" multiple></select></label>
+<label>Exclude A: <select id="excludeA" multiple></select></label>
+<label>Exclude UW: <select id="excludeUW" multiple></select></label>
+<label>Exclude U: <select id="excludeU" multiple></select></label>
+<label>Exclude Legendary: <select id="excludeL" multiple></select></label>
+<label>Exclude Prime: <select id="excludeP" multiple></select></label>
+<label>Exclude Mega: <select id="excludeM" multiple></select></label>
+</div>
+</div>
+
 <div class="section combined-section">
 <div>
 <h2>Corrupt and Greaters</h2>
@@ -136,11 +160,6 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <input type="number" id="absoluteTraitCleanseCounter" min="1" max="3" placeholder="Enter 1-3"></label>
 </div>
 </div>
-</div>
-
-<div class="section">
-<h2>Calculate Final HP</h2>
-<input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added" style="width: 33%; padding: 5px; font-size: 16px;">
 </div>
 
 <div class="section combined-section">
@@ -184,9 +203,14 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </div>
 
 <div class="section">
-<h2>Legendary Trait (Optional - Very Rare)</h2>
+<h2>Legendary Trait (Optional)</h2>
 <select id="Legendary"></select>
 <p class="warning">Make sure to feed the legendary trait early in the order so that you can fix the negative modifiers with subsequent added traits. Legendaries are not automatically used in optimization unless selected here.</p>
+</div>
+
+<div class="section">
+<h2>Calculate Final HP</h2>
+<input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added" style="width: 33%; padding: 5px; font-size: 16px;">
 </div>
 
 <div class="section">
@@ -202,29 +226,6 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
     <button id="deleteBuild" style="font-size: 18px; padding: 12px 20px;">Delete Build</button>
     <button id="shareBuild" style="font-size: 18px; padding: 12px 20px;">Share Build</button>
   </div>
-</div>
-</div>
-
-<div class="section">
-<h2>Optimize Build</h2>
-<label>Minimum Desired Speed %: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="speed-context"></span></label>
-<h2>Exclusions</h2>
-<p>Use exclusions if you are missing some traits and don’t want them to be considered</p>
-<div class="exclusions">
-<label>Exclude W: <select id="excludeW" multiple></select></label>
-<label>Exclude N: <select id="excludeN" multiple></select></label>
-<label>Exclude A: <select id="excludeA" multiple></select></label>
-<label>Exclude UW: <select id="excludeUW" multiple></select></label>
-<label>Exclude U: <select id="excludeU" multiple></select></label>
-<label>Exclude Legendary: <select id="excludeL" multiple></select></label>
-<label>Exclude Prime: <select id="excludeP" multiple></select></label>
-<label>Exclude Mega: <select id="excludeM" multiple></select></label>
-</div>
-<div class="optimize-buttons">
-<button id="optDamage">Optimize for Damage</button>
-<button id="optSpeed">Optimize for Speed</button>
-<button id="optAll">Optimize for Least Waste</button>
-<button id="optDamageLegendary">Optimize for Damage w/ Selected Legendary</button>
 </div>
 </div>
 
@@ -274,6 +275,13 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <div class="combined-section" id="pygmyAddableTraits">
 <!-- Dynamically populated via JS -->
 </div>
+<label>Minimum Desired Speed %: <input type="number" id="pygmyMinSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="pygmySpeedContext"></span></label>
+
+<div class="optimize-buttons">
+<button id="pygmyOptDamage">Optimize for Damage</button>
+<button id="pygmyOptSpeed">Optimize for Speed</button>
+<button id="pygmyOptAll">Optimize for Least Waste</button>
+</div>
 
 <!-- Exclusions for Additions -->
 <h3>Exclusions for Additions</h3>
@@ -287,16 +295,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <label>Exclude Mega: <select id="pygmyExcludeM" multiple></select></label>
 </div>
 
-<label>Minimum Desired Speed %: <input type="number" id="pygmyMinSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="pygmySpeedContext"></span></label>
-
-<div class="optimize-buttons">
-<button id="pygmyOptDamage">Optimize for Damage</button>
-<button id="pygmyOptSpeed">Optimize for Speed</button>
-<button id="pygmyOptAll">Optimize for Least Waste</button>
-</div>
-
 <div class="result" id="pygmyFinalResult">Pygmy Bonus: Damage: 1.0, DR: 1.0, SPD: 1.0</div>
-<button id="pygmyToggleView">Swap View</button>
 </div>
 
 <!-- Collapsible Calculator -->
@@ -903,6 +902,7 @@ function updatePygmyAddableSlots() {
           opt.text = `${t.N}${parts.length > 0 ? ` (${parts.join(', ')})` : ''}`;
           select.appendChild(opt);
         });
+        select.addEventListener('change', calculatePygmyFinalStats);
         (columnIndex % 2 === 0 ? leftColumn : rightColumn).appendChild(select);
       }
       columnIndex++;
@@ -935,7 +935,6 @@ function getPygmyCurrentTotals() {
   return total;
 }
 
-let pygmyIsMultiplierView = true;
 function calculatePygmyFinalStats() {
   const total = getPygmyCurrentTotals();
   let drPercent = total.DR;
@@ -945,7 +944,7 @@ function calculatePygmyFinalStats() {
     drPercent = Math.min(drPercent, 75);
   }
   const dmg = 1 + total.Damage / 100, dr = 1 - drPercent / 100, spd = 1 + total.Speed / 100;
-  let out = pygmyIsMultiplierView ?
+  let out = isMultiplierView ?
     `Pygmy Bonus: Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}` :
     `Pygmy Bonus: Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
   document.getElementById('pygmyFinalResult').innerHTML = out;
@@ -1130,10 +1129,18 @@ autoCalcElements.forEach(el => {
   el.addEventListener('input', calculateFinalStats);
 });
 
-const pygmyAutoCalcElements = document.querySelectorAll('#pygmyTraitPlanner select, #pygmyTraitPlanner input[type="number"]');
-pygmyAutoCalcElements.forEach(el => {
-  el.addEventListener('change', () => { updatePygmyAddableSlots(); calculatePygmyFinalStats(); });
-  el.addEventListener('input', () => { updatePygmyAddableSlots(); calculatePygmyFinalStats(); });
+const pygmyStartingElements = document.querySelectorAll('#pygmyTraitPlanner [id^="pygmyStarting"]');
+pygmyStartingElements.forEach(el => {
+  if (el.tagName === 'SELECT' || el.type === 'number') {
+    el.addEventListener('change', () => { updatePygmyAddableSlots(); calculatePygmyFinalStats(); });
+    if (el.type === 'number') el.addEventListener('input', () => { updatePygmyAddableSlots(); calculatePygmyFinalStats(); });
+  }
+});
+
+const pygmyOtherElements = document.querySelectorAll('#pygmyTraitPlanner input:not([id^="pygmyStarting"]), #pygmyTraitPlanner select:not([id^="pygmyStarting"]):not([id^="pygmyAdd"]):not([id^="pygmyExclude"])');
+pygmyOtherElements.forEach(el => {
+  el.addEventListener('change', calculatePygmyFinalStats);
+  if (el.type === 'number') el.addEventListener('input', calculatePygmyFinalStats);
 });
 
 document.getElementById('pygmyOptDamage').onclick = () => pygmyOptimize('damage');
@@ -1143,9 +1150,6 @@ document.getElementById('pygmyOptAll').onclick = () => pygmyOptimize('all');
 document.getElementById('toggleView').addEventListener('click', () => {
   isMultiplierView = !isMultiplierView;
   calculateFinalStats();
-});
-document.getElementById('pygmyToggleView').addEventListener('click', () => {
-  pygmyIsMultiplierView = !pygmyIsMultiplierView;
   calculatePygmyFinalStats();
 });
 
