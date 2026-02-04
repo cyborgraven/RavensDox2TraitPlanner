@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Raven’s Dox2 Trait Planner</title>
+<title>Raven’s DOX2 Trait Engine</title>
 <style>
 :root {
   --bg-color: #f0f0f0;
@@ -28,6 +28,7 @@ body.dark-mode .header-bottom .clear-buttons button, body.dark-mode .header-bott
 .result { background: var(--result-bg); padding:15px; border-radius:5px; margin-top:10px; font-weight:bold; font-size:30px;}
 .warning { color:red; font-weight:bold; }
 .flex-row { display:flex; gap:5px; flex-wrap:wrap; }
+.flex-row label { flex:1; }
 .flex-row select, .flex-row input[type=number] { flex:1; }
 @media(max-width:600px){h1{font-size:28px;}h2{font-size:22px;} select,input[type=number],input[type=text]{font-size:18px;}}
 body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--sticky-bg:#3a3a5c;--text-color:#f0f0f0;}
@@ -84,7 +85,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </head>
 <body class="dark-mode">
 
-<h1>Raven’s Dox2 Trait Planner</h1>
+<h1>Raven’s DOX2 Trait Engine</h1>
 <div style="text-align:center;"><button id="toggleTheme">Switch to Light Mode</button></div>
 
 <div class="section sticky-header">
@@ -104,12 +105,11 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <div class="section">
 <h2>Optimize Build</h2>
 <div class="optimize-buttons">
-<button id="optDamage">Optimize for Damage</button>
-<button id="optSpeed">Optimize for Speed</button>
-<button id="optAll">Optimize for Least Waste</button>
-<button id="optDamageLegendary">Optimize for Damage w/ Selected Legendary</button>
+<button id="optDamage" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Damage</button>
+<button id="optSpeed" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Speed</button>
+<button id="optAll" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Least Waste</button>
+<button id="optDamageLegendary" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Damage w/ Selected Legendary</button>
 </div>
-<p>all optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed</p>
 <label>Minimum Desired Speed %: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="speed-context"></span></label>
 <h2>Exclusions</h2>
 <p>Use exclusions if you are missing some traits and don’t want them to be considered</p>
@@ -169,7 +169,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <label>Mega Trait:<select id="Mega"></select></label>
 </div>
 <div>
-<h2>Artificial Traits (A) – Max 3</h2>
+<h2 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Artificial Traits (A) – Max 3</h2>
 <select id="A1"></select>
 <select id="A2"></select>
 <select id="A3"></select>
@@ -178,13 +178,13 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 
 <div class="section combined-section">
 <div>
-<h2>Wild Traits (W) – Max 3</h2>
+<h2 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Wild Traits (W) – Max 3</h2>
 <select id="W1"></select>
 <select id="W2"></select>
 <select id="W3"></select>
 </div>
 <div>
-<h2>Natural Traits (N) – Max 3</h2>
+<h2 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Natural Traits (N) – Max 3</h2>
 <select id="N1"></select>
 <select id="N2"></select>
 <select id="N3"></select>
@@ -230,19 +230,19 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </div>
 
 <div class="section" id="pygmyTraitPlanner">
-<h2>Pygmy Trait Planner</h2>
+<h2>Pygmy Trait Engine</h2>
 <p>Feed the corrupt and greater strings to your pygmy if desired, then enter your Pygmy's starting traits (for slot tracking) and current total % bonuses below. The planner will suggest optimal additions.</p>
 
 <h3>Starting Traits</h3>
 <div class="combined-section">
 <div>
-<h4>Starting Wild Traits (W) – Up to 3</h4>
+<h4 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Starting Wild Traits (W) – Up to 3</h4>
 <select id="pygmyStartingW1"></select>
 <select id="pygmyStartingW2"></select>
 <select id="pygmyStartingW3"></select>
 </div>
 <div>
-<h4>Starting Natural Traits (N) – Up to 3</h4>
+<h4 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Starting Natural Traits (N) – Up to 3</h4>
 <select id="pygmyStartingN1"></select>
 <select id="pygmyStartingN2"></select>
 <select id="pygmyStartingN3"></select>
@@ -278,9 +278,9 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <label>Minimum Desired Speed %: <input type="number" id="pygmyMinSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="pygmySpeedContext"></span></label>
 
 <div class="optimize-buttons">
-<button id="pygmyOptDamage">Optimize for Damage</button>
-<button id="pygmyOptSpeed">Optimize for Speed</button>
-<button id="pygmyOptAll">Optimize for Least Waste</button>
+<button id="pygmyOptDamage" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Damage</button>
+<button id="pygmyOptSpeed" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Speed</button>
+<button id="pygmyOptAll" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Least Waste</button>
 </div>
 
 <!-- Exclusions for Additions -->
