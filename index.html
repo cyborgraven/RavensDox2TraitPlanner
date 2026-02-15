@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Raven’s DOX2 Trait Engine</title>
+<title>Raven’s Dox2 Trait Planner</title>
 <style>
 :root {
   --bg-color: #f0f0f0;
@@ -85,7 +85,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </head>
 <body class="dark-mode">
 
-<h1>Raven’s DOX2 Trait Engine</h1>
+<h1>Raven’s Dox2 Trait Planner</h1>
 <div style="text-align:center;"><button id="toggleTheme">Switch to Light Mode</button></div>
 
 <div class="section sticky-header">
@@ -105,12 +105,14 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <div class="section">
 <h2>Optimize Build</h2>
 <div class="optimize-buttons">
-<button id="optDamage" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Damage</button>
-<button id="optSpeed" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Speed</button>
-<button id="optAll" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Least Waste</button>
-<button id="optDamageLegendary" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Damage w/ Selected Legendary</button>
+<button id="optDamage">Optimize for Damage</button>
+<button id="optSpeed">Optimize for Speed</button>
+<button id="optAll">Optimize for Least Waste</button>
+<button id="optDamageLegendary">Optimize for Damage w/ Selected Legendary</button>
 </div>
+<p>all optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed</p>
 <label>Minimum Desired Speed %: <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="speed-context"></span></label>
+<label><input type="checkbox" id="excludeAOptimize"> Check here to optimize without using A traits for Clones</label>
 <h2>Exclusions</h2>
 <p>Use exclusions if you are missing some traits and don’t want them to be considered</p>
 <div class="exclusions">
@@ -169,7 +171,7 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <label>Mega Trait:<select id="Mega"></select></label>
 </div>
 <div>
-<h2 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Artificial Traits (A) – Max 3</h2>
+<h2>Artificial Traits (A) – Max 3</h2>
 <select id="A1"></select>
 <select id="A2"></select>
 <select id="A3"></select>
@@ -178,13 +180,13 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 
 <div class="section combined-section">
 <div>
-<h2 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Wild Traits (W) – Max 3</h2>
+<h2>Wild Traits (W) – Max 3</h2>
 <select id="W1"></select>
 <select id="W2"></select>
 <select id="W3"></select>
 </div>
 <div>
-<h2 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Natural Traits (N) – Max 3</h2>
+<h2>Natural Traits (N) – Max 3</h2>
 <select id="N1"></select>
 <select id="N2"></select>
 <select id="N3"></select>
@@ -230,19 +232,19 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 </div>
 
 <div class="section" id="pygmyTraitPlanner">
-<h2>Pygmy Trait Engine</h2>
+<h2>Pygmy Trait Planner</h2>
 <p>Feed the corrupt and greater strings to your pygmy if desired, then enter your Pygmy's starting traits (for slot tracking) and current total % bonuses below. The planner will suggest optimal additions.</p>
 
 <h3>Starting Traits</h3>
 <div class="combined-section">
 <div>
-<h4 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Starting Wild Traits (W) – Up to 3</h4>
+<h4>Starting Wild Traits (W) – Up to 3</h4>
 <select id="pygmyStartingW1"></select>
 <select id="pygmyStartingW2"></select>
 <select id="pygmyStartingW3"></select>
 </div>
 <div>
-<h4 title="Be sure to add all 3 N traits before any A traits as they occupy the same slots">Starting Natural Traits (N) – Up to 3</h4>
+<h4>Starting Natural Traits (N) – Up to 3</h4>
 <select id="pygmyStartingN1"></select>
 <select id="pygmyStartingN2"></select>
 <select id="pygmyStartingN3"></select>
@@ -276,11 +278,12 @@ body.dark-mode {--bg-color:#1c1c1c;--section-bg:#2c2c2c;--result-bg:#3a3a5c;--st
 <!-- Dynamically populated via JS -->
 </div>
 <label>Minimum Desired Speed %: <input type="number" id="pygmyMinSpeed" placeholder="e.g., 20" step="0.1" style="width: 33%; padding: 5px; font-size: 16px;"><span id="pygmySpeedContext"></span></label>
+<label><input type="checkbox" id="pygmyExcludeAOptimize"> Check here to optimize without using A traits for Clones</label>
 
 <div class="optimize-buttons">
-<button id="pygmyOptDamage" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Damage</button>
-<button id="pygmyOptSpeed" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Speed</button>
-<button id="pygmyOptAll" title="optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed if entered">Optimize for Least Waste</button>
+<button id="pygmyOptDamage">Optimize for Damage</button>
+<button id="pygmyOptSpeed">Optimize for Speed</button>
+<button id="pygmyOptAll">Optimize for Least Waste</button>
 </div>
 
 <!-- Exclusions for Additions -->
@@ -345,7 +348,7 @@ const traitData={
 "U":[{N:"Tough",D:5,DR:15,S:-2.5},{N:"Balanced",D:10,DR:0,S:10},{N:"Runner",D:-5,DR:0,S:15},{N:"Juggernaut",D:15,DR:10,S:-5}],
 "P":[{N:"Tough",D:15,DR:20,S:0},{N:"Balanced",D:20,DR:0,S:5},{N:"Runner",D:0,DR:0,S:25},{N:"Juggernaut",D:25,DR:15,S:-5}],
 "M":[{N:"Tough",D:15,DR:25,S:0},{N:"Balanced",D:25,DR:0,S:7.5},{N:"Runner",D:0,DR:0,S:15},{N:"Juggernaut",D:30,DR:20,S:-5}],
-"L":[{N:"Alpha",D:50,DR:-12.5,S:-12.5},{N:"Gamma",D:20,DR:20,S:-25},{N:"Omega",D:25,DR:-20,S:25}]
+"L":[{N:"Alpha",D:50,DR:-20,S:-15},{N:"Gamma",D:25,DR:15,S:-15},{N:"Omega",D:25,DR:-20,S:15}]
 };
 
 // ---------------------------
@@ -444,7 +447,7 @@ function calculateFinalStats(){
   const dmg=1+total.Damage/100, dr=1-drPercent/100, spd=1+total.Speed/100;
   let out;
   if(isMultiplierView){
-    out=`Damage: ${dmg.toFixed(2)}, DR: ${dr.toFixed(2)}${drWarning}, SPD: ${spd.toFixed(2)}`;
+    out=`Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`;
   }else{
     out=`Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
   }
@@ -626,17 +629,20 @@ function optimize(mode) {
   document.getElementById('speed-context').innerHTML = '';
   const minDR = 75;
   const userMinS = parseFloat(document.getElementById('minSpeed').value) || 0;
+  const wd = (mode === 'damage' || mode === 'all') ? 1 : 0;
+  const ws = (mode === 'speed' || mode === 'all') ? 1 : 0;
+  const useSConstraint = (mode === 'damage' && userMinS > 0);
   const tolerance = 0.03 * userMinS;
   const damageThreshold = 1.05;
-  const useSConstraint = (mode === 'damage' && userMinS > 0);
+  const excludeA = document.getElementById('excludeAOptimize').checked;
 
   let fixedD = 0, fixedDR = 0, fixedS = 0;
   groups.forEach(g => {
     g.ids.forEach(id => {
       const val = document.getElementById(id)?.value;
       if (val && val.includes("-")) {
-        const [cat, i] = val.split("-");
-        const t = traitData[cat][parseInt(i)];
+        const [, i] = val.split("-");
+        const t = traitData[g.cat][parseInt(i)];
         fixedD += t.D || 0;
         fixedDR += t.DR || 0;
         fixedS += t.S || 0;
@@ -661,7 +667,8 @@ function optimize(mode) {
 
   let unfixedGroups = [];
   groups.forEach(g => {
-    if (g.cat === 'L') return;
+    if (g.cat === 'L') return; // Skip Legendary for auto-optimization
+    if (excludeA && g.cat === 'A') return; // Skip A if excluding
     const excluded = Array.from(document.getElementById(`exclude${g.cat}`)?.selectedOptions || []).map(opt => parseInt(opt.value));
     let unfixedIds = [];
     g.ids.forEach((id, slotIndex) => {
@@ -681,146 +688,125 @@ function optimize(mode) {
     return;
   }
 
+  let fixedCounts = {W:0, N:0, A:0, UW:0, U:0, L:0, P:0, M:0};
+  groups.forEach(g => {
+    g.ids.forEach(id => {
+      if (document.getElementById(id)?.value) fixedCounts[g.cat]++;
+    });
+  });
+
+  let additionalCounts = {W:0, N:0, A:0, UW:0, U:0, L:0, P:0, M:0};
+  unfixedGroups.forEach(g => additionalCounts[g.cat] = g.unfixedCount);
+
+  let finalPossible = {};
+  for (let cat in fixedCounts) {
+    finalPossible[cat] = fixedCounts[cat] + additionalCounts[cat];
+  }
+
+  let canFill = {
+    U: finalPossible.N >= 3,
+    P: finalPossible.U >= 1,
+    M: finalPossible.P >= 1
+  };
+  logDebug(`Can fill: U=${canFill.U}, P=${canFill.P}, M=${canFill.M}`);
+
   const groupPriority = {N:0, U:1, P:2, M:3, W:4, A:5, UW:6, L:7};
   unfixedGroups.sort((a, b) => groupPriority[a.cat] - groupPriority[b.cat]);
 
-  const getPrimary = (c) => {
-    if (mode === 'damage') return c.d;
-    if (mode === 'speed') return c.s;
-    return c.d + c.s;
-  };
+  let candidates = [];
 
-  const isBetter = (a, b, drDir) => {
-    const primaryA = getPrimary(a);
-    const primaryB = getPrimary(b);
-    if (primaryA !== primaryB) return primaryA > primaryB;
-    const drMult = drDir === 'max' ? 1 : -1;
-    const drA = a.dr * drMult;
-    const drB = b.dr * drMult;
-    if (drA !== drB) return drA > drB;
-    if (mode === 'damage') return a.s < b.s;
-    return false;
-  };
-
-  // Pass 1: Check if DR >=75 is possible
-  let hasDr = false;
-  const recurseHasDr = (groupIndex = 0, accDR = 0) => {
-    if (hasDr) return; // Early exit if found
+  function recurse(groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) {
     if (groupIndex === unfixedGroups.length) {
-      const dr = fixedDR + accDR;
-      if (dr >= minDR) hasDr = true;
+      const totalD = fixedD + accD;
+      const totalDR = fixedDR + accDR;
+      const totalS = fixedS + accS;
+      candidates.push({d: totalD, dr: totalDR, s: totalS, choices: {...choices}});
       return;
     }
     const g = unfixedGroups[groupIndex];
-    const k = g.unfixedCount;
-    if (k === 0) {
-      recurseHasDr(groupIndex + 1, accDR);
-      return;
-    }
-    const options = getOptions(g.cat, k, g.excluded);
-    for (let opt of options) {
-      recurseHasDr(groupIndex + 1, accDR + opt.dr);
-      if (hasDr) return;
-    }
-  };
-  logDebug('Pass 1: Checking DR reachability');
-  recurseHasDr();
-  const dr_fallback = !hasDr;
-  const drDir = dr_fallback ? 'max' : 'min';
-  const dr_msg = dr_fallback ? ' (DR below 75%; could not reach with available traits)' : '';
-
-  // Pass 2: Find maxD_above (if needed)
-  let maxDAbove = -Infinity;
-  if (useSConstraint) {
-    const recurseMaxD = (groupIndex = 0, accD = 0, accDR = 0, accS = 0) => {
-      if (groupIndex === unfixedGroups.length) {
-        const dr = fixedDR + accDR;
-        const d = fixedD + accD;
-        const s = fixedS + accS;
-        if ((dr >= minDR || dr_fallback) && s >= userMinS) {
-          maxDAbove = Math.max(maxDAbove, d);
-        }
-        return;
-      }
-      const g = unfixedGroups[groupIndex];
-      const k = g.unfixedCount;
-      if (k === 0) {
-        recurseMaxD(groupIndex + 1, accD, accDR, accS);
-        return;
-      }
-      const options = getOptions(g.cat, k, g.excluded);
-      for (let opt of options) {
-        recurseMaxD(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s);
-      }
-    };
-    logDebug('Pass 2: Finding max D above min S');
-    recurseMaxD();
-  }
-
-  // Pass 3: Find best
-  let best = null;
-  const recurseFindBest = (groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) => {
-    if (groupIndex === unfixedGroups.length) {
-      const total = {d: fixedD + accD, dr: fixedDR + accDR, s: fixedS + accS, choices: {...choices}};
-      const qualifiedDr = (total.dr >= minDR || dr_fallback);
-      if (!qualifiedDr) return;
-      let qualifiedS = true;
-      if (useSConstraint) {
-        qualifiedS = total.s >= userMinS || (total.s >= userMinS - tolerance && total.d > maxDAbove * damageThreshold);
-      }
-      if (qualifiedS) {
-        if (!best || isBetter(total, best, drDir)) {
-          best = {...total};
-        }
-      }
-      return;
-    }
-    const g = unfixedGroups[groupIndex];
-    const k = g.unfixedCount;
-    if (k === 0) {
-      recurseFindBest(groupIndex + 1, accD, accDR, accS, {...choices, [g.cat]: {k: 0, combo: []}});
-      return;
-    }
-    const options = getOptions(g.cat, k, g.excluded);
-    for (let opt of options) {
-      const newChoices = {...choices, [g.cat]: {k, combo: opt.combo}};
-      recurseFindBest(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s, newChoices);
-    }
-  };
-  logDebug('Pass 3: Finding best combination');
-  recurseFindBest();
-
-  let msg = dr_msg;
-  if (useSConstraint && best) {
-    const s_fallback = maxDAbove === -Infinity;
-    let s_msg = '';
-    if (!s_fallback) {
-      if (best.s >= userMinS) s_msg = ' (achieved or exceeded)';
-      else s_msg = ` (within 3% of desired: actual ${best.s.toFixed(1)}%)`;
+    const isA = g.cat === 'A';
+    const isDependent = ['U','P','M'].includes(g.cat);
+    let ks;
+    if (isA) {
+      ks = Array.from({length: g.unfixedCount + 1}, (_, i) => i);
+    } else if (isDependent && !canFill[g.cat]) {
+      ks = [0];
     } else {
-      s_msg = ' (below desired; no better options found)';
+      ks = [g.unfixedCount];
     }
-    msg = s_msg + dr_msg;
-  }
-  document.getElementById('speed-context').innerHTML = msg;
-  logDebug(`Optimization message: ${msg}`);
-
-  if (best && best.choices) {
-    logDebug("Applying best choices");
-    unfixedGroups.forEach(g => {
-      const choice = best.choices[g.cat] || {k: 0, combo: []};
-      const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
-      for (let idx = 0; idx < sortedUnfixed.length; idx++) {
-        const id = sortedUnfixed[idx].id;
-        if (idx < choice.k) {
-          document.getElementById(id).value = `${g.cat}-${choice.combo[idx]}`;
-        } else {
-          document.getElementById(id).value = "";
-        }
+    ks.forEach(k => {
+      if (k === 0) {
+        recurse(groupIndex + 1, accD, accDR, accS, {...choices, [g.cat]: {k: 0, combo: []}});
+      } else {
+        const options = getOptions(g.cat, k, g.excluded);
+        options.forEach(opt => {
+          recurse(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s, {...choices, [g.cat]: {k, combo: opt.combo}});
+        });
       }
     });
+  }
+
+  recurse();
+
+  if (candidates.length > 0) {
+    let dr_filtered = candidates.filter(c => c.dr >= minDR);
+    let dr_fallback = dr_filtered.length === 0;
+    let considered = dr_fallback ? candidates : dr_filtered;
+    let dr_msg = dr_fallback ? ' (DR below 75%; could not reach with available traits)' : '';
+    let best = null;
+    let msg = '';
+
+    const drSortDir = dr_fallback ? (a, b) => b.dr - a.dr : (a, b) => a.dr - b.dr;
+
+    if (mode === 'damage' && useSConstraint) {
+      let above = considered.filter(c => c.s >= userMinS);
+      let maxD_above = above.length > 0 ? Math.max(...above.map(c => c.d)) : -Infinity;
+      let below = considered.filter(c => c.s < userMinS && c.s >= userMinS - tolerance);
+      let qualified_below = below.filter(c => c.d > maxD_above * damageThreshold);
+      let s_considered = [...above, ...qualified_below];
+      let s_fallback = s_considered.length === 0;
+      if (s_fallback) s_considered = considered;
+      s_considered.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s);
+      best = s_considered[0];
+      let s_msg = '';
+      if (!s_fallback && best) {
+        const actualS = best.s;
+        if (actualS >= userMinS) s_msg = ' (achieved or exceeded)';
+        else s_msg = ` (within 3% of desired: actual ${actualS.toFixed(1)}%)`;
+      } else {
+        s_msg = ' (below desired; no better options found)';
+      }
+      msg = s_msg + dr_msg;
+    } else {
+      let sortFunc;
+      if (mode === 'damage') sortFunc = (a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s;
+      else if (mode === 'speed') sortFunc = (a, b) => b.s - a.s || drSortDir(a, b);
+      else sortFunc = (a, b) => (b.d + b.s) - (a.d + a.s) || drSortDir(a, b);
+      considered.sort(sortFunc);
+      best = considered[0];
+      msg = dr_msg;
+    }
+
+    document.getElementById('speed-context').innerHTML = msg;
+    logDebug(`Optimization message: ${msg}`);
+
+    if (best && best.choices) {
+      logDebug("Applying best choices");
+      unfixedGroups.forEach(g => {
+        const choice = best.choices[g.cat] || {k: 0, combo: []};
+        const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
+        for (let idx = 0; idx < sortedUnfixed.length; idx++) {
+          const id = sortedUnfixed[idx].id;
+          if (idx < choice.k) {
+            document.getElementById(id).value = `${g.cat}-${choice.combo[idx]}`;
+          } else {
+            document.getElementById(id).value = "";
+          }
+        }
+      });
+    }
   } else {
-    logDebug("No best found");
+    logDebug("No candidates generated");
   }
   calculateFinalStats();
   logDebug("Optimization completed");
@@ -964,7 +950,7 @@ function calculatePygmyFinalStats() {
   }
   const dmg = 1 + total.Damage / 100, dr = 1 - drPercent / 100, spd = 1 + total.Speed / 100;
   let out = isMultiplierView ?
-    `Pygmy Bonus: Damage: ${dmg.toFixed(2)}, DR: ${dr.toFixed(2)}${drWarning}, SPD: ${spd.toFixed(2)}` :
+    `Pygmy Bonus: Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}` :
     `Pygmy Bonus: Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
   document.getElementById('pygmyFinalResult').innerHTML = out;
 }
@@ -974,9 +960,12 @@ function pygmyOptimize(mode) {
   document.getElementById('pygmySpeedContext').innerHTML = '';
   const minDR = 75;
   const userMinS = parseFloat(document.getElementById('pygmyMinSpeed').value) || 0;
+  const wd = (mode === 'damage' || mode === 'all') ? 1 : 0;
+  const ws = (mode === 'speed' || mode === 'all') ? 1 : 0;
+  const useSConstraint = (mode === 'damage' && userMinS > 0);
   const tolerance = 0.03 * userMinS;
   const damageThreshold = 1.05;
-  const useSConstraint = (mode === 'damage' && userMinS > 0);
+  const excludeA = document.getElementById('pygmyExcludeAOptimize').checked;
 
   let fixedD = parseFloat(document.getElementById('pygmyStartingDmg').value) || 0;
   let fixedDR = parseFloat(document.getElementById('pygmyStartingDR').value) || 0;
@@ -984,6 +973,7 @@ function pygmyOptimize(mode) {
 
   let unfixedGroups = [];
   pygmyGroups.forEach(g => {
+    if (excludeA && g.cat === 'A') return; // Skip A if excluding
     const excluded = Array.from(document.getElementById(`pygmyExclude${g.cat}`)?.selectedOptions || []).map(opt => parseInt(opt.value));
     const occupied = g.startingIds.filter(id => document.getElementById(id)?.value !== '').length;
     const unfixedCount = g.maxSlots - occupied;
@@ -1001,149 +991,121 @@ function pygmyOptimize(mode) {
     return;
   }
 
+  let fixedCounts = {W:0, N:0, A:0, UW:0, U:0, P:0, M:0};
+  pygmyGroups.forEach(g => {
+    g.startingIds.forEach(id => {
+      if (document.getElementById(id)?.value !== '') fixedCounts[g.cat]++;
+    });
+  });
+
+  let additionalCounts = {W:0, N:0, A:0, UW:0, U:0, P:0, M:0};
+  unfixedGroups.forEach(g => additionalCounts[g.cat] = g.unfixedCount);
+
+  let finalPossible = {};
+  for (let cat in fixedCounts) {
+    finalPossible[cat] = fixedCounts[cat] + additionalCounts[cat];
+  }
+
+  let canFill = {
+    U: finalPossible.N >= 3,
+    P: finalPossible.U >= 1,
+    M: finalPossible.P >= 1
+  };
+
   const groupPriority = {N:0, U:1, P:2, M:3, W:4, A:5, UW:6};
   unfixedGroups.sort((a, b) => groupPriority[a.cat] - groupPriority[b.cat]);
 
-  const getPrimary = (c) => {
-    if (mode === 'damage') return c.d;
-    if (mode === 'speed') return c.s;
-    return c.d + c.s;
-  };
+  let candidates = [];
 
-  const isBetter = (a, b, drDir) => {
-    const primaryA = getPrimary(a);
-    const primaryB = getPrimary(b);
-    if (primaryA !== primaryB) return primaryA > primaryB;
-    const drMult = drDir === 'max' ? 1 : -1;
-    const drA = a.dr * drMult;
-    const drB = b.dr * drMult;
-    if (drA !== drB) return drA > drB;
-    if (mode === 'damage') return a.s < b.s;
-    return false;
-  };
-
-  // Pass 1: Check if DR >=75 is possible
-  let hasDr = false;
-  const pygmyRecurseHasDr = (groupIndex = 0, accDR = 0) => {
-    if (hasDr) return; // Early exit if found
+  function pygmyRecurse(groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) {
     if (groupIndex === unfixedGroups.length) {
-      const dr = fixedDR + accDR;
-      if (dr >= minDR) hasDr = true;
+      const totalD = fixedD + accD;
+      const totalDR = fixedDR + accDR;
+      const totalS = fixedS + accS;
+      candidates.push({d: totalD, dr: totalDR, s: totalS, choices: {...choices}});
       return;
     }
     const g = unfixedGroups[groupIndex];
-    const k = g.unfixedCount;
-    if (k === 0) {
-      pygmyRecurseHasDr(groupIndex + 1, accDR);
-      return;
-    }
-    const options = getOptions(g.cat, k, g.excluded);
-    for (let opt of options) {
-      pygmyRecurseHasDr(groupIndex + 1, accDR + opt.dr);
-      if (hasDr) return;
-    }
-  };
-  logDebug('Pygmy Pass 1: Checking DR reachability');
-  pygmyRecurseHasDr();
-  const dr_fallback = !hasDr;
-  const drDir = dr_fallback ? 'max' : 'min';
-  const dr_msg = dr_fallback ? ' (DR below 75%; could not reach with available traits)' : '';
-
-  // Pass 2: Find maxD_above (if needed)
-  let maxDAbove = -Infinity;
-  if (useSConstraint) {
-    const pygmyRecurseMaxD = (groupIndex = 0, accD = 0, accDR = 0, accS = 0) => {
-      if (groupIndex === unfixedGroups.length) {
-        const dr = fixedDR + accDR;
-        const d = fixedD + accD;
-        const s = fixedS + accS;
-        if ((dr >= minDR || dr_fallback) && s >= userMinS) {
-          maxDAbove = Math.max(maxDAbove, d);
-        }
-        return;
-      }
-      const g = unfixedGroups[groupIndex];
-      const k = g.unfixedCount;
-      if (k === 0) {
-        pygmyRecurseMaxD(groupIndex + 1, accD, accDR, accS);
-        return;
-      }
-      const options = getOptions(g.cat, k, g.excluded);
-      for (let opt of options) {
-        pygmyRecurseMaxD(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s);
-      }
-    };
-    logDebug('Pygmy Pass 2: Finding max D above min S');
-    pygmyRecurseMaxD();
-  }
-
-  // Pass 3: Find best
-  let best = null;
-  const pygmyRecurseFindBest = (groupIndex = 0, accD = 0, accDR = 0, accS = 0, choices = {}) => {
-    if (groupIndex === unfixedGroups.length) {
-      const total = {d: fixedD + accD, dr: fixedDR + accDR, s: fixedS + accS, choices: {...choices}};
-      const qualifiedDr = (total.dr >= minDR || dr_fallback);
-      if (!qualifiedDr) return;
-      let qualifiedS = true;
-      if (useSConstraint) {
-        qualifiedS = total.s >= userMinS || (total.s >= userMinS - tolerance && total.d > maxDAbove * damageThreshold);
-      }
-      if (qualifiedS) {
-        if (!best || isBetter(total, best, drDir)) {
-          best = {...total};
-        }
-      }
-      return;
-    }
-    const g = unfixedGroups[groupIndex];
-    const k = g.unfixedCount;
-    if (k === 0) {
-      pygmyRecurseFindBest(groupIndex + 1, accD, accDR, accS, {...choices, [g.cat]: {k: 0, combo: []}});
-      return;
-    }
-    const options = getOptions(g.cat, k, g.excluded);
-    for (let opt of options) {
-      const newChoices = {...choices, [g.cat]: {k, combo: opt.combo}};
-      pygmyRecurseFindBest(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s, newChoices);
-    }
-  };
-  logDebug('Pygmy Pass 3: Finding best combination');
-  pygmyRecurseFindBest();
-
-  let msg = dr_msg;
-  if (useSConstraint && best) {
-    const s_fallback = maxDAbove === -Infinity;
-    let s_msg = '';
-    if (!s_fallback) {
-      if (best.s >= userMinS) s_msg = ' (achieved or exceeded)';
-      else s_msg = ` (within 3% of desired: actual ${best.s.toFixed(1)}%)`;
+    const isA = g.cat === 'A';
+    const isDependent = ['U','P','M'].includes(g.cat);
+    let ks;
+    if (isA) {
+      ks = Array.from({length: g.unfixedCount + 1}, (_, i) => i);
+    } else if (isDependent && !canFill[g.cat]) {
+      ks = [0];
     } else {
-      s_msg = ' (below desired; no better options found)';
+      ks = [g.unfixedCount];
     }
-    msg = s_msg + dr_msg;
-  }
-  document.getElementById('pygmySpeedContext').innerHTML = msg;
-  logDebug(`Pygmy optimization message: ${msg}`);
-
-  if (best && best.choices) {
-    logDebug("Applying pygmy best choices");
-    unfixedGroups.forEach(g => {
-      const choice = best.choices[g.cat] || {k: 0, combo: []};
-      const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
-      for (let idx = 0; idx < sortedUnfixed.length; idx++) {
-        const id = sortedUnfixed[idx].id;
-        if (idx < choice.k) {
-          document.getElementById(id).value = `${g.cat}-${choice.combo[idx]}`;
-        } else {
-          document.getElementById(id).value = "";
-        }
+    ks.forEach(k => {
+      if (k === 0) {
+        pygmyRecurse(groupIndex + 1, accD, accDR, accS, {...choices, [g.cat]: {k: 0, combo: []}});
+      } else {
+        const options = getOptions(g.cat, k, g.excluded);
+        options.forEach(opt => {
+          pygmyRecurse(groupIndex + 1, accD + opt.d, accDR + opt.dr, accS + opt.s, {...choices, [g.cat]: {k, combo: opt.combo}});
+        });
       }
     });
-  } else {
-    logDebug("No pygmy best found");
+  }
+
+  pygmyRecurse();
+
+  if (candidates.length > 0) {
+    let dr_filtered = candidates.filter(c => c.dr >= minDR);
+    let dr_fallback = dr_filtered.length === 0;
+    let considered = dr_fallback ? candidates : dr_filtered;
+    let dr_msg = dr_fallback ? ' (DR below 75%; could not reach with available traits)' : '';
+    let best = null;
+    let msg = dr_msg;
+
+    const drSortDir = dr_fallback ? (a, b) => b.dr - a.dr : (a, b) => a.dr - b.dr;
+
+    if (mode === 'damage' && useSConstraint) {
+      let above = considered.filter(c => c.s >= userMinS);
+      let maxD_above = above.length > 0 ? Math.max(...above.map(c => c.d)) : -Infinity;
+      let below = considered.filter(c => c.s < userMinS && c.s >= userMinS - tolerance);
+      let qualified_below = below.filter(c => c.d > maxD_above * damageThreshold);
+      let s_considered = [...above, ...qualified_below];
+      let s_fallback = s_considered.length === 0;
+      if (s_fallback) s_considered = considered;
+      s_considered.sort((a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s);
+      best = s_considered[0];
+      let s_msg = '';
+      if (!s_fallback && best) {
+        const actualS = best.s;
+        if (actualS >= userMinS) s_msg = ' (achieved or exceeded)';
+        else s_msg = ` (within 3% of desired: actual ${actualS.toFixed(1)}%)`;
+      } else {
+        s_msg = ' (below desired; no better options found)';
+      }
+      msg = s_msg + dr_msg;
+    } else {
+      let sortFunc;
+      if (mode === 'damage') sortFunc = (a, b) => b.d - a.d || b.dr - a.dr || a.s - b.s;
+      else if (mode === 'speed') sortFunc = (a, b) => b.s - a.s || drSortDir(a, b);
+      else sortFunc = (a, b) => (b.d + b.s) - (a.d + a.s) || drSortDir(a, b);
+      considered.sort(sortFunc);
+      best = considered[0];
+    }
+
+    document.getElementById('pygmySpeedContext').innerHTML = msg;
+
+    if (best && best.choices) {
+      unfixedGroups.forEach(g => {
+        const choice = best.choices[g.cat] || {k: 0, combo: []};
+        const sortedUnfixed = g.unfixedIds.sort((a, b) => a.slotIndex - b.slotIndex);
+        for (let idx = 0; idx < sortedUnfixed.length; idx++) {
+          const id = sortedUnfixed[idx].id;
+          if (idx < choice.k) {
+            document.getElementById(id).value = `${g.cat}-${choice.combo[idx]}`;
+          } else {
+            document.getElementById(id).value = "";
+          }
+        }
+      });
+    }
   }
   calculatePygmyFinalStats();
-  logDebug("Pygmy optimization completed");
 }
 
 // Initialize
@@ -1230,4 +1192,3 @@ document.getElementById("clearLog").onclick = () => {
 </script>
 </body>
 </html>
-```Float(document
