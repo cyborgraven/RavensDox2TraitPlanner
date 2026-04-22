@@ -320,7 +320,21 @@ font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
 .tip-box { left: auto; right: 0; top: 22px; width: 220px; }
 }
 
-/* How to Use guide */
+/* Pygmy collapsible */
+#pygmyPlannerToggle {
+width: 100%; text-align: left; font-size: 18px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer;
+color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#pygmyPlannerToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#pygmyPlannerToggle .arrow { transition: transform 0.2s; }
+#pygmyPlannerToggle.open .arrow { transform: rotate(180deg); }
+#pygmyPlannerContent { display: none; }
+#pygmyPlannerContent.open { display: block; }
+
 #guideToggle {
 width: 100%; text-align: left; font-size: 15px;
 padding: 10px 14px; margin-bottom: 0;
@@ -411,6 +425,13 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
   </div>
   <small id="speedHint" style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
   <p>Optimizing will prioritize DR and optimize for damage while attempting to reach the minimum required speed set.</p>
+
+  <div style="display:flex; align-items:center; gap:8px; margin: 10px 0 4px;">
+    <input type="checkbox" id="optimizeForCloning" style="width:16px; height:16px; margin:0; cursor:pointer; accent-color:#00ff41;">
+    <label for="optimizeForCloning" style="margin:0; cursor:pointer; color:var(--green-bright); font-size:15px;">Check here to optimize for cloning</label>
+    <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Optimize for cloning will allow you to build a base creature w no A trait slots used in order to repair clone debuffs, for example your clone gets a DR debuff of 15%, you can feed your clone 3 A Tough traits to negate the debuff</span></span>
+  </div>
+
   <h2>Exclusions <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Select any traits you don't currently own. Hold Ctrl (PC) or tap to multi-select. The optimizer will ignore these when building your loadout.</span></span></h2>
   <p>Use exclusions if you are missing some traits and don't want them to be considered.</p>
   <div class="exclusions">
@@ -494,11 +515,13 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
 
 <div class="section">
   <h2>Calculate Final HP</h2>
-  <input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added" style="width: 33%; padding: 5px; font-size: 14px;">
+  <input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added" style="width: 100%; padding: 5px; font-size: 14px;">
 </div>
 
+<button id="pygmyPlannerToggle">> Pygmy Trait Planner <span class="arrow">▼</span></button>
+
+<div id="pygmyPlannerContent">
 <div class="section" id="pygmyTraitPlanner">
-  <h2>Pygmy Trait Planner</h2>
   <p>Feed the corrupt and greater strings to your pygmy if desired, then enter your Pygmy's starting traits (for slot tracking) and current total % bonuses below. The planner will suggest optimal additions.</p>
 
   <h3>Starting Traits</h3>
@@ -571,6 +594,7 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
   </div>
 
   <div class="result" id="pygmyFinalResult">Pygmy Bonus: Damage: 1.0, DR: 1.0, SPD: 1.0</div>
+</div>
 </div>
 
 <!-- Collapsible Calculator -->
@@ -814,6 +838,16 @@ function optimize(mode, withLegendary = false) {
   const sb = getStringBonus();
   fixedD += sb.d; fixedDR += sb.dr; fixedS += sb.s;
 
+  const optimizeForCloning = document.getElementById('optimizeForCloning')?.checked;
+
+  // If cloning mode, clear all A slots first so they don't contribute fixed stats
+  if (optimizeForCloning) {
+    ['A1','A2','A3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+  }
+
   const unfixed = [];
   const filledCount = {W:0, N:0, A:0, UW:0, U:0, P:0, M:0, L:0};
 
@@ -865,6 +899,10 @@ function optimize(mode, withLegendary = false) {
   const finalUnfixed = [];
   resolvedUnfixed.forEach(g => {
     if (g.cat === 'A') {
+      if (optimizeForCloning) {
+        // Leave all A slots empty — skip them entirely
+        return;
+      }
       g.slotIds.forEach(id => {
         finalUnfixed.push({cat:'A', count:1, excluded: g.excluded, slotIds:[id], optional:true});
       });
@@ -1258,6 +1296,12 @@ document.addEventListener('click', () => {
 document.getElementById('guideToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('guideContent').classList.toggle('open');
+});
+
+// Pygmy Trait Planner collapsible toggle
+document.getElementById('pygmyPlannerToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('pygmyPlannerContent').classList.toggle('open');
 });
 
 // Sync speed inputs both ways
