@@ -7,28 +7,138 @@
 <title>Raven's Dox2 Trait Planner</title>
 <style>
 :root {
-  --bg-color: #f0f0f0;
-  --section-bg: #fff;
-  --result-bg: #cfe0ff;
-  --sticky-bg: #e0e0ff;
-  --text-color: #000;
+  --bg-color: #0d0d0d;
+  --section-bg: #0f1a0f;
+  --result-bg: #0a2a0a;
+  --sticky-bg: #0a1f0a;
+  --text-color: #00cc00;
+  --green-bright: #00ff41;
+  --green-mid: #00cc00;
+  --green-dim: #007700;
+  --green-dark: #003300;
+  --border-color: #00aa00;
 }
-body { font-family: Arial, sans-serif; padding: 10px; background: var(--bg-color); color: var(--text-color); margin: 0; }
-h1 { text-align: center; font-size: 24px; margin-bottom: 8px; }
-h2 { font-size: 20px; margin-top: 0; }
-.section { background: var(--section-bg); padding: 14px; margin-bottom: 14px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-label { display: block; margin-top: 8px; font-size: 15px; }
-select, input[type=number], input[type=text] { margin: 6px 0; padding: 7px; width: 100%; font-size: 15px; box-sizing: border-box; }
-.sticky-header { position: sticky; top: 0; background: var(--sticky-bg); padding: 10px 14px; z-index: 999; border-bottom: 2px solid #999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 8px; }
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+body {
+  font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+  padding: 10px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,65,0.015) 2px,
+    rgba(0,255,65,0.015) 4px
+  );
+}
+h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: var(--green-bright);
+  text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+h2 { font-size: 20px; margin-top: 0; color: var(--green-bright); letter-spacing: 1px; }
+h3, h4 { color: var(--green-mid); letter-spacing: 1px; }
+.section {
+  background: var(--section-bg);
+  padding: 14px;
+  margin-bottom: 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 8px rgba(0,255,65,0.1), inset 0 0 8px rgba(0,255,65,0.03);
+}
+label { display: block; margin-top: 8px; font-size: 15px; color: var(--green-mid); }
+select, input[type=number], input[type=text] {
+  margin: 6px 0;
+  padding: 7px;
+  width: 100%;
+  font-size: 15px;
+  box-sizing: border-box;
+  font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+  background-color: #0a1a0a;
+  color: var(--green-bright);
+  border: 1px solid var(--green-dim);
+  border-radius: 3px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color-scheme: dark;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2300ff41' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--green-bright);
+  box-shadow: 0 0 6px rgba(0,255,65,0.4);
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: var(--sticky-bg);
+  padding: 10px 14px;
+  z-index: 999;
+  border-bottom: 2px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0,255,65,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .header-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .header-top h2 { margin: 0; font-size: 20px; white-space: nowrap; }
 .header-top .result { flex-grow: 1; margin: 0; font-size: 15px; padding: 8px; min-width: 0; }
 .header-bottom { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 .header-bottom .clear-buttons { display: flex; gap: 5px; flex-wrap: wrap; }
-.header-bottom .clear-buttons button, .header-bottom button#toggleView { font-size: 13px; padding: 7px 12px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; white-space: nowrap; }
-body.dark-mode .header-bottom .clear-buttons button, body.dark-mode .header-bottom button#toggleView { background-color: #495057; }
-.result { background: var(--result-bg); padding: 10px; border-radius: 5px; margin-top: 8px; font-weight: bold; font-size: 15px; }
-.warning { color: red; font-weight: bold; }
+.header-bottom .clear-buttons button {
+  font-size: 7px; padding: 5px 9px;
+  background-color: #1a2e1a;
+  color: var(--green-mid);
+  border: 1px solid var(--green-dim);
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+}
+.header-bottom .clear-buttons button:hover {
+  background-color: #003300;
+  color: var(--green-bright);
+  box-shadow: 0 0 6px rgba(0,255,65,0.3);
+}
+.header-optimize {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+.header-optimize button {
+  font-size: 20px;
+  padding: 10px 32px;
+  color: var(--green-bright) !important;
+  text-shadow: 0 0 8px rgba(0,255,65,0.6);
+  box-shadow: 0 0 10px rgba(0,255,65,0.2);
+}
+.header-optimize button:hover {
+  box-shadow: 0 0 16px rgba(0,255,65,0.5);
+}
+.result {
+  background: var(--result-bg);
+  padding: 10px;
+  border-radius: 3px;
+  margin-top: 8px;
+  font-weight: bold;
+  font-size: 15px;
+  color: var(--green-bright);
+  border: 1px solid var(--green-dim);
+  text-shadow: 0 0 6px rgba(0,255,65,0.5);
+}
+.warning { color: #ff4444; font-weight: bold; text-shadow: 0 0 6px rgba(255,68,68,0.4); }
 .flex-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .flex-row label { flex: 1; min-width: 140px; }
 .flex-row select, .flex-row input[type=number] { flex: 1; }
@@ -49,72 +159,100 @@ select, input[type=number], input[type=text] { font-size: 13px; padding: 6px; }
 .combined-section > div { min-width: unset; }
 .flex-row { flex-direction: column; gap: 4px; }
 .flex-row label { min-width: unset; }
-.build-management .top-row { flex-direction: column; }
 .pygmy-totals { max-width: 100%; }
 }
 
-body.dark-mode {
-–bg-color: #1c1c1c;
-–section-bg: #2c2c2c;
-–result-bg: #3a3a5c;
-–sticky-bg: #3a3a5c;
-–text-color: #f0f0f0;
-background-color: #1c1c1c !important;
-color: #f0f0f0 !important;
-color-scheme: dark;
+/* Dark mode is now the default/only real mode — light mode is a soft override */
+body.light-mode {
+–bg-color: #f0f0f0;
+–section-bg: #fff;
+–result-bg: #cfe0ff;
+–sticky-bg: #e0e0ff;
+–text-color: #000;
+background-color: #f0f0f0 !important;
+color: #000 !important;
+background-image: none !important;
 }
-body.dark-mode .section,
-body.dark-mode .sticky-header {
-background-color: #2c2c2c !important;
+body.light-mode .section, body.light-mode .sticky-header { background-color: #fff !important; border-color: #ccc !important; box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important; }
+body.light-mode .result { background-color: #cfe0ff !important; color: #000 !important; border-color: #99b !important; text-shadow: none !important; }
+body.light-mode h1 { color: #333 !important; text-shadow: none !important; }
+body.light-mode h2, body.light-mode h3, body.light-mode h4 { color: #333 !important; }
+body.light-mode label, body.light-mode p, body.light-mode small, body.light-mode span { color: #000 !important; }
+body.light-mode select,
+body.light-mode input[type=number],
+body.light-mode input[type=text] {
+background-color: #fff !important;
+color: #000 !important;
+border: 1px solid #aaa !important;
 }
-body.dark-mode .result {
-background-color: #3a3a5c !important;
+body.light-mode select {
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23333’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”) !important;
 }
-body.dark-mode select,
-body.dark-mode input[type=number],
-body.dark-mode input[type=text],
-body.dark-mode .calc-display {
-background-color: #3a3a3a !important;
-color: #f0f0f0 !important;
-border: 1px solid #666 !important;
--webkit-appearance: none;
--moz-appearance: none;
-appearance: none;
-color-scheme: dark;
+body.light-mode button { background-color: #6c757d !important; color: #fff !important; border-color: #555 !important; }
+body.light-mode .header-bottom .clear-buttons button,
+body.light-mode .sticky-header { background-color: #e0e0ff !important; }
+body.light-mode .warning { color: red !important; text-shadow: none !important; }
+
+/* Buttons - Hacker style */
+button {
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+background-color: #1a2e1a;
+color: var(–green-mid);
+border: 1px solid var(–green-dim);
+border-radius: 3px;
+cursor: pointer;
+transition: all 0.15s ease;
 }
-body.dark-mode select {
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23f0f0f0’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 8px center;
-padding-right: 28px;
+button:hover {
+background-color: #003300;
+color: var(–green-bright);
+box-shadow: 0 0 8px rgba(0,255,65,0.35);
 }
-body.dark-mode button:not(#toggleTheme):not(#toggleCalc):not(#optDamageLegendary):not(.header-bottom button) {
-background-color: #4a4a4a !important;
-color: #f0f0f0 !important;
-border: 1px solid #666 !important;
+#toggleTheme {
+font-size: 14px;
+padding: 9px 18px;
+border-radius: 4px;
+cursor: pointer;
+background-color: #003300;
+color: var(–green-bright);
+border: 1px solid var(–green-mid);
+margin-bottom: 14px;
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+text-shadow: 0 0 6px rgba(0,255,65,0.5);
+box-shadow: 0 0 8px rgba(0,255,65,0.2);
 }
-body.dark-mode .calc-buttons button {
-background-color: #4a4a4a !important;
-color: #f0f0f0 !important;
-}
-body.dark-mode label,
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode p,
-body.dark-mode small,
-body.dark-mode span {
-color: #f0f0f0 !important;
-}
-#toggleTheme { font-size: 14px; padding: 9px 18px; border-radius: 10px; cursor: pointer; background-color: #4a90e2; color: #fff; border: none; margin-bottom: 14px; }
+#toggleTheme:hover { box-shadow: 0 0 14px rgba(0,255,65,0.5); }
 
 /* Collapsible Calculator */
-.calc-widget { position: fixed; bottom: 60px; right: 10px; width: 200px; background: var(–section-bg); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; z-index: 2000; display: none; }
-.calc-display { width: 100%; height: 36px; font-size: 16px; margin-bottom: 6px; text-align: right; padding: 4px; box-sizing: border-box; }
+.calc-widget {
+position: fixed; bottom: 60px; right: 10px; width: 200px;
+background: #0a1a0a;
+border: 1px solid var(–green-dim);
+box-shadow: 0 0 16px rgba(0,255,65,0.2);
+border-radius: 4px; padding: 10px; z-index: 2000; display: none;
+}
+.calc-display {
+width: 100%; height: 36px; font-size: 16px; margin-bottom: 6px;
+text-align: right; padding: 4px; box-sizing: border-box;
+background: #000; color: var(–green-bright);
+border: 1px solid var(–green-dim);
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+}
 .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-.calc-buttons button { padding: 9px; font-size: 15px; border-radius: 5px; border: none; cursor: pointer; }
-#toggleCalc { position: fixed; bottom: 10px; right: 10px; z-index: 3000; background: #4a90e2; color: #fff; border: none; border-radius: 10px; padding: 8px 12px; font-size: 14px; cursor: pointer; }
+.calc-buttons button {
+padding: 9px; font-size: 15px; border-radius: 3px;
+background: #1a2e1a; color: var(–green-mid);
+border: 1px solid var(–green-dim); cursor: pointer;
+}
+.calc-buttons button:hover { background: #003300; color: var(–green-bright); box-shadow: 0 0 6px rgba(0,255,65,0.3); }
+#toggleCalc {
+position: fixed; bottom: 10px; right: 10px; z-index: 3000;
+background: #003300; color: var(–green-bright);
+border: 1px solid var(–green-mid); border-radius: 4px;
+padding: 8px 12px; font-size: 14px; cursor: pointer;
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+box-shadow: 0 0 8px rgba(0,255,65,0.25);
+}
 @media (max-width: 900px) { .calc-widget { width: 170px; } }
 
 /* Exclusions */
@@ -125,7 +263,6 @@ color: #f0f0f0 !important;
 /* Optimize buttons */
 .optimize-buttons { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
 .optimize-buttons button { font-size: 16px; padding: 11px 20px; }
-.optimize-buttons button#optDamageLegendary { background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; }
 @media (max-width: 1200px) { .optimize-buttons button { font-size: 14px; padding: 9px 16px; } }
 
 /* Combined sections */
@@ -136,15 +273,6 @@ color: #f0f0f0 !important;
 .combined-section input[type=number] { width: 100%; padding: 5px; font-size: 14px; }
 .combined-section h4 { font-size: 16px; margin-bottom: 8px; }
 .combined-section .addable-column { flex: 1; min-width: 180px; }
-
-/* Build Management */
-.build-management { display: flex; flex-direction: column; gap: 12px; }
-.build-management .top-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.build-management .top-row input { flex: 2; min-width: 160px; }
-.build-management .top-row button { flex: 1; min-width: 100px; }
-.build-management select { width: 100%; }
-.build-management .bottom-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.build-management .bottom-row button { flex: 1; min-width: 100px; font-size: 14px; padding: 9px; }
 
 /* Pygmy Starting % Alignment */
 .pygmy-totals { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; max-width: 40%; margin-left: auto; }
@@ -161,49 +289,124 @@ color: #f0f0f0 !important;
 .spinner { width: 50px; height: 50px; border: 5px solid #fff; border-top-color: #4a90e2; border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 #spinnerOverlay p { color: #fff; font-size: 18px; font-weight: bold; }
+
+/* Tooltip */
+.tip-wrap { position: relative; display: inline-block; margin-left: 6px; vertical-align: middle; }
+.tip-icon {
+display: inline-flex; align-items: center; justify-content: center;
+width: 16px; height: 16px; border-radius: 50%;
+background: #003300; border: 1px solid var(–green-dim);
+color: var(–green-bright); font-size: 11px; font-weight: bold;
+cursor: pointer; user-select: none; line-height: 1;
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+}
+.tip-icon:hover { background: #005500; box-shadow: 0 0 6px rgba(0,255,65,0.4); }
+.tip-box {
+display: none; position: absolute; left: 22px; top: -4px;
+width: 240px; background: #0a1a0a; border: 1px solid var(–green-dim);
+color: var(–green-mid); font-size: 12px; padding: 8px 10px;
+border-radius: 4px; z-index: 500; line-height: 1.5;
+box-shadow: 0 0 12px rgba(0,255,65,0.2);
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+}
+.tip-wrap:hover .tip-box,
+.tip-wrap.open .tip-box { display: block; }
+@media (max-width: 600px) {
+.tip-box { left: auto; right: 0; top: 22px; width: 220px; }
+}
+
+/* How to Use guide */
+#guideToggle {
+width: 100%; text-align: left; font-size: 15px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid var(–green-dim);
+border-radius: 4px; cursor: pointer;
+color: var(–green-bright);
+display: flex; justify-content: space-between; align-items: center;
+}
+#guideToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#guideToggle .arrow { transition: transform 0.2s; }
+#guideToggle.open .arrow { transform: rotate(180deg); }
+#guideContent {
+display: none; background: #0a1a0a;
+border: 1px solid var(–green-dim); border-top: none;
+border-radius: 0 0 4px 4px;
+padding: 14px; margin-bottom: 14px;
+color: var(–green-mid); font-size: 13px; line-height: 1.7;
+}
+#guideContent.open { display: block; }
+#guideContent h3 { color: var(–green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px; }
+#guideContent h3:first-child { margin-top: 0; }
+#guideContent ol { margin: 0; padding-left: 20px; }
+#guideContent ol li { margin-bottom: 6px; }
+#guideContent .note { color: #00aa00; font-style: italic; margin-top: 10px; }
 </style>
 
 </head>
-<body class="dark-mode">
+<body>
 
 <!-- Spinner overlay for optimization -->
 
 <div id="spinnerOverlay"><div class="spinner"></div><p>Optimizing…</p></div>
 
 <h1>Raven's Dox2 Trait Planner</h1>
-<div style="text-align:center;"><button id="toggleTheme">Switch to Light Mode</button></div>
+<div style="text-align:center;"><button id="toggleTheme">&gt; Switch to Light Mode</button></div>
+
+<button id="guideToggle">> How to Use This Planner <span class="arrow">▼</span></button>
+
+<div id="guideContent">
+  <h3>// Overview</h3>
+  <p>This planner helps you optimize your creature's trait loadout to hit the 75% Damage Reduction (DR) cap, then squeeze out as much Damage and Speed as possible with your remaining trait slots.</p>
+  <p>Trait power is shown as both a multiplier (what you see on the buffs screen) and a percentage (what you see mounted). They mean the same thing — 1.20 = 20%.</p>
+
+  <h3>// Recommended Workflow</h3>
+  <ol>
+    <li><b>Set your minimum speed.</b> Decide the lowest Speed % you're willing to accept on your mount and enter it in the Minimum Speed field. The optimizer will always try to meet this before maximizing damage.</li>
+    <li><b>Set exclusions.</b> If you don't own certain traits yet, select them in the Exclusions section so the optimizer won't suggest them.</li>
+    <li><b>Feed the Corrupt String (optional).</b> If you choose to use a Corrupt String, select which stat it affected and enter the bonus % it gave. Be aware — this carries risk in-game.</li>
+    <li><b>Feed the Greater Strings (optional).</b> Enter the stat and bonus % for up to 3 Greater Strings you've fed your creature.</li>
+    <li><b>Select a Mega Trait (optional).</b> Mega traits have powerful secondary effects beyond their raw stat bonus and are often a major build decision. Choose yours before optimizing so the planner accounts for it.</li>
+    <li><b>Select a Legendary Trait (optional).</b> Legendary traits are powerful but come with negative modifiers — feed it early so later traits can offset the downsides. Select it here if you plan to use one.</li>
+    <li><b>Hit Optimize.</b> The planner will fill your remaining slots with the best combination of traits to hit 75% DR first, then meet your speed requirement, then maximize damage.</li>
+  </ol>
+
+  <h3>// Reading the Results</h3>
+  <p>The floating bar at the top always shows your current totals. DR shown is capped at 75% in the display even if your traits exceed it — going over the cap is fine and sometimes unavoidable.</p>
+
+  <p class="note">// Tip: Use the Pygmy Trait Planner section below to plan trait additions for your Pygmy companion separately.</p>
+</div>
 
 <div class="section sticky-header">
   <div class="header-top">
-    <h2>Trait Power %</h2>
-    <div class="result" id="finalResult">Damage: 1.0, DR: 1.0, SPD: 1.0</div>
+    <h2>Trait Power</h2>
+    <div class="result" id="finalResult">Damage: 1.000 (0%) | DR: 1.000 (0%) | SPD: 1.000 (0%)</div>
   </div>
   <div class="header-bottom">
-    <button id="toggleView">Swap Trait Power View</button>
     <div class="clear-buttons">
       <button id="clearOptimized">Clear Optimized</button>
       <button id="clearAll">Clear All</button>
     </div>
   </div>
+  <div class="header-optimize">
+    <button id="optDamage">Optimize</button>
+  </div>
 </div>
 
 <div class="section">
   <h2>Optimize Build</h2>
-  <div class="optimize-buttons">
-    <button id="optDamage">Optimize for Damage</button>
-    <button id="optSpeed">Optimize for Speed</button>
-    <button id="optAll">Optimize for Least Waste</button>
-    <button id="optDamageLegendary">Optimize for Damage w/ Selected Legendary</button>
-  </div>
-  <p>All optimizations will prioritize 75% DR, then optimize for chosen attributes while respecting the minimum desired movement speed.</p>
-  <label>Minimum Desired Speed
-    <!-- Label updates dynamically based on view mode -->
-    (<span id="speedUnitLabel">%</span>):
-    <input type="number" id="minSpeed" placeholder="e.g., 20" step="0.01" style="width: 33%; padding: 5px; font-size: 14px;">
+  <label>Minimum Speed: <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your mount to have after optimization. Enter in either field — multiplier (e.g. 1.20) or percent (e.g. 20) — they stay in sync. Leave blank to ignore speed entirely.</span></span></label>
+  <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin: 6px 0;">
+    <label style="margin:0; display:flex; align-items:center; gap:6px;">
+      Multiplier: <input type="number" id="minSpeedMult" placeholder="e.g. 1.20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
+    </label>
+    <label style="margin:0; display:flex; align-items:center; gap:6px;">
+      Percent: <input type="number" id="minSpeed" placeholder="e.g. 20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
+    </label>
     <span id="speed-context"></span>
-    <small id="speedHint" style="display:block; color:#888; margin-top:3px;"></small>
-  </label>
-  <h2>Exclusions</h2>
+  </div>
+  <small id="speedHint" style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
+  <p>Optimizing will prioritize DR and optimize for damage while attempting to reach the minimum required speed set.</p>
+  <h2>Exclusions <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Select any traits you don't currently own. Hold Ctrl (PC) or tap to multi-select. The optimizer will ignore these when building your loadout.</span></span></h2>
   <p>Use exclusions if you are missing some traits and don't want them to be considered.</p>
   <div class="exclusions">
     <label>Exclude W: <select id="excludeW" multiple></select></label>
@@ -211,7 +414,6 @@ color: #f0f0f0 !important;
     <label>Exclude A: <select id="excludeA" multiple></select></label>
     <label>Exclude UW: <select id="excludeUW" multiple></select></label>
     <label>Exclude U: <select id="excludeU" multiple></select></label>
-    <label>Exclude Legendary: <select id="excludeL" multiple></select></label>
     <label>Exclude Prime: <select id="excludeP" multiple></select></label>
     <label>Exclude Mega: <select id="excludeM" multiple></select></label>
   </div>
@@ -219,7 +421,7 @@ color: #f0f0f0 !important;
 
 <div class="section combined-section">
   <div>
-    <h2>Corrupt and Greaters</h2>
+    <h2>Corrupt and Greaters <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Feed your creature the Corrupt String and up to 3 Greater Strings before adding regular traits. Enter the stat each one boosted and the % bonus it gave so the planner can account for them.</span></span></h2>
     <div class="flex-row">
       <label>Corrupt String Stat: <select id="corruptStat"></select></label>
       <label>Bonus (%): <input type="number" id="corruptInput" min="-25" max="25" placeholder="Enter -25 to 25%"></label>
@@ -237,20 +439,11 @@ color: #f0f0f0 !important;
       <label>Bonus (%): <input type="number" id="geneticValue2" min="5" max="10" placeholder="Enter 5-10%"></label>
     </div>
   </div>
-  <div>
-    <h2>Cleanse Counters</h2>
-    <div class="flex-row">
-      <label>Trait Cleanse Counter: <input type="number" id="traitCleanseCounter" min="1" max="5" placeholder="Enter 1-5"></label>
-    </div>
-    <div class="flex-row">
-      <label>Absolute Trait Cleanse Counter: <input type="number" id="absoluteTraitCleanseCounter" min="1" max="3" placeholder="Enter 1-3"></label>
-    </div>
-  </div>
 </div>
 
 <div class="section combined-section">
   <div>
-    <h2>Prime &amp; Mega Traits</h2>
+    <h2>Prime &amp; Mega Traits <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Mega traits have powerful secondary effects beyond their stat bonus — choosing one is a major build decision. Select your Mega before optimizing so the planner accounts for it. Prime traits unlock automatically once prerequisites are met.</span></span></h2>
     <label>Prime Trait:<select id="Prime"></select></label>
     <label>Mega Trait:<select id="Mega"></select></label>
   </div>
@@ -289,7 +482,7 @@ color: #f0f0f0 !important;
 </div>
 
 <div class="section">
-  <h2>Legendary Trait (Optional)</h2>
+  <h2>Legendary Trait (Optional) <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Legendary traits are powerful but carry negative modifiers. Feed your legendary early in the trait order so later traits can offset the downsides. Selecting one here will include it in optimization when you hit Optimize.</span></span></h2>
   <select id="Legendary"></select>
   <p class="warning">Make sure to feed the legendary trait early in the order so that you can fix the negative modifiers with subsequent added traits. Legendaries are not automatically used in optimization unless selected here.</p>
 </div>
@@ -297,22 +490,6 @@ color: #f0f0f0 !important;
 <div class="section">
   <h2>Calculate Final HP</h2>
   <input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added" style="width: 33%; padding: 5px; font-size: 14px;">
-</div>
-
-<div class="section">
-  <h2>Build Management</h2>
-  <div class="build-management">
-    <div class="top-row">
-      <input type="text" id="buildName" placeholder="Build Name" style="padding: 8px; font-size: 15px;">
-      <button id="saveBuild" style="font-size: 15px; padding: 8px 16px;">Save Build</button>
-    </div>
-    <select id="savedBuilds" style="padding: 8px; font-size: 15px;"></select>
-    <div class="bottom-row">
-      <button id="loadBuild">Load Build</button>
-      <button id="deleteBuild">Delete Build</button>
-      <button id="shareBuild">Share Build</button>
-    </div>
-  </div>
 </div>
 
 <div class="section" id="pygmyTraitPlanner">
@@ -359,18 +536,23 @@ color: #f0f0f0 !important;
   <p>If your Pygmy already has a P or M trait, it is not possible to add any new P or M traits.</p>
   <div class="combined-section" id="pygmyAddableTraits"></div>
 
-<label>Minimum Desired Speed
-(<span id="pygmySpeedUnitLabel">%</span>):
-<input type="number" id="pygmyMinSpeed" placeholder="e.g., 20" step="0.01" style="width: 33%; padding: 5px; font-size: 14px;">
-<span id="pygmySpeedContext"></span>
-<small id="pygmySpeedHint" style="display:block; color:#888; margin-top:3px;"></small>
-</label>
+<label>Minimum Speed: <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your mount to have after optimization. Enter in either field — multiplier (e.g. 1.20) or percent (e.g. 20) — they stay in sync. Leave blank to ignore speed entirely.</span></span></label>
+
+  <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin: 6px 0;">
+    <label style="margin:0; display:flex; align-items:center; gap:6px;">
+      Multiplier: <input type="number" id="pygmyMinSpeedMult" placeholder="e.g. 1.20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
+    </label>
+    <label style="margin:0; display:flex; align-items:center; gap:6px;">
+      Percent: <input type="number" id="pygmyMinSpeed" placeholder="e.g. 20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
+    </label>
+    <span id="pygmySpeedContext"></span>
+  </div>
+  <small id="pygmySpeedHint" style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
 
   <div class="optimize-buttons">
-    <button id="pygmyOptDamage">Optimize for Damage</button>
-    <button id="pygmyOptSpeed">Optimize for Speed</button>
-    <button id="pygmyOptAll">Optimize for Least Waste</button>
+    <button id="pygmyOptDamage">Optimize</button>
   </div>
+  <p>Optimizing will prioritize DR and optimize for damage while attempting to reach the minimum required speed set.</p>
 
   <h3>Exclusions for Additions</h3>
   <div class="exclusions">
@@ -557,43 +739,30 @@ function getCurrentTotals() {
 // ============================================================
 // DISPLAY
 // ============================================================
-let isMultiplierView = true;
 
-// Update speed field hints when view mode changes
-function updateSpeedHints() {
-  const hint = isMultiplierView
-    ? 'Multiplier mode: enter as % (e.g. 20 for 20%, or -5 for -5%)'
-    : 'Percent mode: enter raw % value (e.g. 20 for 20%)';
-  const el1 = document.getElementById('speedHint');
-  const el2 = document.getElementById('pygmySpeedHint');
-  const lbl1 = document.getElementById('speedUnitLabel');
-  const lbl2 = document.getElementById('pygmySpeedUnitLabel');
-  if (el1) el1.textContent = hint;
-  if (el2) el2.textContent = hint;
-  if (lbl1) lbl1.textContent = '%';
-  if (lbl2) lbl2.textContent = '%';
+// parseMinSpeed now simply reads the percent field directly (always raw %)
+function parseMinSpeed(fieldId) {
+  const el = document.getElementById(fieldId);
+  if (!el) return 0;
+  const v = parseFloat(el.value);
+  return isNaN(v) ? 0 : v;
 }
 
-// FIX: Convert minSpeed input to raw % value regardless of view mode.
-// In multiplier view the display shows e.g. SPD: 1.150, but internally
-// all trait bonuses are stored as raw % (e.g. 15).  So the min speed
-// field should ALWAYS be entered as raw % (e.g. 15 for +15%).
-// If the user types 1.1 they likely mean the multiplier 1.10 → 10%.
-// We detect this: if |value| <= 3 AND it's not a whole number we treat
-// it as a multiplier and convert → (value - 1) * 100.
-function parseMinSpeed(rawStr) {
-  if (rawStr === '' || rawStr === null || rawStr === undefined) return 0;
-  const v = parseFloat(rawStr);
-  if (isNaN(v)) return 0;
-  // Heuristic: if in multiplier view and value looks like a multiplier
-  // (between -2 and 4 exclusive, and has a decimal), auto-convert.
-  if (isMultiplierView && Math.abs(v) < 4 && v !== Math.floor(v)) {
-    return (v - 1) * 100;
+// Sync the two speed inputs when either changes
+function syncSpeedInputs(changed, multId, pctId) {
+  const v = parseFloat(changed.value);
+  if (isNaN(v) || changed.value === '') {
+    document.getElementById(changed.id === multId ? pctId : multId).value = '';
+    return;
   }
-  return v;
+  if (changed.id === multId) {
+    document.getElementById(pctId).value = ((v - 1) * 100).toFixed(2).replace(/\.?0+$/, '');
+  } else {
+    document.getElementById(multId).value = (1 + v / 100).toFixed(3).replace(/\.?0+$/, '');
+  }
 }
 
-function renderResult(total, prefix, elementId) {
+function formatResult(total, prefix) {
   let drPercent = total.DR;
   let drWarning = '';
   if (drPercent > 75) {
@@ -601,10 +770,7 @@ function renderResult(total, prefix, elementId) {
     drPercent = 75;
   }
   const dmg = 1 + total.Damage/100, dr = 1 - drPercent/100, spd = 1 + total.Speed/100;
-  let out = isMultiplierView
-    ? `${prefix}Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`
-    : `${prefix}Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
-  document.getElementById(elementId).innerHTML = out;
+  return `${prefix}Damage: ${dmg.toFixed(3)} (${total.Damage.toFixed(1)}%) | DR: ${dr.toFixed(3)} (${drPercent.toFixed(1)}%)${drWarning} | SPD: ${spd.toFixed(3)} (${total.Speed.toFixed(1)}%)`;
 }
 
 function calculateFinalStats() {
@@ -612,13 +778,7 @@ function calculateFinalStats() {
   const target = parseFloat(document.getElementById('targetHP').value);
   let extra = '';
   if (target) { const prime=1.25, mega=1.40; extra = `<br><b>Level HP to ~</b>${Math.round(target/(prime*mega))} before Prime & Mega`; }
-  let drPercent = Math.min(total.DR, 75);
-  let drWarning = total.DR > 75 ? ` <span class="warning">(${(total.DR-75).toFixed(1)}% over cap)</span>` : '';
-  const dmg = 1+total.Damage/100, dr = 1-drPercent/100, spd = 1+total.Speed/100;
-  let out = isMultiplierView
-    ? `Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`
-    : `Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
-  document.getElementById('finalResult').innerHTML = out + extra;
+  document.getElementById('finalResult').innerHTML = formatResult(total, '') + extra;
 }
 
 // ============================================================
@@ -643,7 +803,7 @@ function getExcluded(cat) {
 
 function optimize(mode, withLegendary = false) {
   // FIX: use parseMinSpeed to handle multiplier-style inputs like 0.8 or 1.1
-  const userMinS = parseMinSpeed(document.getElementById('minSpeed').value);
+  const userMinS = parseMinSpeed('minSpeed');
 
   let fixedD = 0, fixedDR = 0, fixedS = 0;
   const sb = getStringBonus();
@@ -720,12 +880,15 @@ function optimize(mode, withLegendary = false) {
 
   const groupCombos = finalUnfixed.map(g => getCombosWithOptional(g));
   const minDR = 75;
-  const useSConstraint = mode === 'damage' && userMinS !== 0;
+  // Speed constraint is active whenever the field has any value (including 0)
+  const minSpeedEl = document.getElementById('minSpeed');
+  const useSConstraint = minSpeedEl && minSpeedEl.value.trim() !== '';
 
   function scoreCandidate(d, dr, s) {
-    if (mode === 'damage') return [dr >= minDR ? 1:0, useSConstraint ? (s >= userMinS ? 1:0) : 0, d, -Math.abs(dr-minDR)];
-    if (mode === 'speed') return [dr >= minDR ? 1:0, s, -Math.abs(dr-minDR)];
-    return [dr >= minDR ? 1:0, d+s, -Math.abs(dr-minDR)];
+    // Priority: 1) hit 75% DR (hard requirement), 2) meet min speed, 3) maximize damage
+    const drOk = dr >= minDR ? 1 : 0;
+    const sOk  = useSConstraint ? (s >= userMinS ? 1 : 0) : 1;
+    return [drOk, sOk, d];
   }
 
   function betterThan(sc, sb) {
@@ -806,70 +969,15 @@ function clearOptimizedTraits() {
 
 function clearAll() {
   MAIN_GROUPS.forEach(g => g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }));
-  ['corruptStat','corruptInput','targetHP','minSpeed','traitCleanseCounter','absoluteTraitCleanseCounter'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['corruptStat','corruptInput','targetHP','minSpeed','minSpeedMult','pygmyMinSpeed','pygmyMinSpeedMult'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   for (let i=0;i<3;i++) { document.getElementById('geneticStat'+i).value=''; document.getElementById('geneticValue'+i).value=''; }
   for (const cat in traitData) { const el=document.getElementById(`exclude${cat}`); if(el) Array.from(el.options).forEach(o=>o.selected=false); }
   document.getElementById('speed-context').innerHTML='';
   calculateFinalStats();
 }
 
-// ============================================================
-// SAVE / LOAD / SHARE BUILDS
-// ============================================================
-const SAVE_IDS = ['W1','W2','W3','N1','N2','N3','A1','A2','A3','UW','U','Prime','Mega','Legendary','corruptStat','corruptInput','geneticStat0','geneticStat1','geneticStat2','geneticValue0','geneticValue1','geneticValue2','targetHP','traitCleanseCounter','absoluteTraitCleanseCounter'];
 
-let savedBuilds = {};
-try { savedBuilds = JSON.parse(localStorage.getItem('savedBuilds')) || {}; } catch(e) {}
 
-function saveBuild() {
-  const name = document.getElementById('buildName').value.trim();
-  if (!name) return alert('Enter a build name!');
-  savedBuilds[name] = {};
-  SAVE_IDS.forEach(id => { savedBuilds[name][id] = document.getElementById(id)?.value || ''; });
-  try { localStorage.setItem('savedBuilds', JSON.stringify(savedBuilds)); } catch(e){}
-  updateSavedDropdown();
-}
-
-function updateSavedDropdown() {
-  const sel = document.getElementById('savedBuilds');
-  sel.innerHTML = '';
-  Object.keys(savedBuilds).forEach(name => {
-    const o = document.createElement('option'); o.value=name; o.textContent=name; sel.appendChild(o);
-  });
-}
-
-function loadBuild() {
-  const name = document.getElementById('savedBuilds').value; if(!name) return;
-  const data = savedBuilds[name];
-  Object.keys(data).forEach(id => { const el=document.getElementById(id); if(el) el.value=data[id]; });
-  calculateFinalStats();
-}
-
-function deleteBuild() {
-  const name = document.getElementById('savedBuilds').value; if(!name) return;
-  delete savedBuilds[name];
-  try { localStorage.setItem('savedBuilds', JSON.stringify(savedBuilds)); } catch(e){}
-  updateSavedDropdown();
-}
-
-function shareBuild() {
-  const data = {};
-  SAVE_IDS.forEach(id => { data[id] = document.getElementById(id)?.value || ''; });
-  const encoded = btoa(JSON.stringify(data));
-  const url = `${location.origin}${location.pathname}?build=${encoded}`;
-  navigator.clipboard.writeText(url).then(()=>alert('Shareable URL copied to clipboard!')).catch(()=>prompt('Copy this URL:', url));
-}
-
-function loadFromUrl() {
-  const p = new URLSearchParams(location.search).get('build');
-  if (!p) return;
-  try {
-    const data = JSON.parse(atob(p));
-    Object.keys(data).forEach(id => { const el=document.getElementById(id); if(el) el.value=data[id]; });
-    calculateFinalStats();
-    alert('Build loaded from shared URL!');
-  } catch(e) { console.error('Invalid shared build', e); }
-}
 
 // ============================================================
 // PYGMY PLANNER
@@ -962,19 +1070,13 @@ function getPygmyCurrentTotals() {
 
 function calculatePygmyFinalStats() {
   const total = getPygmyCurrentTotals();
-  let drPercent = Math.min(total.DR, 75);
-  let drWarning = total.DR>75 ? ` <span class="warning">(${(total.DR-75).toFixed(1)}% over cap)</span>` : '';
-  const dmg=1+total.Damage/100, dr=1-drPercent/100, spd=1+total.Speed/100;
-  let out = isMultiplierView
-    ? `Pygmy Bonus: Damage: ${dmg.toFixed(3)}, DR: ${dr.toFixed(3)}${drWarning}, SPD: ${spd.toFixed(3)}`
-    : `Pygmy Bonus: Damage: ${total.Damage.toFixed(1)}%, DR: ${drPercent.toFixed(1)}%${drWarning}, SPD: ${total.Speed.toFixed(1)}%`;
-  document.getElementById('pygmyFinalResult').innerHTML = out;
+  document.getElementById('pygmyFinalResult').innerHTML = formatResult(total, 'Pygmy Bonus: ');
 }
 
 function pygmyOptimize(mode) {
   document.getElementById('pygmySpeedContext').innerHTML = '';
   // FIX: same parseMinSpeed logic for pygmy
-  const userMinS = parseMinSpeed(document.getElementById('pygmyMinSpeed').value);
+  const userMinS = parseMinSpeed('pygmyMinSpeed');
   const minDR = 75;
 
   let fixedD = parseFloat(document.getElementById('pygmyStartingDmg').value)||0;
@@ -1092,28 +1194,17 @@ function withSpinner(fn) {
 // ============================================================
 populateDropdowns();
 populatePygmyDropdowns();
-updateSavedDropdown();
 calculateFinalStats();
-loadFromUrl();
 updatePygmyAddableSlots();
-updateSpeedHints();
 
 document.getElementById('toggleTheme').onclick = function(){
-  document.body.classList.toggle('dark-mode');
-  this.textContent = document.body.classList.contains('dark-mode') ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+  document.body.classList.toggle('light-mode');
+  this.textContent = document.body.classList.contains('light-mode') ? '> Switch to Dark Mode' : '> Switch to Light Mode';
 };
 
-document.getElementById('toggleView').addEventListener('click', ()=>{
-  isMultiplierView = !isMultiplierView;
-  updateSpeedHints();
-  calculateFinalStats();
-  calculatePygmyFinalStats();
-});
 
-document.getElementById('saveBuild').onclick   = saveBuild;
-document.getElementById('loadBuild').onclick   = loadBuild;
-document.getElementById('deleteBuild').onclick = deleteBuild;
-document.getElementById('shareBuild').onclick  = shareBuild;
+
+
 document.getElementById('clearOptimized').onclick = clearOptimizedTraits;
 document.getElementById('clearAll').onclick       = clearAll;
 
@@ -1124,32 +1215,63 @@ document.getElementById('toggleCalc').onclick = ()=>{
   else{w.style.display='block';btn.textContent='Hide Calculator';}
 };
 
-document.getElementById('optDamage').onclick          = ()=>withSpinner(()=>optimize('damage'));
-document.getElementById('optSpeed').onclick           = ()=>withSpinner(()=>optimize('speed'));
-document.getElementById('optAll').onclick             = ()=>withSpinner(()=>optimize('all'));
-document.getElementById('optDamageLegendary').onclick = ()=>{
-  if(!document.getElementById('Legendary').value){alert('Please select a Legendary trait first!');return;}
-  withSpinner(()=>optimize('damage',true));
+function updateOptimizeButton() {
+  const hasLegendary = !!document.getElementById('Legendary').value;
+  const hasMega      = !!document.getElementById('Mega').value;
+  let label = 'Optimize';
+  if (hasLegendary && hasMega)   label = 'Optimize w/ Legendary & Mega';
+  else if (hasLegendary)         label = 'Optimize w/ Legendary';
+  else if (hasMega)              label = 'Optimize w/ Mega';
+  document.getElementById('optDamage').textContent = label;
+}
+
+document.getElementById('optDamage').onclick = () => {
+  const hasLegendary = !!document.getElementById('Legendary').value;
+  withSpinner(() => optimize('damage', hasLegendary));
 };
 
+document.getElementById('Legendary').addEventListener('change', updateOptimizeButton);
+document.getElementById('Mega').addEventListener('change', updateOptimizeButton);
+
 document.getElementById('pygmyOptDamage').onclick = ()=>withSpinner(()=>pygmyOptimize('damage'));
-document.getElementById('pygmyOptSpeed').onclick  = ()=>withSpinner(()=>pygmyOptimize('speed'));
-document.getElementById('pygmyOptAll').onclick    = ()=>withSpinner(()=>pygmyOptimize('all'));
+
+// Tooltip toggle for mobile tap support
+document.querySelectorAll('.tip-icon').forEach(icon => {
+  icon.addEventListener('click', e => {
+    e.stopPropagation();
+    const wrap = icon.closest('.tip-wrap');
+    const wasOpen = wrap.classList.contains('open');
+    document.querySelectorAll('.tip-wrap.open').forEach(w => w.classList.remove('open'));
+    if (!wasOpen) wrap.classList.add('open');
+  });
+});
+document.addEventListener('click', () => {
+  document.querySelectorAll('.tip-wrap.open').forEach(w => w.classList.remove('open'));
+});
+
+// How to Use guide toggle
+document.getElementById('guideToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('guideContent').classList.toggle('open');
+});
+
+// Sync speed inputs both ways
+document.getElementById('minSpeedMult').addEventListener('input', function(){ syncSpeedInputs(this, 'minSpeedMult', 'minSpeed'); });
+document.getElementById('minSpeed').addEventListener('input', function(){ syncSpeedInputs(this, 'minSpeedMult', 'minSpeed'); });
+document.getElementById('pygmyMinSpeedMult').addEventListener('input', function(){ syncSpeedInputs(this, 'pygmyMinSpeedMult', 'pygmyMinSpeed'); });
+document.getElementById('pygmyMinSpeed').addEventListener('input', function(){ syncSpeedInputs(this, 'pygmyMinSpeedMult', 'pygmyMinSpeed'); });
 
 // FIX: Use only 'change' event for number inputs to avoid double-counting.
 // 'input' fires on every keystroke (including incomplete numbers like "1" when typing "10"),
 // which caused values like 10 to be read as "1" then "10" — or counted twice.
 // 'change' fires only when the field is committed (blur / Enter), which is correct.
-document.querySelectorAll('select:not(#savedBuilds):not([id^="exclude"]):not([id^="pygmyExclude"]):not([id^="pygmyAdd"])').forEach(el=>{
+document.querySelectorAll('select:not([id^="exclude"]):not([id^="pygmyExclude"]):not([id^="pygmyAdd"])').forEach(el=>{
   el.addEventListener('change', calculateFinalStats);
 });
 document.querySelectorAll('input[type="number"]').forEach(el=>{
   el.addEventListener('change', calculateFinalStats);
 });
-// buildName text input doesn't affect stats
-document.querySelectorAll('input[type="text"]#buildName').forEach(el=>{
-  el.addEventListener('change', calculateFinalStats);
-});
+
 
 document.querySelectorAll('[id^="pygmyStarting"]').forEach(el=>{
   el.addEventListener('change', ()=>{updatePygmyAddableSlots(); calculatePygmyFinalStats();});
@@ -1174,8 +1296,7 @@ enforceRange('corruptInput', -25, 25);
 enforceRange('geneticValue0', 5, 10);
 enforceRange('geneticValue1', 5, 10);
 enforceRange('geneticValue2', 5, 10);
-enforceRange('traitCleanseCounter', 1, 5);
-enforceRange('absoluteTraitCleanseCounter', 1, 3);
+
 </script>
 
 </body>
