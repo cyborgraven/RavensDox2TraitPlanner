@@ -448,7 +448,7 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
     <label>Mega Trait:<select id="Mega"></select></label>
   </div>
   <div>
-    <h2>Artificial Traits (A) – Max 3</h2>
+    <h2>Artificial Traits (A) -- Max 3</h2>
     <select id="A1"></select>
     <select id="A2"></select>
     <select id="A3"></select>
@@ -457,13 +457,13 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
 
 <div class="section combined-section">
   <div>
-    <h2>Wild Traits (W) – Max 3</h2>
+    <h2>Wild Traits (W) -- Max 3</h2>
     <select id="W1"></select>
     <select id="W2"></select>
     <select id="W3"></select>
   </div>
   <div>
-    <h2>Natural Traits (N) – Max 3</h2>
+    <h2>Natural Traits (N) -- Max 3</h2>
     <select id="N1"></select>
     <select id="N2"></select>
     <select id="N3"></select>
@@ -499,13 +499,13 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
   <h3>Starting Traits</h3>
   <div class="combined-section">
     <div>
-      <h4>Starting Wild Traits (W) – Up to 3</h4>
+      <h4>Starting Wild Traits (W) -- Up to 3</h4>
       <select id="pygmyStartingW1"></select>
       <select id="pygmyStartingW2"></select>
       <select id="pygmyStartingW3"></select>
     </div>
     <div>
-      <h4>Starting Natural Traits (N) – Up to 3</h4>
+      <h4>Starting Natural Traits (N) -- Up to 3</h4>
       <select id="pygmyStartingN1"></select>
       <select id="pygmyStartingN2"></select>
       <select id="pygmyStartingN3"></select>
@@ -1035,7 +1035,7 @@ function updatePygmyAddableSlots() {
     const available = g.maxSlots - occupied;
     if (available <= 0) return;
     const col = colIdx%2===0 ? leftCol : rightCol;
-    const h4 = document.createElement('h4'); h4.textContent=`Addable ${g.cat} – Up to ${available}`; col.appendChild(h4);
+    const h4 = document.createElement('h4'); h4.textContent=`Addable ${g.cat} -- Up to ${available}`; col.appendChild(h4);
     for (let i=1; i<=available; i++) {
       const sel = document.createElement('select');
       sel.id = `${g.prefix}${i}`;
