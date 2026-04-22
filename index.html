@@ -53,7 +53,60 @@ select, input[type=number], input[type=text] { font-size: 13px; padding: 6px; }
 .pygmy-totals { max-width: 100%; }
 }
 
-body.dark-mode { –bg-color: #1c1c1c; –section-bg: #2c2c2c; –result-bg: #3a3a5c; –sticky-bg: #3a3a5c; –text-color: #f0f0f0; }
+body.dark-mode {
+–bg-color: #1c1c1c;
+–section-bg: #2c2c2c;
+–result-bg: #3a3a5c;
+–sticky-bg: #3a3a5c;
+–text-color: #f0f0f0;
+background-color: #1c1c1c !important;
+color: #f0f0f0 !important;
+color-scheme: dark;
+}
+body.dark-mode .section,
+body.dark-mode .sticky-header {
+background-color: #2c2c2c !important;
+}
+body.dark-mode .result {
+background-color: #3a3a5c !important;
+}
+body.dark-mode select,
+body.dark-mode input[type=number],
+body.dark-mode input[type=text],
+body.dark-mode .calc-display {
+background-color: #3a3a3a !important;
+color: #f0f0f0 !important;
+border: 1px solid #666 !important;
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+color-scheme: dark;
+}
+body.dark-mode select {
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23f0f0f0’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 8px center;
+padding-right: 28px;
+}
+body.dark-mode button:not(#toggleTheme):not(#toggleCalc):not(#optDamageLegendary):not(.header-bottom button) {
+background-color: #4a4a4a !important;
+color: #f0f0f0 !important;
+border: 1px solid #666 !important;
+}
+body.dark-mode .calc-buttons button {
+background-color: #4a4a4a !important;
+color: #f0f0f0 !important;
+}
+body.dark-mode label,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode p,
+body.dark-mode small,
+body.dark-mode span {
+color: #f0f0f0 !important;
+}
 #toggleTheme { font-size: 14px; padding: 9px 18px; border-radius: 10px; cursor: pointer; background-color: #4a90e2; color: #fff; border: none; margin-bottom: 14px; }
 
 /* Collapsible Calculator */
@@ -360,7 +413,7 @@ const traitData = {
   U:  [{N:"Tough",    D:5,   DR:15,  S:-2.5},{N:"Balanced", D:10,  DR:0,   S:10 }, {N:"Runner",    D:-5,  DR:0,   S:15 }, {N:"Juggernaut",D:15,  DR:10,  S:-5 }],
   P:  [{N:"Tough",    D:15,  DR:20,  S:0  }, {N:"Balanced", D:20,  DR:0,   S:5  }, {N:"Runner",    D:0,   DR:0,   S:25 }, {N:"Juggernaut",D:25,  DR:15,  S:-5 }],
   M:  [{N:"Tough",    D:15,  DR:25,  S:0  }, {N:"Balanced", D:25,  DR:0,   S:7.5},{N:"Runner",    D:0,   DR:0,   S:15 }, {N:"Juggernaut",D:30,  DR:20,  S:-5 }],
-  L:  [{N:"Alpha",    D:50,  DR:-12.5,S:-12.5},{N:"Gamma",  D:20,  DR:20,  S:-25},{N:"Omega",     D:25,  DR:-20, S:25 }]
+  L:  [{N:"Alpha",    D:50,  DR:-20,  S:-15 },{N:"Gamma",  D:25,  DR:15,  S:-15 },{N:"Omega",     D:25,  DR:-20, S:15  }]
 };
 
 // ============================================================
