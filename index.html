@@ -5,6 +5,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Raven's Dox2 Trait Planner</title>
+
+<!-- PWA Support -->
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ff41">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trait Planner">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 :root {
@@ -196,7 +206,87 @@ background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/20
 body.light-mode button { background-color: #6c757d !important; color: #fff !important; border-color: #555 !important; }
 body.light-mode .header-bottom .clear-buttons button,
 body.light-mode .sticky-header { background-color: #e0e0ff !important; }
-body.light-mode .warning { color: red !important; text-shadow: none !important; }
+body.light-mode .warning { color: #cc0000 !important; text-shadow: none !important; }
+
+/* Light mode: guide content */
+body.light-mode #guideContent {
+background-color: #f7f7ff !important;
+color: #222 !important;
+border-color: #bbc !important;
+}
+body.light-mode #guideContent h3 { color: #333 !important; }
+body.light-mode #guideContent .note { color: #555 !important; }
+body.light-mode #guideContent b { color: #111 !important; }
+
+/* Light mode: collapsible toggles */
+body.light-mode #guideToggle,
+body.light-mode #pygmyPlannerToggle {
+background-color: #e0e0f0 !important;
+color: #222 !important;
+border-color: #aaa !important;
+}
+body.light-mode #guideToggle:hover,
+body.light-mode #pygmyPlannerToggle:hover {
+background-color: #d0d0e8 !important;
+box-shadow: none !important;
+}
+
+/* Light mode: tooltips */
+body.light-mode .tip-icon {
+background: #dde !important;
+border-color: #99a !important;
+color: #333 !important;
+}
+body.light-mode .tip-icon:hover { background: #ccd !important; box-shadow: none !important; }
+body.light-mode .tip-box {
+background: #fff !important;
+border-color: #aab !important;
+color: #222 !important;
+box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Light mode: calculator */
+body.light-mode .calc-widget {
+background: #f0f0f8 !important;
+border-color: #aaa !important;
+box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+body.light-mode .calc-display {
+background: #fff !important;
+color: #111 !important;
+border-color: #aaa !important;
+}
+body.light-mode .calc-buttons button {
+background: #e0e0f0 !important;
+color: #222 !important;
+border-color: #aaa !important;
+}
+body.light-mode .calc-buttons button:hover {
+background: #d0d0e8 !important;
+color: #000 !important;
+box-shadow: none !important;
+}
+body.light-mode #toggleCalc {
+background: #6c757d !important;
+color: #fff !important;
+border-color: #555 !important;
+box-shadow: none !important;
+}
+
+/* Light mode: optimize buttons */
+body.light-mode .optimize-buttons button,
+body.light-mode .header-optimize button {
+color: #fff !important;
+text-shadow: none !important;
+box-shadow: none !important;
+}
+
+/* Light mode: pygmy content */
+body.light-mode #pygmyPlannerContent { color: #222 !important; }
+body.light-mode #pygmySpeedContext { color: #333 !important; }
+
+/* Light mode: result spans and strong tags */
+body.light-mode strong, body.light-mode b { color: #111 !important; }
 
 /* Buttons - Hacker style */
 button {
@@ -367,6 +457,16 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
 <!-- Spinner overlay for optimization -->
 
 <div id="spinnerOverlay"><div class="spinner"></div><p>Optimizing…</p></div>
+
+<!-- PWA Install Banner -->
+
+<div id="pwa-install-banner" style="display:none; position:fixed; bottom:60px; left:10px; right:10px; z-index:4000; background:#0f1a0f; border:1px solid #00cc00; border-radius:4px; padding:10px 14px; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 0 16px rgba(0,255,65,0.25); font-family:'Share Tech Mono',monospace; flex-wrap:wrap;">
+  <span style="color:#00ff41; font-size:13px;">&#x1F4F2; Install Trait Planner for offline use</span>
+  <div style="display:flex; gap:8px;">
+    <button id="pwa-install-btn" style="font-size:12px; padding:6px 14px; background:#003300; color:#00ff41 !important; border:1px solid #00cc00; border-radius:3px; cursor:pointer;">Install App</button>
+    <button id="pwa-dismiss-btn" style="font-size:12px; padding:6px 10px; background:#1a1a1a; color:#007700 !important; border:1px solid #007700; border-radius:3px; cursor:pointer;">&#x2715;</button>
+  </div>
+</div>
 
 <h1>Raven's Dox2 Trait Planner</h1>
 <div style="text-align:center;"><button id="toggleTheme">&gt; Switch to Light Mode</button></div>
@@ -1290,6 +1390,47 @@ document.querySelectorAll('.tip-icon').forEach(icon => {
 });
 document.addEventListener('click', () => {
   document.querySelectorAll('.tip-wrap.open').forEach(w => w.classList.remove('open'));
+});
+
+// ============================================================
+// PWA: SERVICE WORKER REGISTRATION
+// ============================================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('[PWA] Service worker registered:', reg.scope))
+      .catch(err => console.warn('[PWA] Service worker registration failed:', err));
+  });
+}
+
+// ============================================================
+// PWA: INSTALL PROMPT BANNER
+// ============================================================
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner) banner.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner) banner.style.display = 'none';
+  deferredInstallPrompt = null;
+});
+
+document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  document.getElementById('pwa-install-banner').style.display = 'none';
+});
+
+document.getElementById('pwa-dismiss-btn')?.addEventListener('click', () => {
+  document.getElementById('pwa-install-banner').style.display = 'none';
 });
 
 // How to Use guide toggle
