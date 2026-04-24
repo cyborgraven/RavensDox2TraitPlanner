@@ -449,6 +449,180 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
 #guideContent ol { margin: 0; padding-left: 20px; }
 #guideContent ol li { margin-bottom: 6px; }
 #guideContent .note { color: #00aa00; font-style: italic; margin-top: 10px; }
+
+/* ── Dramatic Score Reveal ── */
+@keyframes gradeSlam {
+0%   { transform: scale(3) rotate(-8deg); opacity: 0; }
+60%  { transform: scale(0.92) rotate(2deg); opacity: 1; }
+80%  { transform: scale(1.08) rotate(-1deg); }
+100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes fadeSlideUp {
+0%   { opacity: 0; transform: translateY(14px); }
+100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes scanline {
+0%   { background-position: 0 0; }
+100% { background-position: 0 40px; }
+}
+@keyframes gradePulse {
+0%, 100% { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+50%       { text-shadow: 0 0 40px currentColor, 0 0 80px currentColor, 0 0 120px currentColor; }
+}
+@keyframes flavorBlink {
+0%, 100% { opacity: 1; } 50% { opacity: 0; }
+}
+
+.score-reveal {
+display: none;
+position: relative; overflow: hidden;
+background: #020d02;
+border: 2px solid var(–border-color);
+border-radius: 6px;
+padding: 24px 16px 20px;
+margin: 12px 0;
+text-align: center;
+box-shadow: 0 0 30px rgba(0,255,65,0.15), inset 0 0 30px rgba(0,255,65,0.04);
+}
+.score-reveal::before {
+content: ‘’;
+position: absolute; inset: 0; pointer-events: none;
+background: repeating-linear-gradient(
+0deg,
+transparent, transparent 3px,
+rgba(0,255,65,0.03) 3px, rgba(0,255,65,0.03) 4px
+);
+animation: scanline 3s linear infinite;
+}
+.score-reveal-label {
+font-size: 11px; letter-spacing: 4px; color: #007700;
+text-transform: uppercase; margin-bottom: 10px;
+animation: fadeSlideUp 0.4s ease both;
+}
+.score-reveal-grade {
+font-size: 96px; line-height: 1; font-weight: bold;
+animation: gradeSlam 0.5s cubic-bezier(0.22,1,0.36,1) both, gradePulse 2.5s ease-in-out 0.6s infinite;
+display: block; margin-bottom: 4px;
+}
+.score-reveal-score {
+font-size: 18px; color: var(–green-bright); letter-spacing: 2px;
+animation: fadeSlideUp 0.4s ease 0.25s both;
+margin-bottom: 8px;
+}
+.score-reveal-stats {
+display: grid; grid-template-columns: 1fr 1fr 1fr;
+font-size: 13px; color: #00aa00; letter-spacing: 1px;
+animation: fadeSlideUp 0.4s ease 0.35s both;
+margin-bottom: 12px; width: 100%;
+}
+.score-reveal-stats .stat-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.score-reveal-stats .stat-col .stat-label { font-size: 11px; color: #007700; letter-spacing: 2px; }
+.score-reveal-stats .stat-col .stat-mult  { font-size: 15px; color: var(–green-bright); font-weight: bold; }
+.score-reveal-stats .stat-col .stat-pct   { font-size: 12px; color: #00aa00; }
+.score-reveal-flavor {
+font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+color: var(–green-bright); font-weight: bold;
+animation: fadeSlideUp 0.4s ease 0.45s both;
+text-shadow: 0 0 10px rgba(0,255,65,0.6);
+min-height: 1.4em;
+}
+.score-reveal-flavor.blink-cursor::after {
+content: ‘█’;
+animation: flavorBlink 0.8s step-end 0.5s 6;
+}
+/* Grade color overrides for reveal */
+.score-reveal.grade-Splus .score-reveal-grade { color: #ff0; text-shadow: 0 0 30px #ff0, 0 0 60px #ff0; }
+.score-reveal.grade-S     .score-reveal-grade { color: #00ff41; }
+.score-reveal.grade-A     .score-reveal-grade { color: #00cc00; }
+.score-reveal.grade-B     .score-reveal-grade { color: #00aa00; }
+.score-reveal.grade-C     .score-reveal-grade { color: #007700; }
+.score-reveal.grade-D     .score-reveal-grade { color: #888; }
+.score-reveal.grade-F     .score-reveal-grade { color: #ff4444; text-shadow: 0 0 20px #ff4444; }
+.score-reveal.grade-Splus { border-color: #ff0; box-shadow: 0 0 40px rgba(255,255,0,0.2), inset 0 0 30px rgba(255,255,0,0.04); }
+.score-reveal.grade-F     { border-color: #ff4444; box-shadow: 0 0 20px rgba(255,68,68,0.15); }
+body.light-mode .score-reveal { background: #f0f0ff; border-color: #aaa; }
+body.light-mode .score-reveal::before { opacity: 0; }
+body.light-mode .score-reveal-label { color: #888; }
+body.light-mode .score-reveal-score { color: #222; }
+body.light-mode .score-reveal-stats { color: #444; }
+body.light-mode .score-reveal-flavor { color: #333; text-shadow: none; }
+body.light-mode .score-reveal.grade-Splus .score-reveal-grade { color: #b8860b; text-shadow: none; }
+body.light-mode .score-reveal.grade-S .score-reveal-grade { color: #008800; }
+body.light-mode .score-reveal.grade-A .score-reveal-grade { color: #005500; }
+body.light-mode .score-reveal.grade-B .score-reveal-grade { color: #336633; }
+body.light-mode .score-reveal.grade-C .score-reveal-grade { color: #555; }
+body.light-mode .score-reveal.grade-D .score-reveal-grade { color: #777; }
+body.light-mode .score-reveal.grade-F .score-reveal-grade { color: #cc0000; text-shadow: none; }
+.score-box {
+display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+background: #0a2a0a; border: 1px solid var(–border-color);
+border-radius: 4px; padding: 10px 14px; margin-top: 10px;
+}
+.grade-badge {
+font-size: 36px; font-weight: bold; min-width: 52px; text-align: center;
+text-shadow: 0 0 14px currentColor; line-height: 1;
+}
+.grade-Splus { color: #ff0; }
+.grade-S     { color: #00ff41; }
+.grade-A     { color: #00cc00; }
+.grade-B     { color: #00aa00; }
+.grade-C     { color: #007700; }
+.grade-D     { color: #888; }
+.grade-F     { color: #ff4444; }
+.score-detail { flex: 1; font-size: 13px; color: var(–green-mid); line-height: 1.7; }
+.score-detail strong { color: var(–green-bright); }
+.score-submit-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.score-submit-row input[type=text] { width: 160px; padding: 6px 8px; font-size: 13px; }
+.score-submit-row button { font-size: 13px; padding: 6px 14px; }
+.score-unqualified { color: #ff4444; font-size: 14px; font-weight: bold; margin-top: 8px; text-shadow: 0 0 6px rgba(255,68,68,0.4); }
+
+/* ── Leaderboard ── */
+#leaderboardToggle {
+width: 100%; text-align: left; font-size: 18px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer;
+color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#leaderboardToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#leaderboardToggle .arrow { transition: transform 0.2s; }
+#leaderboardToggle.open .arrow { transform: rotate(180deg); }
+#leaderboardContent { display: none; margin-bottom: 14px; }
+#leaderboardContent.open { display: block; }
+.lb-tabs { display: flex; gap: 0; margin-bottom: 0; }
+.lb-tab {
+flex: 1; padding: 8px; text-align: center; cursor: pointer;
+background: #0a1a0a; border: 1px solid #007700; font-size: 14px;
+color: #00cc00; font-family: ‘Share Tech Mono’, monospace;
+}
+.lb-tab:first-child { border-radius: 0 0 0 0; }
+.lb-tab.active { background: #003300; color: #00ff41; border-bottom-color: #003300; }
+.lb-tab:hover { background: #003300; }
+.lb-panel {
+display: none; background: #0a1a0a; border: 1px solid #007700;
+border-top: none; border-radius: 0 0 4px 4px; padding: 12px;
+}
+.lb-panel.active { display: block; }
+.lb-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.lb-table th { color: #00aa00; text-align: left; padding: 5px 8px; border-bottom: 1px solid #007700; }
+.lb-table td { padding: 5px 8px; border-bottom: 1px solid #002200; color: var(–green-mid); }
+.lb-table tr:first-child td { color: #00ff41; font-weight: bold; }
+.lb-table .lb-grade { font-weight: bold; text-shadow: 0 0 8px currentColor; }
+.lb-empty { color: #007700; font-size: 13px; padding: 10px 0; text-align: center; }
+.lb-clear-btn { font-size: 11px; padding: 4px 10px; margin-top: 10px; }
+body.light-mode .score-box { background: #cfe0ff; border-color: #99b; }
+body.light-mode .grade-badge { text-shadow: none; }
+body.light-mode .score-detail { color: #333; }
+body.light-mode .score-detail strong { color: #000; }
+body.light-mode .score-unqualified { color: #cc0000; text-shadow: none; }
+body.light-mode #leaderboardToggle { background: #e0e0f0; color: #222 !important; border-color: #aaa; }
+body.light-mode .lb-tab { background: #e0e0f0; color: #333; border-color: #aaa; }
+body.light-mode .lb-tab.active { background: #d0d0e8; color: #000; }
+body.light-mode .lb-panel { background: #f7f7ff; border-color: #aaa; }
+body.light-mode .lb-table th { color: #555; border-color: #aaa; }
+body.light-mode .lb-table td { color: #222; border-color: #ddd; }
+body.light-mode .lb-table tr:first-child td { color: #000; }
 </style>
 
 </head>
@@ -499,7 +673,9 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
   <div class="header-top">
     <h2>Trait Power</h2>
     <div class="result" id="finalResult">Damage: 1.000 (0%) | DR: 1.000 (0%) | SPD: 1.000 (0%)</div>
+
   </div>
+  <div id="mountUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
   <div class="header-bottom">
     <div class="clear-buttons">
       <button id="clearOptimized">Clear Optimized</button>
@@ -509,6 +685,16 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
   <div class="header-optimize">
     <button id="optDamage">Optimize</button>
   </div>
+</div>
+
+<!-- Mount score reveal (shown after optimize) -->
+
+<div id="mountScoreReveal" class="score-reveal" style="display:none;">
+  <div class="score-reveal-label">// TRAIT POWER CALCULATED — FINAL ASSESSMENT</div>
+  <span id="mountRevealGrade" class="score-reveal-grade">S+</span>
+  <div id="mountRevealScore" class="score-reveal-score"></div>
+  <div id="mountRevealStats" class="score-reveal-stats"></div>
+  <div id="mountRevealFlavor" class="score-reveal-flavor"></div>
 </div>
 
 <div class="section">
@@ -694,7 +880,40 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
   </div>
 
   <div class="result" id="pygmyFinalResult">Pygmy Bonus: Damage: 1.0, DR: 1.0, SPD: 1.0</div>
+  <div id="pygmyScoreReveal" class="score-reveal" style="display:none;">
+    <div class="score-reveal-label">// TRAIT POWER CALCULATED — FINAL ASSESSMENT</div>
+    <span id="pygmyRevealGrade" class="score-reveal-grade">S+</span>
+    <div id="pygmyRevealScore" class="score-reveal-score"></div>
+    <div id="pygmyRevealStats" class="score-reveal-stats"></div>
+    <div id="pygmyRevealFlavor" class="score-reveal-flavor"></div>
+  </div>
+  <div id="pygmyUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
 </div>
+</div>
+
+<!-- Leaderboard -->
+
+<button id="leaderboardToggle">> 🏆 Leaderboard <span class="arrow">▼</span></button>
+
+<div id="leaderboardContent">
+  <div class="lb-tabs">
+    <div class="lb-tab active" data-tab="mount">Mount Builds</div>
+    <div class="lb-tab" data-tab="pygmy">Pygmy Builds</div>
+  </div>
+  <div class="lb-panel active" id="lb-mount">
+    <div class="score-submit-row" style="margin-bottom:10px;">
+      <input type="text" id="mountPlayerName" placeholder="Your name..." maxlength="24">
+      <button id="mountSubmitBtn">&gt; Submit Current Mount Build</button>
+    </div>
+    <div id="lb-mount-rows"><div class="lb-empty">No scores submitted yet.</div></div>
+  </div>
+  <div class="lb-panel" id="lb-pygmy">
+    <div class="score-submit-row" style="margin-bottom:10px;">
+      <input type="text" id="pygmyPlayerName" placeholder="Your name..." maxlength="24">
+      <button id="pygmySubmitBtn">&gt; Submit Current Pygmy Build</button>
+    </div>
+    <div id="lb-pygmy-rows"><div class="lb-empty">No scores submitted yet.</div></div>
+  </div>
 </div>
 
 <!-- Collapsible Calculator -->
@@ -1101,12 +1320,26 @@ function optimize(mode, withLegendary = false) {
 // ============================================================
 // CLEAR
 // ============================================================
+function clearScoreReveal() {
+  ['mountScoreReveal', 'pygmyScoreReveal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  ['mountUnqualified', 'pygmyUnqualified'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  window._lastMountScore = null;
+  window._lastPygmyScore = null;
+}
+
 function clearOptimizedTraits() {
   MAIN_GROUPS.forEach(g => {
     if (g.cat !== 'M') {
       g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
     }
   });
+  clearScoreReveal();
   calculateFinalStats();
 }
 
@@ -1116,6 +1349,9 @@ function clearAll() {
   for (let i=0;i<3;i++) { document.getElementById('geneticStat'+i).value=''; document.getElementById('geneticValue'+i).value=''; }
   for (const cat in traitData) { const el=document.getElementById(`exclude${cat}`); if(el) Array.from(el.options).forEach(o=>o.selected=false); }
   document.getElementById('speed-context').innerHTML='';
+  window._mountOptimized = false;
+  window._pygmyOptimized = false;
+  clearScoreReveal();
   calculateFinalStats();
 }
 
@@ -1322,8 +1558,341 @@ function calcClear(){calcDisplay.value='';}
 function calcEquals(){try{calcDisplay.value=Function('"use strict";return('+calcDisplay.value+')')();}catch{calcDisplay.value='Error';}}
 
 // ============================================================
-// SPINNER WRAPPER
+// SCORING ENGINE
 // ============================================================
+
+/**
+ * Gate-based grading. All stats expressed as multipliers (e.g. 3.0, 1.75).
+ * DR must be >= 75% (i.e. drPct >= 75) to qualify for any grade.
+ *
+ * MOUNT gates (speed gated only at S/S+ since pygmy covers speed):
+ *   S+  DMG >= 3.0  SPD >= 1.0
+ *   S   DMG >= 2.5  SPD >= 1.0
+ *   A   DMG >= 2.0  SPD >= 1.0
+ *   B   DMG >= 1.6
+ *   C   DMG >= 1.3
+ *   D   DMG >= 1.1
+ *   F   below D or DR not capped
+ *
+ * PYGMY gates (speed gated all the way down — pygmy IS the speed):
+ *   S+  DMG >= 3.0  SPD >= 1.7
+ *   S   DMG >= 2.5  SPD >= 1.4
+ *   A   DMG >= 2.0  SPD >= 1.2
+ *   B   DMG >= 1.6  SPD >= 1.1
+ *   C   DMG >= 1.3
+ *   D   DMG >= 1.1
+ *   F   below D or DR not capped
+ *
+ * Score (0–100) is derived from how far the build sits within its grade band,
+ * giving a sense of progression even within a tier.
+ */
+function scoreBuild(dmgPct, drPct, spdPct, type) {
+  const qualified = drPct >= 75;
+  if (!qualified) return { score: 0, grade: 'F', qualified: false, dmg: dmgPct, dr: drPct, spd: spdPct };
+
+  // Convert percentages to multipliers for gate comparisons
+  const dmgMult = 1 + dmgPct / 100;
+  const spdMult = 1 + spdPct / 100;
+
+  // Determine grade via gates
+  let grade;
+  if (type === 'mount') {
+    if      (dmgMult >= 3.0 && spdMult >= 1.0) grade = 'S+';
+    else if (dmgMult >= 2.5 && spdMult >= 1.0) grade = 'S';
+    else if (dmgMult >= 2.0 && spdMult >= 1.0) grade = 'A';
+    else if (dmgMult >= 1.6)                    grade = 'B';
+    else if (dmgMult >= 1.3)                    grade = 'C';
+    else if (dmgMult >= 1.1)                    grade = 'D';
+    else                                         grade = 'F';
+  } else {
+    if      (dmgMult >= 3.0 && spdMult >= 1.7) grade = 'S+';
+    else if (dmgMult >= 2.5 && spdMult >= 1.4) grade = 'S';
+    else if (dmgMult >= 2.0 && spdMult >= 1.2) grade = 'A';
+    else if (dmgMult >= 1.6 && spdMult >= 1.1) grade = 'B';
+    else if (dmgMult >= 1.3)                    grade = 'C';
+    else if (dmgMult >= 1.1)                    grade = 'D';
+    else                                         grade = 'F';
+  }
+
+  // Numeric score: position within grade band for a sense of progression.
+  // Each grade band maps to a score range; we interpolate within it using DMG
+  // as the primary driver (plus SPD contribution for pygmy).
+  const gradeBands = { 'S+': [95, 100], 'S': [82, 94], 'A': [67, 81], 'B': [50, 66], 'C': [35, 49], 'D': [18, 34], 'F': [0, 17] };
+  const [bandLo, bandHi] = gradeBands[grade];
+
+  // Within-band progress: how far above the gate floor are we?
+  // Use DMG as primary, SPD as secondary for pygmy.
+  const gateFloors = {
+    mount: { 'S+': 3.0, 'S': 2.5, 'A': 2.0, 'B': 1.6, 'C': 1.3, 'D': 1.1, 'F': 0 },
+    pygmy: { 'S+': 3.0, 'S': 2.5, 'A': 2.0, 'B': 1.6, 'C': 1.3, 'D': 1.1, 'F': 0 }
+  };
+  const gateCeilings = {
+    mount: { 'S+': 3.36, 'S': 3.0, 'A': 2.5, 'B': 2.0, 'C': 1.6, 'D': 1.3, 'F': 1.1 },
+    pygmy: { 'S+': 3.31, 'S': 3.0, 'A': 2.5, 'B': 2.0, 'C': 1.6, 'D': 1.3, 'F': 1.1 }
+  };
+
+  const floor   = gateFloors[type][grade];
+  const ceiling = gateCeilings[type][grade];
+  const dmgProgress = ceiling > floor ? Math.min(1, Math.max(0, (dmgMult - floor) / (ceiling - floor))) : 1;
+
+  let spdProgress = 0;
+  if (type === 'pygmy' && ['S+','S','A','B'].includes(grade)) {
+    const spdFloors   = { 'S+': 1.7, 'S': 1.4, 'A': 1.2, 'B': 1.1 };
+    const spdCeilings = { 'S+': 1.79, 'S': 1.7, 'A': 1.4, 'B': 1.2 };
+    const sf = spdFloors[grade], sc = spdCeilings[grade];
+    spdProgress = sc > sf ? Math.min(1, Math.max(0, (spdMult - sf) / (sc - sf))) : 1;
+  }
+
+  const progress = type === 'pygmy' ? dmgProgress * 0.7 + spdProgress * 0.3 : dmgProgress;
+  const score    = Math.round(bandLo + progress * (bandHi - bandLo));
+
+  return { score, grade, qualified: true, dmg: dmgPct, dr: drPct, spd: spdPct, dmgMult, spdMult };
+}
+
+function gradeClass(grade) {
+  return 'grade-' + grade.replace('+', 'plus');
+}
+
+// Tracks whether optimize has been fired for each planner
+window._mountOptimized = false;
+window._pygmyOptimized = false;
+
+const FLAVOR_TEXT = {
+  'S+': [
+    "AN ABERRATION OF NATURE. SCIENTISTS WEEP.",
+    "ITS POWER LEVEL IS IMMEASURABLE.",
+    "THE GODS THEMSELVES HAVE TAKEN NOTICE.",
+    "REALITY ITSELF BENDS AROUND THIS CREATURE.",
+  ],
+  'S': [
+    "ITS POWER LEVEL IS OVER 9000.",
+    "A FEARSOME FORCE UNLEASHED UPON THE WORLD.",
+    "ENEMIES SEE IT COMING AND SIMPLY LOG OFF.",
+    "FEW HAVE WITNESSED THIS. FEWER SURVIVED.",
+  ],
+  'A': [
+    "A FEARSOME SPECIMEN. ENEMIES TREMBLE.",
+    "EXCEPTIONAL. THE CREATURE KNOWS IT.",
+    "BUILT DIFFERENT. NOTICEABLY DIFFERENT.",
+    "YOUR ENEMIES WILL REMEMBER THIS BUILD.",
+  ],
+  'B': [
+    "SOLID. RESPECTABLE. NOT TO BE UNDERESTIMATED.",
+    "GOOD POWER. THE CREATURE APPROVES.",
+    "A WORTHY BUILD. KEEP PUSHING.",
+    "STRONG. THE GRIND IS PAYING OFF.",
+  ],
+  'C': [
+    "AVERAGE. THE CREATURE SENSES YOUR DISAPPOINTMENT.",
+    "MEDIOCRE POWER. THE CREATURE SHRUGS.",
+    "IT WILL DO. FOR NOW.",
+    "THE CREATURE LOOKS AT YOU. SIGHS. SAYS NOTHING.",
+  ],
+  'D': [
+    "...IT HAS POTENTIAL. SOMEWHERE. MAYBE.",
+    "THE CREATURE IS TRYING ITS BEST.",
+    "WEAK. BUT NOT UNFORGIVABLY SO.",
+    "THE TRAINING MONTAGE BEGINS NOW.",
+  ],
+  'F': [
+    "THE CREATURE STARES AT YOU. YOU STARE BACK. NOTHING HAPPENS.",
+    "THIS IS A VIOLATION OF THE CREATURE'S RIGHTS.",
+    "THE CREATURE HAS FILED FOR EMANCIPATION.",
+    "SOMEWHERE, A TRAINER IS CRYING.",
+  ],
+};
+
+function getFlavorText(grade) {
+  const lines = FLAVOR_TEXT[grade] || FLAVOR_TEXT['F'];
+  return lines[Math.floor(Math.random() * lines.length)];
+}
+
+function renderScoreUI(result, revealId, gradeId, scoreId, statsId, flavorId, unqualId, optimizeFired, isMount) {
+  const reveal = document.getElementById(revealId);
+  const unqual = document.getElementById(unqualId);
+
+  if (!result.qualified) {
+    reveal.style.display = 'none';
+    unqual.style.display = optimizeFired ? 'block' : 'none';
+    return;
+  }
+
+  unqual.style.display = 'none';
+
+  const gc = gradeClass(result.grade);
+
+  // Reset animations by briefly hiding, then showing
+  reveal.style.display = 'none';
+  reveal.className = 'score-reveal ' + gc;
+
+  const gradeEl  = document.getElementById(gradeId);
+  const scoreEl  = document.getElementById(scoreId);
+  const statsEl  = document.getElementById(statsId);
+  const flavorEl = document.getElementById(flavorId);
+
+  const dmgMult = result.dmgMult ? result.dmgMult.toFixed(2) : (1 + result.dmg/100).toFixed(2);
+  const spdMult = result.spdMult ? result.spdMult.toFixed(2) : (1 + result.spd/100).toFixed(2);
+  const dmgPct  = result.dmg.toFixed(1);
+  const spdPct  = result.spd.toFixed(1);
+
+  gradeEl.textContent  = result.grade;
+  gradeEl.className    = 'score-reveal-grade';
+  scoreEl.textContent  = `SCORE: ${result.score} / 100`;
+  statsEl.innerHTML = `
+    <div class="stat-col">
+      <span class="stat-label">DMG</span>
+      <span class="stat-mult">${dmgMult}x</span>
+      <span class="stat-pct">${dmgPct}%</span>
+    </div>
+    <div class="stat-col">
+      <span class="stat-label">DR</span>
+      <span class="stat-mult">CAPPED</span>
+      <span class="stat-pct">75%</span>
+    </div>
+    <div class="stat-col">
+      <span class="stat-label">SPD</span>
+      <span class="stat-mult">${spdMult}x</span>
+      <span class="stat-pct">${spdPct}%</span>
+    </div>`;
+  flavorEl.textContent = getFlavorText(result.grade);
+  flavorEl.classList.remove('blink-cursor');
+
+  // Force reflow to restart CSS animations, then show
+  void reveal.offsetWidth;
+  reveal.style.display = 'block';
+
+  // Kick off blink cursor after a moment
+  setTimeout(() => flavorEl.classList.add('blink-cursor'), 100);
+  setTimeout(() => flavorEl.classList.remove('blink-cursor'), 5000);
+}
+
+// ── Direct score trigger — called explicitly after optimize ──
+function triggerMountScore() {
+  const total = getCurrentTotals();
+  const res = scoreBuild(total.Damage, total.DR, total.Speed, 'mount');
+  renderScoreUI(res, 'mountScoreReveal', 'mountRevealGrade', 'mountRevealScore', 'mountRevealStats', 'mountRevealFlavor', 'mountUnqualified', window._mountOptimized, true);
+  window._lastMountScore = res;
+  const el = document.getElementById('mountScoreReveal');
+  if (el && el.style.display !== 'none') {
+    const stickyH = document.querySelector('.sticky-header')?.offsetHeight || 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - stickyH - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+  const txt = document.getElementById('pygmyFinalResult')?.innerText || '';
+  const dmgM = txt.match(/Damage:\s*([\d.]+)/);
+  const drM  = txt.match(/DR:\s*([\d.]+)/);
+  const spdM = txt.match(/SPD:\s*([\d.]+)/);
+  if (dmgM && drM && spdM) {
+    const dmgPct = (parseFloat(dmgM[1]) - 1) * 100;
+    const drPct  = (1 - parseFloat(drM[1]))  * 100;
+    const spdPct = (parseFloat(spdM[1]) - 1) * 100;
+    const res = scoreBuild(dmgPct, drPct, spdPct, 'pygmy');
+    renderScoreUI(res, 'pygmyScoreReveal', 'pygmyRevealGrade', 'pygmyRevealScore', 'pygmyRevealStats', 'pygmyRevealFlavor', 'pygmyUnqualified', window._pygmyOptimized, false);
+    window._lastPygmyScore = res;
+    const el = document.getElementById('pygmyScoreReveal');
+    if (el && el.style.display !== 'none') {
+      const stickyH = document.querySelector('.sticky-header')?.offsetHeight || 0;
+      const top = el.getBoundingClientRect().top + window.scrollY - stickyH - 8;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+}
+
+// ============================================================
+// SHARED LEADERBOARD  (uses window.storage persistent API)
+// ============================================================
+
+const LB_KEY_MOUNT = 'lb-mount-v1';
+const LB_KEY_PYGMY = 'lb-pygmy-v1';
+const LB_MAX       = 20;
+
+async function lbLoad(key) {
+  try {
+    const r = await window.storage.get(key, true);
+    return r ? JSON.parse(r.value) : [];
+  } catch { return []; }
+}
+
+async function lbSave(key, entries) {
+  try { await window.storage.set(key, JSON.stringify(entries), true); } catch {}
+}
+
+function lbRender(entries, containerId) {
+  const el = document.getElementById(containerId);
+  if (!entries || entries.length === 0) {
+    el.innerHTML = '<div class="lb-empty">No scores submitted yet.</div>'; return;
+  }
+  const rows = entries.map((e, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escHtml(e.name)}</td>
+      <td class="lb-grade ${gradeClass(e.grade)}">${e.grade}</td>
+      <td>${e.score}</td>
+      <td>${e.dmg.toFixed(1)}%</td>
+      <td>${e.dr.toFixed(1)}%</td>
+      <td>${e.spd.toFixed(1)}%</td>
+      <td style="font-size:11px; color:#007700">${e.date}</td>
+    </tr>`).join('');
+  el.innerHTML = `<table class="lb-table">
+    <thead><tr><th>#</th><th>Name</th><th>Grade</th><th>Score</th><th>DMG</th><th>DR</th><th>SPD</th><th>Date</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function lbSubmit(key, score, nameInputId, containerId) {
+  if (!score || !score.qualified) return;
+  const name = (document.getElementById(nameInputId).value || '').trim() || 'Anonymous';
+  const entry = {
+    name, grade: score.grade, score: score.score,
+    dmg: score.dmg, dr: score.dr, spd: score.spd,
+    date: new Date().toLocaleDateString()
+  };
+  const entries = await lbLoad(key);
+  entries.push(entry);
+  entries.sort((a, b) => b.score - a.score);
+  const trimmed = entries.slice(0, LB_MAX);
+  await lbSave(key, trimmed);
+  lbRender(trimmed, containerId);
+  // Open the leaderboard panel if not already
+  document.getElementById('leaderboardToggle').classList.add('open');
+  document.getElementById('leaderboardContent').classList.add('open');
+  // Switch to correct tab
+  const tab = key === LB_KEY_MOUNT ? 'mount' : 'pygmy';
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.lb-panel').forEach(p => p.classList.toggle('active', p.id === 'lb-' + tab));
+}
+
+async function lbInit() {
+  lbRender(await lbLoad(LB_KEY_MOUNT), 'lb-mount-rows');
+  lbRender(await lbLoad(LB_KEY_PYGMY), 'lb-pygmy-rows');
+}
+lbInit();
+
+// Leaderboard tab switching
+document.querySelectorAll('.lb-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const t = tab.dataset.tab;
+    document.querySelectorAll('.lb-tab').forEach(x => x.classList.toggle('active', x.dataset.tab === t));
+    document.querySelectorAll('.lb-panel').forEach(p => p.classList.toggle('active', p.id === 'lb-' + t));
+  });
+});
+
+// Leaderboard toggle
+document.getElementById('leaderboardToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('leaderboardContent').classList.toggle('open');
+});
+
+// Submit buttons
+document.getElementById('mountSubmitBtn').addEventListener('click', () =>
+  lbSubmit(LB_KEY_MOUNT, window._lastMountScore, 'mountPlayerName', 'lb-mount-rows'));
+document.getElementById('pygmySubmitBtn').addEventListener('click', () =>
+  lbSubmit(LB_KEY_PYGMY, window._lastPygmyScore, 'pygmyPlayerName', 'lb-pygmy-rows'));
+
 function withSpinner(fn) {
   const overlay = document.getElementById('spinnerOverlay');
   overlay.classList.add('active');
@@ -1349,7 +1918,7 @@ document.getElementById('toggleTheme').onclick = function(){
 
 
 document.getElementById('clearOptimized').onclick = clearOptimizedTraits;
-document.getElementById('clearAll').onclick       = clearAll;
+document.getElementById('clearAll').onclick = clearAll;
 
 document.getElementById('toggleCalc').onclick = ()=>{
   const w=document.getElementById('calcWidget');
@@ -1370,13 +1939,23 @@ function updateOptimizeButton() {
 
 document.getElementById('optDamage').onclick = () => {
   const hasLegendary = !!document.getElementById('Legendary').value;
-  withSpinner(() => optimize('damage', hasLegendary));
+  window._mountOptimized = true;
+  withSpinner(() => {
+    optimize('damage', hasLegendary);
+    setTimeout(() => triggerMountScore(), 50);
+  });
 };
 
 document.getElementById('Legendary').addEventListener('change', updateOptimizeButton);
 document.getElementById('Mega').addEventListener('change', updateOptimizeButton);
 
-document.getElementById('pygmyOptDamage').onclick = ()=>withSpinner(()=>pygmyOptimize('damage'));
+document.getElementById('pygmyOptDamage').onclick = () => {
+  window._pygmyOptimized = true;
+  withSpinner(() => {
+    pygmyOptimize('damage');
+    setTimeout(() => triggerPygmyScore(), 50);
+  });
+};
 
 // Tooltip toggle for mobile tap support
 document.querySelectorAll('.tip-icon').forEach(icon => {
