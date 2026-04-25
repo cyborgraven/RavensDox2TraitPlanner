@@ -2507,6 +2507,7 @@ document.getElementById('leaderboardToggle').addEventListener('click', function(
 // ============================================================
 
 let _lbImageBase64 = null;
+let _lbImageMime = 'image/jpeg';
 let _lbExtractedScore = null;
 
 document.getElementById('lbScreenshotInput').addEventListener('change', function() {
@@ -2516,16 +2517,38 @@ document.getElementById('lbScreenshotInput').addEventListener('change', function
   const reader = new FileReader();
   reader.onload = function(e) {
     const dataUrl = e.target.result;
-    _lbImageBase64 = dataUrl.split(',')[1];
-    const preview = document.getElementById('lbScreenshotPreview');
-    preview.src = dataUrl;
-    document.getElementById('lbScreenshotPreviewWrap').style.display = 'block';
-    document.getElementById('lbAnalysisResult').style.display = 'none';
-    document.getElementById('lbSubmitMsg').textContent = '';
-    _lbExtractedScore = null;
+    const mimeMatch = dataUrl.match(/^data:(image\/[a-zA-Z+]+);base64,/);
+    const detected = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+    const supported = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (supported.includes(detected)) {
+      _lbImageBase64 = dataUrl.split(',')[1];
+      _lbImageMime = detected;
+      showPreview(dataUrl);
+    } else {
+      // Re-encode unsupported types (e.g. HEIC after browser decode) to jpeg via canvas
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width; canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        const jpegUrl = canvas.toDataURL('image/jpeg', 0.92);
+        _lbImageBase64 = jpegUrl.split(',')[1];
+        _lbImageMime = 'image/jpeg';
+        showPreview(dataUrl);
+      };
+      img.src = dataUrl;
+    }
   };
   reader.readAsDataURL(file);
 });
+
+function showPreview(dataUrl) {
+  document.getElementById('lbScreenshotPreview').src = dataUrl;
+  document.getElementById('lbScreenshotPreviewWrap').style.display = 'block';
+  document.getElementById('lbAnalysisResult').style.display = 'none';
+  document.getElementById('lbSubmitMsg').textContent = '';
+  _lbExtractedScore = null;
+}
 
 document.getElementById('lbAnalyzeBtn').addEventListener('click', async function() {
   if (!_lbImageBase64) return;
@@ -2545,7 +2568,7 @@ document.getElementById('lbAnalyzeBtn').addEventListener('click', async function
           content: [
             {
               type: 'image',
-              source: { type: 'base64', media_type: 'image/jpeg', data: _lbImageBase64 }
+              source: { type: 'base64', media_type: _lbImageMime, data: _lbImageBase64 }
             },
             {
               type: 'text',
@@ -2564,14 +2587,19 @@ If you cannot find TRAITS % data in the image, return: {"error": "No TRAITS % da
     });
 
     const data = await response.json();
+
+    // Surface API-level errors (auth, rate limit, etc.)
+    if (data.error) throw new Error(`API error: ${data.error.message || JSON.stringify(data.error)}`);
+
     const text = data.content?.map(c => c.text || '').join('') || '';
+    if (!text) throw new Error(`Empty response from API. Status: ${response.status}`);
 
     let parsed;
     try {
       const clean = text.replace(/```json|```/g, '').trim();
       parsed = JSON.parse(clean);
     } catch {
-      throw new Error('Could not parse response from image analysis.');
+      throw new Error(`Could not parse AI response: "${text.slice(0, 120)}"`);
     }
 
     if (parsed.error) throw new Error(parsed.error);
