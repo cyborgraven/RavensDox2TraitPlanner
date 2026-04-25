@@ -109,7 +109,6 @@ gap: 8px;
 }
 .header-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .header-top h2 { margin: 0; font-size: 20px; white-space: nowrap; }
-.header-top .result { flex-grow: 1; margin: 0; font-size: 15px; padding: 8px; min-width: 0; }
 .header-bottom { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 .header-bottom .clear-buttons { display: flex; gap: 5px; flex-wrap: wrap; }
 .header-bottom .clear-buttons button {
@@ -142,6 +141,65 @@ box-shadow: 0 0 10px rgba(0,255,65,0.2);
 .header-optimize button:hover {
 box-shadow: 0 0 16px rgba(0,255,65,0.5);
 }
+
+/* ── Three-column stat panel ── */
+.stat-panel {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 1px;
+background: var(–green-dim);
+border: 1px solid var(–green-dim);
+border-radius: 4px;
+overflow: hidden;
+margin-top: 4px;
+}
+.stat-panel-cell {
+background: var(–result-bg);
+padding: 8px 6px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 1px;
+}
+.stat-panel-label {
+font-size: 10px;
+letter-spacing: 2px;
+color: var(–green-dim);
+text-transform: uppercase;
+}
+.stat-panel-mult {
+font-size: 22px;
+font-weight: bold;
+color: var(–green-bright);
+text-shadow: 0 0 8px rgba(0,255,65,0.5);
+line-height: 1.1;
+}
+.stat-panel-pct {
+font-size: 12px;
+color: var(–green-mid);
+}
+.stat-panel-warning {
+font-size: 10px;
+color: #ff4444;
+text-shadow: 0 0 4px rgba(255,68,68,0.4);
+}
+.stat-panel-cell.dr-over .stat-panel-mult {
+color: #ffaa00;
+text-shadow: 0 0 8px rgba(255,170,0,0.5);
+}
+@media (max-width: 600px) {
+.stat-panel-mult { font-size: 17px; }
+.stat-panel-label { font-size: 9px; letter-spacing: 1px; }
+.stat-panel-pct { font-size: 11px; }
+}
+body.light-mode .stat-panel { background: #aaa !important; border-color: #aaa !important; }
+body.light-mode .stat-panel-cell { background: #cfe0ff !important; }
+body.light-mode .stat-panel-label { color: #777 !important; }
+body.light-mode .stat-panel-mult { color: #000 !important; text-shadow: none !important; }
+body.light-mode .stat-panel-pct { color: #333 !important; }
+body.light-mode .stat-panel-warning { color: #cc0000 !important; text-shadow: none !important; }
+body.light-mode .stat-panel-cell.dr-over .stat-panel-mult { color: #cc6600 !important; text-shadow: none !important; }
+
 .result {
 background: var(–result-bg);
 padding: 10px;
@@ -167,17 +225,7 @@ h3 { font-size: 14px; }
 h4 { font-size: 13px; }
 label { font-size: 13px; }
 select, input[type=number], input[type=text] { font-size: 13px; padding: 6px; }
-.result { font-size: 13px; padding: 8px; }
-.header-top .result { font-size: 12px; }
 .optimize-buttons button { font-size: 14px; padding: 9px 14px; }
-.combined-section { flex-direction: column; gap: 10px; }
-.combined-section > div { min-width: unset; }
-.flex-row { flex-direction: column; gap: 4px; }
-.flex-row label { min-width: unset; }
-.pygmy-totals { max-width: 100%; }
-}
-
-/* Dark mode is now the default/only real mode — light mode is a soft override */
 body.light-mode {
 –bg-color: #f0f0f0;
 –section-bg: #fff;
@@ -220,16 +268,17 @@ body.light-mode #guideContent b { color: #111 !important; }
 
 /* Light mode: collapsible toggles */
 body.light-mode #guideToggle,
-body.light-mode #pygmyPlannerToggle {
-background-color: #e0e0f0 !important;
-color: #222 !important;
-border-color: #aaa !important;
-}
+body.light-mode #pygmyPlannerToggle,
+body.light-mode .mode-switch button { background-color: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
 body.light-mode #guideToggle:hover,
-body.light-mode #pygmyPlannerToggle:hover {
-background-color: #d0d0e8 !important;
-box-shadow: none !important;
-}
+body.light-mode #pygmyPlannerToggle:hover,
+body.light-mode .mode-switch button:hover { background-color: #d0d0e8 !important; box-shadow: none !important; }
+body.light-mode .mode-switch button.active { background-color: #d0d0e8 !important; color: #000 !important; }
+body.light-mode .pygmy-note { background: #f0f0ff !important; border-color: #aaa !important; color: #333 !important; }
+body.light-mode .pygmy-note strong { color: #000 !important; }
+body.light-mode .pygmy-stat-row { background: #f7f7ff !important; border-color: #aaa !important; }
+body.light-mode .pygmy-stat-row h4 { color: #333 !important; }
+body.light-mode .pygmy-stat-row .sync-pair label { color: #555 !important; }
 
 /* Light mode: tooltips */
 body.light-mode .tip-icon {
@@ -410,20 +459,48 @@ font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
 .tip-box { left: auto; right: 0; top: 22px; width: 220px; }
 }
 
-/* Pygmy collapsible */
-#pygmyPlannerToggle {
-width: 100%; text-align: left; font-size: 18px;
-padding: 10px 14px; margin-bottom: 0;
-background: #0a1a0a; border: 1px solid #007700;
-border-radius: 4px; cursor: pointer;
-color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+/* Mode Switch */
+.mode-switch {
+display: flex; gap: 0; margin-bottom: 14px;
+border: 1px solid #007700; border-radius: 4px; overflow: hidden;
 }
-#pygmyPlannerToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
-#pygmyPlannerToggle .arrow { transition: transform 0.2s; }
-#pygmyPlannerToggle.open .arrow { transform: rotate(180deg); }
-#pygmyPlannerContent { display: none; }
-#pygmyPlannerContent.open { display: block; }
+.mode-switch button {
+flex: 1; padding: 12px; font-size: 16px; letter-spacing: 2px;
+border: none; border-radius: 0; cursor: pointer;
+background: #0a1a0a; color: #007700 !important;
+transition: all 0.15s ease; text-transform: uppercase;
+}
+.mode-switch button.active {
+background: #003300; color: #00ff41 !important;
+box-shadow: inset 0 0 12px rgba(0,255,65,0.1);
+text-shadow: 0 0 8px rgba(0,255,65,0.5);
+}
+.mode-switch button:hover:not(.active) { background: #001a00; color: #00cc00 !important; }
+.mode-panel { display: none; }
+.mode-panel.active { display: block; }
+
+/* Pygmy slot inputs */
+.pygmy-slots {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 10px 0;
+}
+.pygmy-slot-group { display: flex; flex-direction: column; gap: 4px; }
+.pygmy-slot-group label { font-size: 13px; color: #00aa00; }
+.pygmy-slot-group input[type=number] { width: 100%; text-align: center; font-size: 16px; padding: 8px; }
+
+/* Pygmy current totals synced inputs */
+.pygmy-stat-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 10px 0; }
+.pygmy-stat-row { background: #0a1a0a; border: 1px solid #005500; border-radius: 4px; padding: 10px 12px; }
+.pygmy-stat-row h4 { margin: 0 0 8px; font-size: 13px; letter-spacing: 2px; color: #00ff41; }
+.pygmy-stat-row .sync-pair { display: flex; gap: 8px; align-items: center; }
+.pygmy-stat-row .sync-pair label { font-size: 12px; color: #007700; white-space: nowrap; margin: 0; }
+.pygmy-stat-row .sync-pair input { flex: 1; min-width: 0; }
+
+.pygmy-note {
+background: #001a00; border: 1px solid #005500; border-left: 3px solid #00ff41;
+border-radius: 3px; padding: 10px 14px; margin-bottom: 14px;
+font-size: 13px; color: #00aa00; line-height: 1.7;
+}
+.pygmy-note strong { color: #00ff41; }
 
 #guideToggle {
 width: 100%; text-align: left; font-size: 15px;
@@ -449,6 +526,45 @@ color: var(–green-mid); font-size: 13px; line-height: 1.7;
 #guideContent ol { margin: 0; padding-left: 20px; }
 #guideContent ol li { margin-bottom: 6px; }
 #guideContent .note { color: #00aa00; font-style: italic; margin-top: 10px; }
+
+#guideTogglePygmy {
+width: 100%; text-align: left; font-size: 15px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer;
+color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#guideTogglePygmy:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#guideTogglePygmy .arrow { transition: transform 0.2s; }
+#guideTogglePygmy.open .arrow { transform: rotate(180deg); }
+#guideContentPygmy {
+display: none; background: #0a1a0a;
+border: 1px solid var(–green-dim); border-top: none;
+border-radius: 0 0 4px 4px;
+padding: 14px; margin-bottom: 14px;
+color: var(–green-mid); font-size: 13px; line-height: 1.7;
+}
+#guideContentPygmy.open { display: block; }
+#guideContentPygmy h3 { color: var(–green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px; }
+#guideContentPygmy h3:first-child { margin-top: 0; }
+#guideContentPygmy ol { margin: 0; padding-left: 20px; }
+#guideContentPygmy ol li { margin-bottom: 6px; }
+
+/* Pygmy Prime/Mega checkboxes */
+.pygmy-type-checks {
+display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0;
+}
+.pygmy-type-check {
+display: flex; align-items: center; gap: 8px;
+background: #0a1a0a; border: 1px solid #005500; border-radius: 4px;
+padding: 10px 14px; cursor: pointer; flex: 1; min-width: 140px;
+}
+.pygmy-type-check input[type=checkbox] {
+width: 18px; height: 18px; margin: 0; cursor: pointer;
+accent-color: #00ff41; flex-shrink: 0;
+}
+.pygmy-type-check span { color: #00cc00; font-size: 14px; }
 
 /* ── Dramatic Score Reveal ── */
 @keyframes gradeSlam {
@@ -602,9 +718,10 @@ color: #00cc00; font-family: ‘Share Tech Mono’, monospace;
 .lb-panel {
 display: none; background: #0a1a0a; border: 1px solid #007700;
 border-top: none; border-radius: 0 0 4px 4px; padding: 12px;
+overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .lb-panel.active { display: block; }
-.lb-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.lb-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 400px; }
 .lb-table th { color: #00aa00; text-align: left; padding: 5px 8px; border-bottom: 1px solid #007700; }
 .lb-table td { padding: 5px 8px; border-bottom: 1px solid #002200; color: var(–green-mid); }
 .lb-table tr:first-child td { color: #00ff41; font-weight: bold; }
@@ -623,6 +740,78 @@ body.light-mode .lb-panel { background: #f7f7ff; border-color: #aaa; }
 body.light-mode .lb-table th { color: #555; border-color: #aaa; }
 body.light-mode .lb-table td { color: #222; border-color: #ddd; }
 body.light-mode .lb-table tr:first-child td { color: #000; }
+
+/* ── Trait Database ── */
+#traitDbToggle {
+width: 100%; text-align: left; font-size: 18px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer;
+color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#traitDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#traitDbToggle .arrow { transition: transform 0.2s; }
+#traitDbToggle.open .arrow { transform: rotate(180deg); }
+#traitDbContent {
+display: none; background: #0a1a0a;
+border: 1px solid var(–green-dim); border-top: none;
+border-radius: 0 0 4px 4px;
+padding: 16px 14px; margin-bottom: 14px;
+}
+#traitDbContent.open { display: block; }
+.tdb-category { margin-bottom: 20px; }
+.tdb-category-title {
+font-size: 13px; letter-spacing: 3px; color: #007700;
+text-transform: uppercase; margin-bottom: 8px;
+border-bottom: 1px solid #003300; padding-bottom: 4px;
+}
+.tdb-category-title span { color: #00ff41; }
+.tdb-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 8px;
+}
+.tdb-card {
+background: #0f1a0f; border: 1px solid #004400;
+border-radius: 4px; padding: 10px 12px;
+transition: border-color 0.15s, box-shadow 0.15s;
+}
+.tdb-card:hover {
+border-color: #00aa00;
+box-shadow: 0 0 8px rgba(0,255,65,0.15);
+}
+.tdb-card-name {
+font-size: 14px; font-weight: bold;
+color: #00ff41; margin-bottom: 6px;
+letter-spacing: 1px;
+}
+.tdb-stat { font-size: 12px; display: flex; justify-content: space-between; margin: 2px 0; color: #007700; }
+.tdb-stat span:last-child { font-weight: bold; }
+.tdb-stat.pos span:last-child { color: #00cc00; }
+.tdb-stat.neg span:last-child { color: #ff4444; }
+.tdb-stat.zero span:last-child { color: #004400; }
+.tdb-note {
+font-size: 11px; color: #005500; margin-top: 6px;
+font-style: italic; border-top: 1px solid #002200; padding-top: 5px;
+}
+.tdb-note.tdb-perk {
+color: #00aa00; font-style: normal; border-color: #004400;
+}
+body.light-mode #traitDbToggle { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode #traitDbToggle:hover { background: #d0d0e8 !important; box-shadow: none !important; }
+body.light-mode #traitDbContent { background: #f7f7ff !important; border-color: #aaa !important; }
+body.light-mode .tdb-category-title { color: #555 !important; border-color: #ccc !important; }
+body.light-mode .tdb-category-title span { color: #000 !important; }
+body.light-mode .tdb-card { background: #fff !important; border-color: #ddd !important; }
+body.light-mode .tdb-card:hover { border-color: #aaa !important; box-shadow: 0 0 8px rgba(0,0,0,0.1) !important; }
+body.light-mode .tdb-card-name { color: #000 !important; }
+body.light-mode .tdb-stat { color: #999 !important; }
+body.light-mode .tdb-stat.pos span:last-child { color: #006600 !important; }
+body.light-mode .tdb-stat.neg span:last-child { color: #cc0000 !important; }
+body.light-mode .tdb-stat.zero span:last-child { color: #ccc !important; }
+body.light-mode .tdb-note { color: #888 !important; border-color: #ddd !important; }
+body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #ccc !important; }
 </style>
 
 </head>
@@ -644,6 +833,17 @@ body.light-mode .lb-table tr:first-child td { color: #000; }
 
 <h1>Raven's Dox2 Trait Planner</h1>
 <div style="text-align:center;"><button id="toggleTheme">&gt; Switch to Light Mode</button></div>
+
+<!-- Mode Switch -->
+
+<div class="mode-switch">
+  <button id="modeMountBtn" class="active">⚔ Mount</button>
+  <button id="modePygmyBtn">🦎 Pygmy</button>
+</div>
+
+<!-- MOUNT MODE -->
+
+<div id="mountModePanel" class="mode-panel active">
 
 <button id="guideToggle">> How to Use This Planner <span class="arrow">▼</span></button>
 
@@ -672,8 +872,11 @@ body.light-mode .lb-table tr:first-child td { color: #000; }
 <div class="section sticky-header">
   <div class="header-top">
     <h2>Trait Power</h2>
-    <div class="result" id="finalResult">Damage: 1.000 (0%) | DR: 1.000 (0%) | SPD: 1.000 (0%)</div>
-
+  </div>
+  <div id="finalResult" class="stat-panel">
+    <div class="stat-panel-cell"><div class="stat-panel-label">Damage</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">DR</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">Speed</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
   </div>
   <div id="mountUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
   <div class="header-bottom">
@@ -804,54 +1007,126 @@ body.light-mode .lb-table tr:first-child td { color: #000; }
   <input type="number" id="targetHP" placeholder="Enter Desired Final HP after Prime and Mega traits added" style="width: 100%; padding: 5px; font-size: 14px;">
 </div>
 
-<button id="pygmyPlannerToggle">> Pygmy Trait Planner <span class="arrow">▼</span></button>
+</div><!-- end mountModePanel -->
 
-<div id="pygmyPlannerContent">
-<div class="section" id="pygmyTraitPlanner">
-  <p>Feed the corrupt and greater strings to your pygmy if desired, then enter your Pygmy's starting traits (for slot tracking) and current total % bonuses below. The planner will suggest optimal additions.</p>
+<!-- PYGMY MODE -->
 
-  <h3>Starting Traits</h3>
-  <div class="combined-section">
-    <div>
-      <h4>Starting Wild Traits (W) -- Up to 3</h4>
-      <select id="pygmyStartingW1"></select>
-      <select id="pygmyStartingW2"></select>
-      <select id="pygmyStartingW3"></select>
-    </div>
-    <div>
-      <h4>Starting Natural Traits (N) -- Up to 3</h4>
-      <select id="pygmyStartingN1"></select>
-      <select id="pygmyStartingN2"></select>
-      <select id="pygmyStartingN3"></select>
+<div id="pygmyModePanel" class="mode-panel">
+
+<button id="guideTogglePygmy">> How to Use the Pygmy Planner <span class="arrow">▼</span></button>
+
+<div id="guideContentPygmy">
+  <h3>// Pygmy Workflow</h3>
+  <ol>
+    <li><b>Feed your Corrupt String</b> (if desired), and your 1–3 Greater Strings.</li>
+    <li><b>Open your buffs screen</b> or look at your Dino Pygmy Power % on your player HUD after equipping your Pygmy.</li>
+    <li><b>Enter your current totals</b> using the buff screen or player HUD values — whichever you prefer. Both multiplier and % formats are supported and stay in sync.</li>
+    <li><b>Enter the number of open slots</b> your Pygmy has in each category, making sure to include negative traits as they do occupy slots.</li>
+    <li><b>Set any exclusions</b> if needed for traits you may not have or do not wish to use. Set your desired minimum speed. Hit Optimize. Feed the suggested traits to have the best possible outcome.</li>
+  </ol>
+</div>
+
+<div class="section sticky-header" id="pygmyStickyHeader">
+  <div class="header-top">
+    <h2>Pygmy Trait Power</h2>
+  </div>
+  <div id="pygmyFinalResult" class="stat-panel">
+    <div class="stat-panel-cell"><div class="stat-panel-label">Damage</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">DR</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">Speed</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+  </div>
+  <div id="pygmyUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
+  <div class="header-bottom">
+    <div class="clear-buttons">
+      <button id="pygmyClearOptimized">Clear Optimized</button>
+      <button id="pygmyClearAll">Clear All Pygmy</button>
     </div>
   </div>
+  <div class="header-optimize">
+    <button id="pygmyOptDamage">Optimize Pygmy</button>
+  </div>
+</div>
 
-  <div class="combined-section">
-    <div>
-      <h4>Starting Unique Wild (UW)</h4>
-      <select id="pygmyStartingUW"></select>
+<div id="pygmyScoreReveal" class="score-reveal" style="display:none;">
+  <div class="score-reveal-label">// TRAIT POWER CALCULATED — FINAL ASSESSMENT</div>
+  <span id="pygmyRevealGrade" class="score-reveal-grade">S+</span>
+  <div id="pygmyRevealScore" class="score-reveal-score"></div>
+  <div id="pygmyRevealStats" class="score-reveal-stats"></div>
+  <div id="pygmyRevealFlavor" class="score-reveal-flavor"></div>
+</div>
+
+<div class="section">
+  <h2>Current Trait Power</h2>
+  <div class="pygmy-stat-inputs">
+    <div class="pygmy-stat-row">
+      <h4>// DAMAGE</h4>
+      <div class="sync-pair">
+        <label>Mult:</label><input type="number" id="pygmyDmgMult" placeholder="e.g. 1.75" step="0.001">
+        <label>%:</label><input type="number" id="pygmyDmgPct" placeholder="e.g. 75" step="0.1">
+      </div>
     </div>
-    <div>
-      <h4>Starting Prime (P)</h4>
-      <select id="pygmyStartingPrime"></select>
-      <h4>Starting Mega (M)</h4>
-      <select id="pygmyStartingMega"></select>
+    <div class="pygmy-stat-row">
+      <h4>// DAMAGE REDUCTION</h4>
+      <div class="sync-pair">
+        <label>Mult:</label><input type="number" id="pygmyDRMult" placeholder="e.g. 0.50" step="0.001">
+        <label>%:</label><input type="number" id="pygmyDRPct" placeholder="e.g. 50" step="0.1">
+      </div>
+    </div>
+    <div class="pygmy-stat-row">
+      <h4>// SPEED</h4>
+      <div class="sync-pair">
+        <label>Mult:</label><input type="number" id="pygmySpdMult" placeholder="e.g. 1.20" step="0.001">
+        <label>%:</label><input type="number" id="pygmySpdPct" placeholder="e.g. 20" step="0.1">
+      </div>
     </div>
   </div>
+</div>
 
-  <h3>Current Totals (from fed strings &amp; starting traits)</h3>
-  <div class="pygmy-totals">
-    <label>Current Damage %: <input type="number" id="pygmyStartingDmg" placeholder="DMG %"></label>
-    <label>Current DR %: <input type="number" id="pygmyStartingDR" placeholder="DR %"></label>
-    <label>Current Speed %: <input type="number" id="pygmyStartingSpd" placeholder="SPD %"></label>
+<div class="section">
+  <h2>Pygmy Type</h2>
+  <p style="color:#00aa00; font-size:13px; margin:0 0 10px;">Pygmys born with a Pygmy Prime (PP) or Pygmy Mega (PM) trait cannot receive normal Prime or Mega traits. Their values are already included in your current totals above.</p>
+  <div class="pygmy-type-checks">
+    <label class="pygmy-type-check">
+      <input type="checkbox" id="pygmyHasPrime">
+      <span>My Pygmy is a <strong style="color:#00ff41">Prime Pygmy</strong> (has PP trait)</span>
+    </label>
+    <label class="pygmy-type-check">
+      <input type="checkbox" id="pygmyHasMega">
+      <span>My Pygmy is a <strong style="color:#00ff41">Mega Pygmy</strong> (has PM trait)</span>
+    </label>
   </div>
+</div>
 
-  <h3>Addable Traits</h3>
-  <p>If your Pygmy already has a P or M trait, it is not possible to add any new P or M traits.</p>
-  <div class="combined-section" id="pygmyAddableTraits"></div>
+<div class="section">
+  <h2>Open Trait Slots</h2>
+  <p style="color:#00aa00; font-size:13px; margin:0 0 10px;">Enter how many empty slots your Pygmy has in each category. Count negative traits as occupied slots.</p>
+  <div class="pygmy-slots">
+    <div class="pygmy-slot-group">
+      <label>Wild (W) <span style="color:#007700">(max 3)</span></label>
+      <input type="number" id="pygmyOpenW" min="0" max="3" placeholder="0" step="1">
+    </div>
+    <div class="pygmy-slot-group">
+      <label>Natural (N) <span style="color:#007700">(max 3)</span></label>
+      <input type="number" id="pygmyOpenN" min="0" max="3" placeholder="0" step="1">
+    </div>
+    <div class="pygmy-slot-group">
+      <label>Artificial (A) <span style="color:#007700">(max 3)</span></label>
+      <input type="number" id="pygmyOpenA" min="0" max="3" placeholder="0" step="1">
+    </div>
+    <div class="pygmy-slot-group">
+      <label>Unique Wild (UW) <span style="color:#007700">(max 1)</span></label>
+      <input type="number" id="pygmyOpenUW" min="0" max="1" placeholder="0" step="1">
+    </div>
+    <div class="pygmy-slot-group">
+      <label>Unique (U) <span style="color:#007700">(max 1)</span></label>
+      <input type="number" id="pygmyOpenU" min="0" max="1" placeholder="0" step="1">
+    </div>
+  </div>
+  <small id="pygmySlotNote" style="color:#007700; display:block; margin-top:6px;"></small>
+</div>
 
-<label>Minimum Speed: <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your mount to have after optimization. Enter in either field — multiplier (e.g. 1.20) or percent (e.g. 20) — they stay in sync. Leave blank to ignore speed entirely.</span></span></label>
-
+<div class="section">
+  <h2>Minimum Speed <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your Pygmy to have after optimization. Enter in either field — they stay in sync. Leave blank to ignore speed entirely.</span></span></h2>
   <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin: 6px 0;">
     <label style="margin:0; display:flex; align-items:center; gap:6px;">
       Multiplier: <input type="number" id="pygmyMinSpeedMult" placeholder="e.g. 1.20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
@@ -861,14 +1136,11 @@ body.light-mode .lb-table tr:first-child td { color: #000; }
     </label>
     <span id="pygmySpeedContext"></span>
   </div>
-  <small id="pygmySpeedHint" style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
+  <small style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
+</div>
 
-  <div class="optimize-buttons">
-    <button id="pygmyOptDamage">Optimize</button>
-  </div>
-  <p>Optimizing will prioritize DR and optimize for damage while attempting to reach the minimum required speed set.</p>
-
-  <h3>Exclusions for Additions</h3>
+<div class="section">
+  <h2>Exclusions <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Select traits you don't own so the optimizer won't suggest them. Hold Ctrl (PC) or tap to multi-select.</span></span></h2>
   <div class="exclusions">
     <label>Exclude W: <select id="pygmyExcludeW" multiple></select></label>
     <label>Exclude N: <select id="pygmyExcludeN" multiple></select></label>
@@ -878,20 +1150,64 @@ body.light-mode .lb-table tr:first-child td { color: #000; }
     <label>Exclude Prime: <select id="pygmyExcludeP" multiple></select></label>
     <label>Exclude Mega: <select id="pygmyExcludeM" multiple></select></label>
   </div>
+</div>
 
-  <div class="result" id="pygmyFinalResult">Pygmy Bonus: Damage: 1.0, DR: 1.0, SPD: 1.0</div>
-  <div id="pygmyScoreReveal" class="score-reveal" style="display:none;">
-    <div class="score-reveal-label">// TRAIT POWER CALCULATED — FINAL ASSESSMENT</div>
-    <span id="pygmyRevealGrade" class="score-reveal-grade">S+</span>
-    <div id="pygmyRevealScore" class="score-reveal-score"></div>
-    <div id="pygmyRevealStats" class="score-reveal-stats"></div>
-    <div id="pygmyRevealFlavor" class="score-reveal-flavor"></div>
+<div class="score-submit-row" style="margin: 10px 0 4px;">
+  <input type="text" id="pygmyPlayerName" placeholder="Your name..." maxlength="24">
+  <button id="pygmySubmitBtn">&gt; Submit Pygmy Build to Leaderboard</button>
+</div>
+
+</div><!-- end pygmyModePanel -->
+
+<!-- Trait Database -->
+
+<button id="traitDbToggle">> 📖 Trait Database <span class="arrow">▼</span></button>
+
+<div id="traitDbContent">
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Wild (W)</span> — up to 3 &nbsp;·&nbsp; Standard wild traits, balanced values</div>
+    <div class="tdb-grid" id="tdb-W"></div>
   </div>
-  <div id="pygmyUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
-</div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Natural (N)</span> — up to 3 &nbsp;·&nbsp; Higher DR focus, lower damage</div>
+    <div class="tdb-grid" id="tdb-N"></div>
+  </div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Artificial (A)</span> — up to 3 &nbsp;·&nbsp; Smaller bonuses, useful for fine-tuning</div>
+    <div class="tdb-grid" id="tdb-A"></div>
+  </div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Unique Wild (UW)</span> — max 1 &nbsp;·&nbsp; Stronger wild-type bonuses</div>
+    <div class="tdb-grid" id="tdb-UW"></div>
+  </div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Unique (U)</span> — max 1 &nbsp;·&nbsp; High-value single slot</div>
+    <div class="tdb-grid" id="tdb-U"></div>
+  </div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Prime (P)</span> — max 1 &nbsp;·&nbsp; Requires full N + U slots first</div>
+    <div class="tdb-grid" id="tdb-P"></div>
+  </div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Mega (M)</span> — max 1 &nbsp;·&nbsp; Requires Prime first, major build decision</div>
+    <div class="tdb-grid" id="tdb-M"></div>
+  </div>
+
+  <div class="tdb-category">
+    <div class="tdb-category-title"><span>Legendary</span> — optional &nbsp;·&nbsp; Powerful perks but carries negative modifiers — feed early</div>
+    <div class="tdb-grid" id="tdb-L"></div>
+  </div>
+
 </div>
 
-<!-- Leaderboard -->
+<!-- Leaderboard (shared) -->
 
 <button id="leaderboardToggle">> 🏆 Leaderboard <span class="arrow">▼</span></button>
 
@@ -908,10 +1224,6 @@ body.light-mode .lb-table tr:first-child td { color: #000; }
     <div id="lb-mount-rows"><div class="lb-empty">No scores submitted yet.</div></div>
   </div>
   <div class="lb-panel" id="lb-pygmy">
-    <div class="score-submit-row" style="margin-bottom:10px;">
-      <input type="text" id="pygmyPlayerName" placeholder="Your name..." maxlength="24">
-      <button id="pygmySubmitBtn">&gt; Submit Current Pygmy Build</button>
-    </div>
     <div id="lb-pygmy-rows"><div class="lb-empty">No scores submitted yet.</div></div>
   </div>
 </div>
@@ -1112,21 +1424,56 @@ function syncSpeedInputs(changed, multId, pctId) {
 
 function formatResult(total, prefix) {
   let drPercent = total.DR;
-  let drWarning = '';
+  let drOver = false;
+  let drOverAmt = 0;
   if (drPercent > 75) {
-    drWarning = ` <span class="warning">(${(drPercent - 75).toFixed(1)}% over cap)</span>`;
+    drOverAmt = drPercent - 75;
     drPercent = 75;
+    drOver = true;
   }
-  const dmg = 1 + total.Damage/100, dr = 1 - drPercent/100, spd = 1 + total.Speed/100;
-  return `${prefix}Damage: ${dmg.toFixed(3)} (${total.Damage.toFixed(1)}%) | DR: ${dr.toFixed(3)} (${drPercent.toFixed(1)}%)${drWarning} | SPD: ${spd.toFixed(3)} (${total.Speed.toFixed(1)}%)`;
+  const dmgMult = (1 + total.Damage / 100).toFixed(2);
+  const drMult  = (1 - drPercent / 100).toFixed(2);
+  const spdMult = (1 + total.Speed / 100).toFixed(2);
+
+  const drWarning = drOver
+    ? `<div class="stat-panel-warning">+${drOverAmt.toFixed(1)}% over cap</div>` : '';
+
+  return `
+    <div class="stat-panel-cell">
+      <div class="stat-panel-label">Damage</div>
+      <div class="stat-panel-mult">${dmgMult}</div>
+      <div class="stat-panel-pct">${total.Damage.toFixed(1)}%</div>
+    </div>
+    <div class="stat-panel-cell${drOver ? ' dr-over' : ''}">
+      <div class="stat-panel-label">DR</div>
+      <div class="stat-panel-mult">${drMult}</div>
+      <div class="stat-panel-pct">${drPercent.toFixed(1)}%</div>
+      ${drWarning}
+    </div>
+    <div class="stat-panel-cell">
+      <div class="stat-panel-label">Speed</div>
+      <div class="stat-panel-mult">${spdMult}</div>
+      <div class="stat-panel-pct">${total.Speed.toFixed(1)}%</div>
+    </div>`;
 }
 
 function calculateFinalStats() {
   const total = getCurrentTotals();
+  document.getElementById('finalResult').innerHTML = formatResult(total, '');
   const target = parseFloat(document.getElementById('targetHP').value);
-  let extra = '';
-  if (target) { const prime=1.25, mega=1.40; extra = `<br><b>Level HP to ~</b>${Math.round(target/(prime*mega))} before Prime & Mega`; }
-  document.getElementById('finalResult').innerHTML = formatResult(total, '') + extra;
+  let hpNote = document.getElementById('mountHpNote');
+  if (target) {
+    const prime = 1.25, mega = 1.40;
+    if (!hpNote) {
+      hpNote = document.createElement('div');
+      hpNote.id = 'mountHpNote';
+      hpNote.style.cssText = 'font-size:13px; color:#00aa00; text-align:center; margin-top:4px;';
+      document.getElementById('finalResult').after(hpNote);
+    }
+    hpNote.innerHTML = `<b>Level HP to ~${Math.round(target/(prime*mega))}</b> before adding Prime & Mega`;
+  } else if (hpNote) {
+    hpNote.remove();
+  }
 }
 
 // ============================================================
@@ -1321,16 +1668,11 @@ function optimize(mode, withLegendary = false) {
 // CLEAR
 // ============================================================
 function clearScoreReveal() {
-  ['mountScoreReveal', 'pygmyScoreReveal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-  ['mountUnqualified', 'pygmyUnqualified'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
+  const el = document.getElementById('mountScoreReveal');
+  if (el) el.style.display = 'none';
+  const uq = document.getElementById('mountUnqualified');
+  if (uq) uq.style.display = 'none';
   window._lastMountScore = null;
-  window._lastPygmyScore = null;
 }
 
 function clearOptimizedTraits() {
@@ -1339,18 +1681,21 @@ function clearOptimizedTraits() {
       g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
     }
   });
+  const mountResultArea = document.getElementById('mountResultArea');
+  if (mountResultArea) mountResultArea.remove();
   clearScoreReveal();
   calculateFinalStats();
 }
 
 function clearAll() {
   MAIN_GROUPS.forEach(g => g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }));
-  ['corruptStat','corruptInput','targetHP','minSpeed','minSpeedMult','pygmyMinSpeed','pygmyMinSpeedMult'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['corruptStat','corruptInput','targetHP','minSpeed','minSpeedMult'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   for (let i=0;i<3;i++) { document.getElementById('geneticStat'+i).value=''; document.getElementById('geneticValue'+i).value=''; }
   for (const cat in traitData) { const el=document.getElementById(`exclude${cat}`); if(el) Array.from(el.options).forEach(o=>o.selected=false); }
   document.getElementById('speed-context').innerHTML='';
   window._mountOptimized = false;
-  window._pygmyOptimized = false;
+  const mountResultArea = document.getElementById('mountResultArea');
+  if (mountResultArea) mountResultArea.remove();
   clearScoreReveal();
   calculateFinalStats();
 }
@@ -1359,195 +1704,390 @@ function clearAll() {
 
 
 // ============================================================
-// PYGMY PLANNER
+// MODE SWITCH
 // ============================================================
-const PYGMY_GROUPS = [
-  {cat:'W',  maxSlots:3, startingIds:['pygmyStartingW1','pygmyStartingW2','pygmyStartingW3'], prefix:'pygmyAddW'},
-  {cat:'N',  maxSlots:3, startingIds:['pygmyStartingN1','pygmyStartingN2','pygmyStartingN3'], prefix:'pygmyAddN'},
-  {cat:'A',  maxSlots:3, startingIds:[], prefix:'pygmyAddA'},
-  {cat:'UW', maxSlots:1, startingIds:['pygmyStartingUW'], prefix:'pygmyAddUW'},
-  {cat:'U',  maxSlots:1, startingIds:[], prefix:'pygmyAddU'},
-  {cat:'P',  maxSlots:1, startingIds:['pygmyStartingPrime'], prefix:'pygmyAddPrime'},
-  {cat:'M',  maxSlots:1, startingIds:['pygmyStartingMega'], prefix:'pygmyAddMega'}
-];
+document.getElementById('modeMountBtn').addEventListener('click', function() {
+  document.getElementById('mountModePanel').classList.add('active');
+  document.getElementById('pygmyModePanel').classList.remove('active');
+  this.classList.add('active');
+  document.getElementById('modePygmyBtn').classList.remove('active');
+});
+document.getElementById('modePygmyBtn').addEventListener('click', function() {
+  document.getElementById('pygmyModePanel').classList.add('active');
+  document.getElementById('mountModePanel').classList.remove('active');
+  this.classList.add('active');
+  document.getElementById('modeMountBtn').classList.remove('active');
+});
 
-function populatePygmyDropdowns() {
-  PYGMY_GROUPS.forEach(g => {
-    g.startingIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.innerHTML = '<option value="">--None--</option>';
-      traitData[g.cat].forEach((t, i) => {
-        const o = document.createElement('option'); o.value=i; o.textContent=t.N; el.appendChild(o);
-      });
-    });
-  });
+// Pygmy guide toggle
+document.getElementById('guideTogglePygmy').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('guideContentPygmy').classList.toggle('open');
+});
 
-  for (const cat in traitData) {
-    if (cat === 'L') continue;
+// ============================================================
+// PYGMY PLANNER — NEW CLEAN IMPLEMENTATION
+// ============================================================
+
+// Add negative traits to traitData
+const pygmyNegData = {
+  W: [
+    {N:"Fragile (neg)", D:0, DR:-10, S:0},
+    {N:"Weak (neg)",    D:-10, DR:0, S:0},
+    {N:"Paralyzed (neg)", D:0, DR:-5, S:-10}
+  ],
+  N: [
+    {N:"Fragile (neg)", D:0, DR:-15, S:0},
+    {N:"Weak (neg)",    D:-15, DR:0, S:0},
+    {N:"Paralyzed (neg)", D:0, DR:-5, S:-10}
+  ],
+  A: [
+    {N:"Fragile (neg)", D:0, DR:-7.5, S:0},
+    {N:"Weak (neg)",    D:-7.5, DR:0, S:0},
+    {N:"Paralyzed (neg)", D:0, DR:-2.5, S:-5}
+  ]
+};
+
+// Populate pygmy exclusion dropdowns (positive traits only, no Legendary)
+function populatePygmyExclusions() {
+  const cats = ['W','N','A','UW','U','P','M'];
+  cats.forEach(cat => {
     const el = document.getElementById(`pygmyExclude${cat}`);
-    if (!el) continue;
+    if (!el) return;
     el.innerHTML = '';
     traitData[cat].forEach((t, i) => {
-      const o = document.createElement('option'); o.value=i; o.textContent=t.N; el.appendChild(o);
+      const o = document.createElement('option');
+      o.value = i; o.textContent = t.N; el.appendChild(o);
     });
-  }
-}
-
-function updatePygmyAddableSlots() {
-  const container = document.getElementById('pygmyAddableTraits');
-  container.innerHTML = '';
-  let hasPrime = document.getElementById('pygmyStartingPrime').value !== '';
-  let hasMega  = document.getElementById('pygmyStartingMega').value  !== '';
-  if (hasMega && !hasPrime) {
-    alert('If a Pygmy has a Mega trait, it must also have a Prime trait. Please select a Prime trait.');
-    document.getElementById('pygmyStartingMega').value = '';
-    hasMega = false;
-  }
-  const leftCol = document.createElement('div'); leftCol.className='addable-column';
-  const rightCol= document.createElement('div'); rightCol.className='addable-column';
-  let colIdx = 0;
-
-  PYGMY_GROUPS.forEach(g => {
-    if ((g.cat==='P' && hasPrime)||(g.cat==='M' && hasMega)) return;
-    const occupied = g.startingIds.filter(id=>document.getElementById(id)?.value!=='').length;
-    const available = g.maxSlots - occupied;
-    if (available <= 0) return;
-    const col = colIdx%2===0 ? leftCol : rightCol;
-    const h4 = document.createElement('h4'); h4.textContent=`Addable ${g.cat} -- Up to ${available}`; col.appendChild(h4);
-    for (let i=1; i<=available; i++) {
-      const sel = document.createElement('select');
-      sel.id = `${g.prefix}${i}`;
-      fillSelect(sel, g.cat);
-      sel.addEventListener('change', calculatePygmyFinalStats);
-      col.appendChild(sel);
-    }
-    colIdx++;
   });
+}
+populatePygmyExclusions();
 
-  container.appendChild(leftCol);
-  container.appendChild(rightCol);
+// Sync pygmy current total inputs (mult <-> pct)
+// DMG: mult = 1 + pct/100  (e.g. 75% = 1.75x)
+// DR:  mult = 1 - pct/100  (e.g. 50% = 0.50x reduction remaining — but we track as % reduced)
+// SPD: mult = 1 + pct/100
+
+function syncPygmyStat(changedId, multId, pctId, isDR) {
+  const el = document.getElementById(changedId);
+  const v = parseFloat(el.value);
+  if (isNaN(v) || el.value === '') {
+    document.getElementById(changedId === multId ? pctId : multId).value = '';
+    return;
+  }
+  if (changedId === multId) {
+    // Convert mult -> pct
+    const pct = isDR ? ((1 - v) * 100) : ((v - 1) * 100);
+    document.getElementById(pctId).value = pct.toFixed(2).replace(/\.?0+$/, '');
+  } else {
+    // Convert pct -> mult
+    const mult = isDR ? (1 - v / 100) : (1 + v / 100);
+    document.getElementById(multId).value = mult.toFixed(3).replace(/\.?0+$/, '');
+  }
   calculatePygmyFinalStats();
 }
 
-function getPygmyCurrentTotals() {
-  let d = parseFloat(document.getElementById('pygmyStartingDmg').value)||0;
-  let dr= parseFloat(document.getElementById('pygmyStartingDR').value) ||0;
-  let s = parseFloat(document.getElementById('pygmyStartingSpd').value)||0;
-  PYGMY_GROUPS.forEach(g => {
-    for (let i=1; i<=g.maxSlots; i++) {
-      const val = document.getElementById(`${g.prefix}${i}`)?.value;
-      if (val && val.includes('-')) {
-        const [cat, idx] = val.split('-');
-        const t = traitData[cat][+idx];
-        d+=t.D||0; dr+=t.DR||0; s+=t.S||0;
-      }
-    }
-  });
-  return {Damage:d, DR:dr, Speed:s};
+document.getElementById('pygmyDmgMult').addEventListener('input', function(){ syncPygmyStat('pygmyDmgMult','pygmyDmgMult','pygmyDmgPct',false); });
+document.getElementById('pygmyDmgPct').addEventListener('input',  function(){ syncPygmyStat('pygmyDmgPct', 'pygmyDmgMult','pygmyDmgPct',false); });
+document.getElementById('pygmyDRMult').addEventListener('input',  function(){ syncPygmyStat('pygmyDRMult', 'pygmyDRMult', 'pygmyDRPct', true);  });
+document.getElementById('pygmyDRPct').addEventListener('input',   function(){ syncPygmyStat('pygmyDRPct',  'pygmyDRMult', 'pygmyDRPct', true);  });
+document.getElementById('pygmySpdMult').addEventListener('input', function(){ syncPygmyStat('pygmySpdMult','pygmySpdMult','pygmySpdPct',false); });
+document.getElementById('pygmySpdPct').addEventListener('input',  function(){ syncPygmyStat('pygmySpdPct', 'pygmySpdMult','pygmySpdPct',false); });
+
+// Read pygmy current totals from the synced inputs (as %)
+function getPygmyStartingTotals() {
+  const dmg = parseFloat(document.getElementById('pygmyDmgPct').value) || 0;
+  const dr  = parseFloat(document.getElementById('pygmyDRPct').value)  || 0;
+  const spd = parseFloat(document.getElementById('pygmySpdPct').value) || 0;
+  return { d: dmg, dr: dr, s: spd };
+}
+
+// Read open slot counts, clamped to valid ranges
+function getPygmyOpenSlots() {
+  function clamp(id, max) {
+    const v = parseInt(document.getElementById(id)?.value) || 0;
+    return Math.min(max, Math.max(0, v));
+  }
+  const openW  = clamp('pygmyOpenW',  3);
+  const openN  = clamp('pygmyOpenN',  3);
+  const openA  = clamp('pygmyOpenA',  3);
+  const openUW = clamp('pygmyOpenUW', 1);
+  const openU  = clamp('pygmyOpenU',  1);
+
+  // Prime/Mega determined by checkboxes — if Pygmy has PP/PM, those slots are 0
+  const hasPP = document.getElementById('pygmyHasPrime')?.checked;
+  const hasPM = document.getElementById('pygmyHasMega')?.checked;
+  const openP = hasPP ? 0 : 1;
+  const openM = hasPM ? 0 : (hasPP ? 0 : (openP === 1 ? 1 : 0));
+  // Mega only available if Prime slot is being filled or already has prime
+  const effectiveM = (!hasPM && openP === 1) ? 1 : 0;
+
+  return { W: openW, N: openN, A: openA, UW: openUW, U: openU, P: openP, M: effectiveM };
+}
+
+// Build the result slot display (what gets optimized into)
+// We use a simple virtual slot array approach — no dynamic DOM generation
+const PYGMY_RESULT_CATS = ['W','N','A','UW','U','P','M'];
+const pygmyResultSlots = {}; // cat -> array of chosen trait indices (filled by optimizer)
+
+function clearPygmyResultSlots() {
+  PYGMY_RESULT_CATS.forEach(cat => { pygmyResultSlots[cat] = []; });
+}
+clearPygmyResultSlots();
+
+function getPygmyExcluded(cat) {
+  const el = document.getElementById(`pygmyExclude${cat}`);
+  if (!el) return [];
+  return Array.from(el.selectedOptions).map(o => +o.value);
 }
 
 function calculatePygmyFinalStats() {
-  const total = getPygmyCurrentTotals();
-  document.getElementById('pygmyFinalResult').innerHTML = formatResult(total, 'Pygmy Bonus: ');
+  const base = getPygmyStartingTotals();
+  let d = base.d, dr = base.dr, s = base.s;
+
+  // Add up optimized result slots
+  PYGMY_RESULT_CATS.forEach(cat => {
+    (pygmyResultSlots[cat] || []).forEach(idx => {
+      const t = traitData[cat][idx];
+      if (t) { d += t.D||0; dr += t.DR||0; s += t.S||0; }
+    });
+  });
+
+  document.getElementById('pygmyFinalResult').innerHTML = formatResult({Damage:d, DR:dr, Speed:s}, '');
 }
 
 function pygmyOptimize(mode) {
   document.getElementById('pygmySpeedContext').innerHTML = '';
-  // FIX: same parseMinSpeed logic for pygmy
+  clearPygmyResultSlots();
+
+  const base = getPygmyStartingTotals();
+  const fixedD = base.d, fixedDR = base.dr, fixedS = base.s;
+  const slots = getPygmyOpenSlots();
   const userMinS = parseMinSpeed('pygmyMinSpeed');
   const minDR = 75;
 
-  let fixedD = parseFloat(document.getElementById('pygmyStartingDmg').value)||0;
-  let fixedDR= parseFloat(document.getElementById('pygmyStartingDR').value) ||0;
-  let fixedS = parseFloat(document.getElementById('pygmyStartingSpd').value)||0;
-
-  const hasPrime = document.getElementById('pygmyStartingPrime').value !== '';
-  const hasMega  = document.getElementById('pygmyStartingMega').value  !== '';
-
-  const finalUnfixed = [];
-  PYGMY_GROUPS.forEach(g => {
-    if ((g.cat==='P' && hasPrime)||(g.cat==='M' && hasMega)) return;
-    const occupied = g.startingIds.filter(id=>document.getElementById(id)?.value!=='').length;
-    const available = g.maxSlots - occupied;
-    if (available <= 0) return;
-    const slotIds = [];
-    for (let i=1; i<=available; i++) slotIds.push(`${g.prefix}${i}`);
-    const excluded = Array.from(document.getElementById(`pygmyExclude${g.cat}`)?.selectedOptions||[]).map(o=>+o.value);
-    if (g.cat==='A') {
-      slotIds.forEach(id => finalUnfixed.push({cat:'A', count:1, excluded, slotIds:[id], optional:true}));
+  // Build groups from open slots
+  const groups = [];
+  PYGMY_RESULT_CATS.forEach(cat => {
+    const count = slots[cat] || 0;
+    if (count === 0) return;
+    const excluded = getPygmyExcluded(cat);
+    if (cat === 'A') {
+      // Each A slot is independent/optional
+      for (let i = 0; i < count; i++) {
+        groups.push({cat, count:1, excluded, optional:true, slotIdx: i});
+      }
     } else {
-      finalUnfixed.push({cat:g.cat, count:available, excluded, slotIds});
+      groups.push({cat, count, excluded, optional:false});
     }
   });
 
-  if (finalUnfixed.length===0) { calculatePygmyFinalStats(); return; }
+  if (groups.length === 0) { calculatePygmyFinalStats(); return; }
 
-  const nAvail = finalUnfixed.filter(g=>g.cat==='N').reduce((a,g)=>a+g.count,0);
-  const uAvail = finalUnfixed.filter(g=>g.cat==='U').reduce((a,g)=>a+g.count,0);
-  const pAvail = finalUnfixed.filter(g=>g.cat==='P').reduce((a,g)=>a+g.count,0);
-  const canFillU = nAvail>=3;
-  const canFillP = uAvail>=1;
-  const canFillM = pAvail>=1;
-
-  const resolvedUnfixed = finalUnfixed.map(g=>{
-    if ((g.cat==='U'&&!canFillU)||(g.cat==='P'&&!canFillP)||(g.cat==='M'&&!canFillM)) return {...g, count:0};
-    return g;
-  });
-
-  function getPygmyCombos(g) {
-    if (g.optional) return [{d:0,dr:0,s:0,combo:[]}, ...getCombos(g.cat,1,g.excluded)];
+  function getGroupCombos(g) {
+    if (g.optional) {
+      return [{d:0,dr:0,s:0,combo:[]}, ...getCombos(g.cat, 1, g.excluded)];
+    }
     return getCombos(g.cat, g.count, g.excluded);
   }
 
-  const groupCombos = resolvedUnfixed.map(g=>getPygmyCombos(g));
-  const useSConstraint = mode==='damage' && userMinS !== 0;
-
-  function scoreC(d,dr,s) {
-    if (mode==='damage') return [dr>=minDR?1:0, useSConstraint?(s>=userMinS?1:0):0, d, -Math.abs(dr-minDR)];
-    if (mode==='speed')  return [dr>=minDR?1:0, s, -Math.abs(dr-minDR)];
-    return [dr>=minDR?1:0, d+s, -Math.abs(dr-minDR)];
-  }
-  function betterC(sc,sb){ for(let i=0;i<sc.length;i++){if(sc[i]>sb[i])return true;if(sc[i]<sb[i])return false;} return false; }
-
-  const numG = resolvedUnfixed.length;
+  const groupCombos = groups.map(g => getGroupCombos(g));
+  const useSConstraint = userMinS !== 0;
+  const numG = groups.length;
   const indices = new Int32Array(numG);
-  const aD=new Float64Array(numG+1), aDR=new Float64Array(numG+1), aS=new Float64Array(numG+1);
+  const aD = new Float64Array(numG+1);
+  const aDR = new Float64Array(numG+1);
+  const aS = new Float64Array(numG+1);
   aD[0]=fixedD; aDR[0]=fixedDR; aS[0]=fixedS;
-  let best=null, gi=0;
+  let best = null, gi = 0;
 
-  while(gi>=0){
-    if(gi===numG){
-      const sc=scoreC(aD[gi],aDR[gi],aS[gi]);
-      if(!best||betterC(sc,best.sc)) best={d:aD[gi],dr:aDR[gi],s:aS[gi],sc,optIdxs:indices.slice(0,numG)};
-      gi--; if(gi>=0) indices[gi]++;
-      continue;
+  function score(d,dr,s) {
+    return [dr>=minDR?1:0, useSConstraint?(s>=userMinS?1:0):1, d];
+  }
+  function better(sc,sb){ for(let i=0;i<sc.length;i++){if(sc[i]>sb[i])return true;if(sc[i]<sb[i])return false;} return false; }
+
+  while(gi >= 0) {
+    if(gi === numG) {
+      const sc = score(aD[gi],aDR[gi],aS[gi]);
+      if(!best || better(sc,best.sc)) best={d:aD[gi],dr:aDR[gi],s:aS[gi],sc,optIdxs:indices.slice(0,numG)};
+      gi--; if(gi>=0) indices[gi]++; continue;
     }
-    const opts=groupCombos[gi];
-    if(indices[gi]>=opts.length){ indices[gi]=0; gi--; if(gi>=0)indices[gi]++; continue; }
-    const opt=opts[indices[gi]];
+    const opts = groupCombos[gi];
+    if(indices[gi] >= opts.length){ indices[gi]=0; gi--; if(gi>=0) indices[gi]++; continue; }
+    const opt = opts[indices[gi]];
     aD[gi+1]=aD[gi]+opt.d; aDR[gi+1]=aDR[gi]+opt.dr; aS[gi+1]=aS[gi]+opt.s;
     gi++; indices[gi]=0;
   }
 
-  if(best){
-    resolvedUnfixed.forEach((g,i)=>{
-      const opt=groupCombos[i][best.optIdxs[i]];
-      g.slotIds.forEach((id,idx)=>{
-        const el=document.getElementById(id); if(!el) return;
-        el.value=(opt&&idx<opt.combo.length)?`${g.cat}-${opt.combo[idx]}`:'';
-      });
+  if(best) {
+    groups.forEach((g, i) => {
+      const opt = groupCombos[i][best.optIdxs[i]];
+      if (!pygmyResultSlots[g.cat]) pygmyResultSlots[g.cat] = [];
+      if (opt && opt.combo.length > 0) {
+        opt.combo.forEach(idx => pygmyResultSlots[g.cat].push(idx));
+      }
     });
-    let msg='';
-    if(best.dr<minDR) msg+=' (DR below 75%; could not reach with available traits)';
-    if(useSConstraint){
-      if(best.s>=userMinS) msg+=` (speed achieved: ${best.s.toFixed(1)}%)`;
-      else msg+=` (speed below desired; best found: ${best.s.toFixed(1)}%)`;
+
+    // Build human-readable result
+    let msg = '';
+    if(best.dr < minDR) msg += ' (DR below 75%; not enough slots to cap)';
+    if(useSConstraint) {
+      if(best.s >= userMinS) msg += ` (speed achieved: ${best.s.toFixed(1)}%)`;
+      else msg += ` (speed below target; best: ${best.s.toFixed(1)}%)`;
     }
-    document.getElementById('pygmySpeedContext').innerHTML=msg;
+    document.getElementById('pygmySpeedContext').innerHTML = msg;
+
+    // Store result data so triggerPygmyScore can render it after score box appears
+    window._pygmyLastResults = {groups, groupCombos, optIdxs: best.optIdxs};
   }
   calculatePygmyFinalStats();
 }
+
+function renderPygmyResults(groups, groupCombos, optIdxs) {
+  const byCategory = {};
+  groups.forEach((g, i) => {
+    const opt = groupCombos[i][optIdxs[i]];
+    if (!opt || opt.combo.length === 0) return;
+    if (!byCategory[g.cat]) byCategory[g.cat] = [];
+    opt.combo.forEach(idx => byCategory[g.cat].push(traitData[g.cat][idx].N));
+  });
+
+  const catLabels = {W:'Wild (W)', N:'Natural (N)', A:'Artificial (A)', UW:'Unique Wild (UW)', U:'Unique (U)', P:'Prime (P)', M:'Mega (M)'};
+  let html = '<h2>// Recommended Traits to Feed</h2>';
+  let hasAny = false;
+  PYGMY_RESULT_CATS.forEach(cat => {
+    if (!byCategory[cat] || byCategory[cat].length === 0) return;
+    hasAny = true;
+    html += `<div style="margin: 8px 0;"><span style="color:#007700">${catLabels[cat]}:</span> `;
+    html += byCategory[cat].map(n => `<strong style="color:#00ff41">${n}</strong>`).join(' + ');
+    html += '</div>';
+  });
+
+  if (!hasAny) {
+    html += '<p style="color:#007700">No traits to add — all slots already filled or no improvement possible.</p>';
+  }
+
+  // Place result area right after the score reveal box
+  let resultArea = document.getElementById('pygmyResultArea');
+  if (!resultArea) {
+    resultArea = document.createElement('div');
+    resultArea.id = 'pygmyResultArea';
+    resultArea.className = 'section';
+    const scoreBox = document.getElementById('pygmyScoreReveal');
+    scoreBox.after(resultArea);
+  }
+  resultArea.innerHTML = html;
+}
+
+// Clear pygmy optimized results
+function clearPygmyOptimized() {
+  clearPygmyResultSlots();
+  window._pygmyLastResults = null;
+  const resultArea = document.getElementById('pygmyResultArea');
+  if (resultArea) resultArea.remove();
+  document.getElementById('pygmySpeedContext').innerHTML = '';
+  window._pygmyOptimized = false;
+  clearPygmyScoreReveal();
+  calculatePygmyFinalStats();
+}
+
+function clearPygmyAll() {
+  ['pygmyDmgMult','pygmyDmgPct','pygmyDRMult','pygmyDRPct','pygmySpdMult','pygmySpdPct',
+   'pygmyMinSpeed','pygmyMinSpeedMult'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  ['pygmyOpenW','pygmyOpenN','pygmyOpenA','pygmyOpenUW','pygmyOpenU'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  const hasPrime = document.getElementById('pygmyHasPrime');
+  const hasMega  = document.getElementById('pygmyHasMega');
+  if(hasPrime) hasPrime.checked = false;
+  if(hasMega)  hasMega.checked  = false;
+  ['pygmyExcludeW','pygmyExcludeN','pygmyExcludeA','pygmyExcludeUW','pygmyExcludeU','pygmyExcludeP','pygmyExcludeM'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) Array.from(el.options).forEach(o => o.selected = false);
+  });
+  clearPygmyOptimized();
+}
+
+function clearPygmyScoreReveal() {
+  const el = document.getElementById('pygmyScoreReveal');
+  if(el) el.style.display = 'none';
+  const uq = document.getElementById('pygmyUnqualified');
+  if(uq) uq.style.display = 'none';
+  window._lastPygmyScore = null;
+}
+
+function triggerPygmyScore() {
+  const base = getPygmyStartingTotals();
+  let d = base.d, dr = base.dr, s = base.s;
+  PYGMY_RESULT_CATS.forEach(cat => {
+    (pygmyResultSlots[cat]||[]).forEach(idx => {
+      const t = traitData[cat][idx];
+      if(t){ d+=t.D||0; dr+=t.DR||0; s+=t.S||0; }
+    });
+  });
+  const res = scoreBuild(d, dr, s, 'pygmy');
+  renderScoreUI(res, 'pygmyScoreReveal','pygmyRevealGrade','pygmyRevealScore','pygmyRevealStats','pygmyRevealFlavor','pygmyUnqualified', window._pygmyOptimized, false);
+  window._lastPygmyScore = res;
+
+  // Render recommended traits below the score box
+  if (window._pygmyLastResults) {
+    const {groups, groupCombos, optIdxs} = window._pygmyLastResults;
+    renderPygmyResults(groups, groupCombos, optIdxs);
+  }
+
+  const el = document.getElementById('pygmyScoreReveal');
+  if(el && el.style.display !== 'none'){
+    const stickyH = document.querySelector('#pygmyStickyHeader')?.offsetHeight || 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - stickyH - 8;
+    window.scrollTo({top, behavior:'smooth'});
+  }
+}
+
+document.getElementById('pygmyClearOptimized').addEventListener('click', clearPygmyOptimized);
+document.getElementById('pygmyClearAll').addEventListener('click', clearPygmyAll);
+
+document.getElementById('pygmyOptDamage').addEventListener('click', () => {
+  window._pygmyOptimized = true;
+  withSpinner(() => {
+    pygmyOptimize('damage');
+    setTimeout(() => triggerPygmyScore(), 50);
+  });
+});
+
+// Slot/checkbox change — update note and recalc
+function updatePygmySlotNote() {
+  const note = document.getElementById('pygmySlotNote');
+  if (!note) return;
+  const openU  = parseInt(document.getElementById('pygmyOpenU')?.value) || 0;
+  const hasPrime = document.getElementById('pygmyHasPrime')?.checked;
+  const hasMega  = document.getElementById('pygmyHasMega')?.checked;
+  const msgs = [];
+  if (hasMega && !hasPrime) msgs.push('⚠ A Mega Pygmy must also be a Prime Pygmy — check both boxes.');
+  if (!hasPrime && openU === 0) msgs.push('ℹ Prime & Mega traits require a filled U slot. Leave 1 U slot open or confirm U is already filled.');
+  note.innerHTML = msgs.join(' ');
+}
+
+['pygmyOpenW','pygmyOpenN','pygmyOpenA','pygmyOpenUW','pygmyOpenU'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', () => {
+    updatePygmySlotNote();
+    calculatePygmyFinalStats();
+  });
+});
+
+document.getElementById('pygmyHasPrime')?.addEventListener('change', () => {
+  updatePygmySlotNote();
+  calculatePygmyFinalStats();
+});
+document.getElementById('pygmyHasMega')?.addEventListener('change', () => {
+  // If Mega checked, auto-check Prime too
+  if (document.getElementById('pygmyHasMega').checked) {
+    document.getElementById('pygmyHasPrime').checked = true;
+  }
+  updatePygmySlotNote();
+  calculatePygmyFinalStats();
+});
 
 // ============================================================
 // CALCULATOR
@@ -1766,35 +2306,64 @@ function renderScoreUI(result, revealId, gradeId, scoreId, statsId, flavorId, un
   setTimeout(() => flavorEl.classList.remove('blink-cursor'), 5000);
 }
 
+// ── Mount recommended traits renderer ──
+function renderMountResults() {
+  const catLabels = {W:'Wild (W)', N:'Natural (N)', A:'Artificial (A)', UW:'Unique Wild (UW)', U:'Unique (U)', P:'Prime (P)', M:'Mega (M)', L:'Legendary'};
+  const byCategory = {};
+
+  MAIN_GROUPS.forEach(g => {
+    g.slots.forEach(id => {
+      const val = document.getElementById(id)?.value;
+      if (val && val.includes('-')) {
+        const [cat, i] = val.split('-');
+        const t = traitData[cat][+i];
+        if (!byCategory[cat]) byCategory[cat] = [];
+        byCategory[cat].push(t.N);
+      }
+    });
+  });
+
+  const catOrder = ['W','N','A','UW','U','P','M','L'];
+  let html = '<h2>// Recommended Traits to Feed</h2>';
+  let hasAny = false;
+  catOrder.forEach(cat => {
+    if (!byCategory[cat] || byCategory[cat].length === 0) return;
+    hasAny = true;
+    html += `<div style="margin: 8px 0;"><span style="color:#007700">${catLabels[cat]}:</span> `;
+    html += byCategory[cat].map(n => `<strong style="color:#00ff41">${n}</strong>`).join(' + ');
+    html += '</div>';
+  });
+
+  if (!hasAny) {
+    html += '<p style="color:#007700">No traits selected yet — run Optimize first.</p>';
+  }
+
+  let resultArea = document.getElementById('mountResultArea');
+  if (!resultArea) {
+    resultArea = document.createElement('div');
+    resultArea.id = 'mountResultArea';
+    resultArea.className = 'section';
+    const scoreBox = document.getElementById('mountScoreReveal');
+    scoreBox.after(resultArea);
+  }
+  resultArea.innerHTML = html;
+}
+
 // ── Direct score trigger — called explicitly after optimize ──
 function triggerMountScore() {
   const total = getCurrentTotals();
   const res = scoreBuild(total.Damage, total.DR, total.Speed, 'mount');
   renderScoreUI(res, 'mountScoreReveal', 'mountRevealGrade', 'mountRevealScore', 'mountRevealStats', 'mountRevealFlavor', 'mountUnqualified', window._mountOptimized, true);
   window._lastMountScore = res;
+
+  // Render recommended traits below the score box
+  renderMountResults();
+
   const el = document.getElementById('mountScoreReveal');
   if (el && el.style.display !== 'none') {
     const stickyH = document.querySelector('.sticky-header')?.offsetHeight || 0;
     const top = el.getBoundingClientRect().top + window.scrollY - stickyH - 8;
     window.scrollTo({ top, behavior: 'smooth' });
-  }
-  const txt = document.getElementById('pygmyFinalResult')?.innerText || '';
-  const dmgM = txt.match(/Damage:\s*([\d.]+)/);
-  const drM  = txt.match(/DR:\s*([\d.]+)/);
-  const spdM = txt.match(/SPD:\s*([\d.]+)/);
-  if (dmgM && drM && spdM) {
-    const dmgPct = (parseFloat(dmgM[1]) - 1) * 100;
-    const drPct  = (1 - parseFloat(drM[1]))  * 100;
-    const spdPct = (parseFloat(spdM[1]) - 1) * 100;
-    const res = scoreBuild(dmgPct, drPct, spdPct, 'pygmy');
-    renderScoreUI(res, 'pygmyScoreReveal', 'pygmyRevealGrade', 'pygmyRevealScore', 'pygmyRevealStats', 'pygmyRevealFlavor', 'pygmyUnqualified', window._pygmyOptimized, false);
-    window._lastPygmyScore = res;
-    const el = document.getElementById('pygmyScoreReveal');
-    if (el && el.style.display !== 'none') {
-      const stickyH = document.querySelector('.sticky-header')?.offsetHeight || 0;
-      const top = el.getBoundingClientRect().top + window.scrollY - stickyH - 8;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
   }
 }
 
@@ -1881,13 +2450,70 @@ document.querySelectorAll('.lb-tab').forEach(tab => {
   });
 });
 
+// Trait database toggle
+document.getElementById('traitDbToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('traitDbContent').classList.toggle('open');
+});
+
 // Leaderboard toggle
 document.getElementById('leaderboardToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('leaderboardContent').classList.toggle('open');
 });
 
-// Submit buttons
+// ============================================================
+// TRAIT DATABASE DISPLAY
+// ============================================================
+(function buildTraitDatabase() {
+  function statClass(v) {
+    if (v > 0) return 'pos';
+    if (v < 0) return 'neg';
+    return 'zero';
+  }
+
+  function statLabel(v) {
+    if (v === 0) return `<span>—</span>`;
+    return `<span>${v > 0 ? '+' : ''}${v}%</span>`;
+  }
+
+  const megaPerks = {
+    'Tough':      '🛡 Bonus 25% DR when below 50% health.',
+    'Balanced':   '🩸 Prevents global bleeding. Reduces Ruptured duration by 50%.',
+    'Runner':     '💨 Grants the Elusive ability — escalating chance to mitigate 25–100% of ALL incoming damage.',
+    'Juggernaut': '🕸 Immunity to webs & slows. Reduces Dazed timer.'
+  };
+
+  const legendaryPerks = {
+    'Alpha':  '⚔ Max damage taken capped at 30% of Max HP.',
+    'Gamma':  '💚 +100 HP regen per second.',
+    'Omega':  '❤ +10,000 Max HP.'
+  };
+
+  function buildCard(cat, trait) {
+    const perk = cat === 'M' ? megaPerks[trait.N] : cat === 'L' ? legendaryPerks[trait.N] : null;
+    const noteHTML = perk
+      ? `<div class="tdb-note tdb-perk">${perk}</div>`
+      : cat === 'L'
+      ? `<div class="tdb-note">Feed early — subsequent traits can offset the negatives.</div>`
+      : '';
+    return `
+      <div class="tdb-card">
+        <div class="tdb-card-name">${trait.N}</div>
+        <div class="tdb-stat ${statClass(trait.D)}"><span>Damage</span>${statLabel(trait.D)}</div>
+        <div class="tdb-stat ${statClass(trait.DR)}"><span>DR</span>${statLabel(trait.DR)}</div>
+        <div class="tdb-stat ${statClass(trait.S)}"><span>Speed</span>${statLabel(trait.S)}</div>
+        ${noteHTML}
+      </div>`;
+  }
+
+  for (const cat in traitData) {
+    const container = document.getElementById(`tdb-${cat}`);
+    if (!container) continue;
+    container.innerHTML = traitData[cat].map(t => buildCard(cat, t)).join('');
+  }
+})();
+
 document.getElementById('mountSubmitBtn').addEventListener('click', () =>
   lbSubmit(LB_KEY_MOUNT, window._lastMountScore, 'mountPlayerName', 'lb-mount-rows'));
 document.getElementById('pygmySubmitBtn').addEventListener('click', () =>
@@ -1905,9 +2531,8 @@ function withSpinner(fn) {
 // INIT & EVENT LISTENERS
 // ============================================================
 populateDropdowns();
-populatePygmyDropdowns();
 calculateFinalStats();
-updatePygmyAddableSlots();
+calculatePygmyFinalStats();
 
 document.getElementById('toggleTheme').onclick = function(){
   document.body.classList.toggle('light-mode');
@@ -1948,14 +2573,6 @@ document.getElementById('optDamage').onclick = () => {
 
 document.getElementById('Legendary').addEventListener('change', updateOptimizeButton);
 document.getElementById('Mega').addEventListener('change', updateOptimizeButton);
-
-document.getElementById('pygmyOptDamage').onclick = () => {
-  window._pygmyOptimized = true;
-  withSpinner(() => {
-    pygmyOptimize('damage');
-    setTimeout(() => triggerPygmyScore(), 50);
-  });
-};
 
 // Tooltip toggle for mobile tap support
 document.querySelectorAll('.tip-icon').forEach(icon => {
@@ -2018,36 +2635,19 @@ document.getElementById('guideToggle').addEventListener('click', function() {
   document.getElementById('guideContent').classList.toggle('open');
 });
 
-// Pygmy Trait Planner collapsible toggle
-document.getElementById('pygmyPlannerToggle').addEventListener('click', function() {
-  this.classList.toggle('open');
-  document.getElementById('pygmyPlannerContent').classList.toggle('open');
-});
-
-// Sync speed inputs both ways
+// Sync speed inputs both ways (mount)
 document.getElementById('minSpeedMult').addEventListener('input', function(){ syncSpeedInputs(this, 'minSpeedMult', 'minSpeed'); });
 document.getElementById('minSpeed').addEventListener('input', function(){ syncSpeedInputs(this, 'minSpeedMult', 'minSpeed'); });
+// Sync pygmy min speed inputs
 document.getElementById('pygmyMinSpeedMult').addEventListener('input', function(){ syncSpeedInputs(this, 'pygmyMinSpeedMult', 'pygmyMinSpeed'); });
 document.getElementById('pygmyMinSpeed').addEventListener('input', function(){ syncSpeedInputs(this, 'pygmyMinSpeedMult', 'pygmyMinSpeed'); });
 
-// FIX: Use only 'change' event for number inputs to avoid double-counting.
-// 'input' fires on every keystroke (including incomplete numbers like "1" when typing "10"),
-// which caused values like 10 to be read as "1" then "10" — or counted twice.
-// 'change' fires only when the field is committed (blur / Enter), which is correct.
-document.querySelectorAll('select:not([id^="exclude"]):not([id^="pygmyExclude"]):not([id^="pygmyAdd"])').forEach(el=>{
+// Mount select/input listeners — use 'change' to avoid double-counting on keystroke
+document.querySelectorAll('#mountModePanel select:not([id^="exclude"])').forEach(el=>{
   el.addEventListener('change', calculateFinalStats);
 });
-document.querySelectorAll('input[type="number"]').forEach(el=>{
+document.querySelectorAll('#mountModePanel input[type="number"]').forEach(el=>{
   el.addEventListener('change', calculateFinalStats);
-});
-
-
-document.querySelectorAll('[id^="pygmyStarting"]').forEach(el=>{
-  el.addEventListener('change', ()=>{updatePygmyAddableSlots(); calculatePygmyFinalStats();});
-});
-
-document.querySelectorAll('#pygmyTraitPlanner input[type="number"]:not([id^="pygmyStarting"])').forEach(el=>{
-  el.addEventListener('change', calculatePygmyFinalStats);
 });
 
 // Range enforcement — only clamp on blur so typing "10" isn't interrupted
