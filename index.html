@@ -294,34 +294,6 @@ color: #222 !important;
 box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
 }
 
-/* Light mode: calculator */
-body.light-mode .calc-widget {
-background: #f0f0f8 !important;
-border-color: #aaa !important;
-box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
-}
-body.light-mode .calc-display {
-background: #fff !important;
-color: #111 !important;
-border-color: #aaa !important;
-}
-body.light-mode .calc-buttons button {
-background: #e0e0f0 !important;
-color: #222 !important;
-border-color: #aaa !important;
-}
-body.light-mode .calc-buttons button:hover {
-background: #d0d0e8 !important;
-color: #000 !important;
-box-shadow: none !important;
-}
-body.light-mode #toggleCalc {
-background: #6c757d !important;
-color: #fff !important;
-border-color: #555 !important;
-box-shadow: none !important;
-}
-
 /* Light mode: optimize buttons */
 body.light-mode .optimize-buttons button,
 body.light-mode .header-optimize button {
@@ -366,38 +338,6 @@ text-shadow: 0 0 6px rgba(0,255,65,0.5);
 box-shadow: 0 0 8px rgba(0,255,65,0.2);
 }
 #toggleTheme:hover { box-shadow: 0 0 14px rgba(0,255,65,0.5); }
-
-/* Collapsible Calculator */
-.calc-widget {
-position: fixed; bottom: 60px; right: 10px; width: 200px;
-background: #0a1a0a;
-border: 1px solid var(–green-dim);
-box-shadow: 0 0 16px rgba(0,255,65,0.2);
-border-radius: 4px; padding: 10px; z-index: 2000; display: none;
-}
-.calc-display {
-width: 100%; height: 36px; font-size: 16px; margin-bottom: 6px;
-text-align: right; padding: 4px; box-sizing: border-box;
-background: #000; color: var(–green-bright);
-border: 1px solid var(–green-dim);
-font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
-}
-.calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-.calc-buttons button {
-padding: 9px; font-size: 15px; border-radius: 3px;
-background: #1a2e1a; color: #00cc00 !important;
-border: 1px solid #007700; cursor: pointer;
-}
-.calc-buttons button:hover { background: #003300; color: #00ff41 !important; box-shadow: 0 0 6px rgba(0,255,65,0.3); }
-#toggleCalc {
-position: fixed; bottom: 10px; right: 10px; z-index: 3000;
-background: #003300; color: #00ff41 !important;
-border: 1px solid #00cc00; border-radius: 4px;
-padding: 8px 12px; font-size: 14px; cursor: pointer;
-font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
-box-shadow: 0 0 8px rgba(0,255,65,0.25);
-}
-@media (max-width: 900px) { .calc-widget { width: 170px; } }
 
 /* Exclusions */
 .exclusions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
@@ -1128,6 +1068,7 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     <label for="pygmyOptimizeForCloning" style="margin:0; cursor:pointer; color:var(--green-bright); font-size:15px;">Check here to optimize for cloning</label>
     <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Optimize for cloning will allow you to build a Pygmy with no A trait slots used, keeping them free to repair clone debuffs later — for example if your clone gets a DR debuff of 15%, you can feed it 3 A Tough traits to negate it.</span></span>
   </div>
+</div>
 
 <div class="section">
   <h2>Minimum Speed <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your Pygmy to have after optimization. Enter in either field — they stay in sync. Leave blank to ignore speed entirely.</span></span></h2>
@@ -1154,11 +1095,6 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     <label>Exclude Prime: <select id="pygmyExcludeP" multiple></select></label>
     <label>Exclude Mega: <select id="pygmyExcludeM" multiple></select></label>
   </div>
-</div>
-
-<div class="score-submit-row" style="margin: 10px 0 4px;">
-  <input type="text" id="pygmyPlayerName" placeholder="Your name..." maxlength="24">
-  <button id="pygmySubmitBtn">&gt; Submit Pygmy Build to Leaderboard</button>
 </div>
 
 </div><!-- end pygmyModePanel -->
@@ -1228,22 +1164,11 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     <div id="lb-mount-rows"><div class="lb-empty">No scores submitted yet.</div></div>
   </div>
   <div class="lb-panel" id="lb-pygmy">
+    <div class="score-submit-row" style="margin-bottom:10px;">
+      <input type="text" id="pygmyPlayerName" placeholder="Your name..." maxlength="24">
+      <button id="pygmySubmitBtn">&gt; Submit Pygmy Build to Leaderboard</button>
+    </div>
     <div id="lb-pygmy-rows"><div class="lb-empty">No scores submitted yet.</div></div>
-  </div>
-</div>
-
-<!-- Collapsible Calculator -->
-
-<button id="toggleCalc">Show Calculator</button>
-
-<div class="calc-widget" id="calcWidget">
-  <input type="text" class="calc-display" id="calcDisplay" readonly>
-  <div class="calc-buttons">
-    <button onclick="calcPress('7')">7</button><button onclick="calcPress('8')">8</button><button onclick="calcPress('9')">9</button><button onclick="calcPress('/')">÷</button>
-    <button onclick="calcPress('4')">4</button><button onclick="calcPress('5')">5</button><button onclick="calcPress('6')">6</button><button onclick="calcPress('*')">×</button>
-    <button onclick="calcPress('1')">1</button><button onclick="calcPress('2')">2</button><button onclick="calcPress('3')">3</button><button onclick="calcPress('-')">−</button>
-    <button onclick="calcPress('0')">0</button><button onclick="calcPress('.')">.</button><button onclick="calcClear()">C</button><button onclick="calcPress('+')">+</button>
-    <button style="grid-column: span 4; background:#4a90e2; color:white;" onclick="calcEquals()">=</button>
   </div>
 </div>
 
@@ -2097,14 +2022,6 @@ document.getElementById('pygmyHasMega')?.addEventListener('change', () => {
 });
 
 // ============================================================
-// CALCULATOR
-// ============================================================
-const calcDisplay = document.getElementById('calcDisplay');
-function calcPress(v){calcDisplay.value+=v;}
-function calcClear(){calcDisplay.value='';}
-function calcEquals(){try{calcDisplay.value=Function('"use strict";return('+calcDisplay.value+')')();}catch{calcDisplay.value='Error';}}
-
-// ============================================================
 // SCORING ENGINE
 // ============================================================
 
@@ -2551,13 +2468,6 @@ document.getElementById('toggleTheme').onclick = function(){
 
 document.getElementById('clearOptimized').onclick = clearOptimizedTraits;
 document.getElementById('clearAll').onclick = clearAll;
-
-document.getElementById('toggleCalc').onclick = ()=>{
-  const w=document.getElementById('calcWidget');
-  const btn=document.getElementById('toggleCalc');
-  if(w.style.display==='block'){w.style.display='none';btn.textContent='Show Calculator';}
-  else{w.style.display='block';btn.textContent='Hide Calculator';}
-};
 
 function updateOptimizeButton() {
   const hasLegendary = !!document.getElementById('Legendary').value;
