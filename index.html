@@ -1123,7 +1123,11 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     </div>
   </div>
   <small id="pygmySlotNote" style="color:#007700; display:block; margin-top:6px;"></small>
-</div>
+  <div style="display:flex; align-items:center; gap:8px; margin: 12px 0 4px;">
+    <input type="checkbox" id="pygmyOptimizeForCloning" style="width:16px; height:16px; margin:0; cursor:pointer; accent-color:#00ff41;">
+    <label for="pygmyOptimizeForCloning" style="margin:0; cursor:pointer; color:var(--green-bright); font-size:15px;">Check here to optimize for cloning</label>
+    <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Optimize for cloning will allow you to build a Pygmy with no A trait slots used, keeping them free to repair clone debuffs later — for example if your clone gets a DR debuff of 15%, you can feed it 3 A Tough traits to negate it.</span></span>
+  </div>
 
 <div class="section">
   <h2>Minimum Speed <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your Pygmy to have after optimization. Enter in either field — they stay in sync. Leave blank to ignore speed entirely.</span></span></h2>
@@ -1865,15 +1869,16 @@ function pygmyOptimize(mode) {
   const slots = getPygmyOpenSlots();
   const userMinS = parseMinSpeed('pygmyMinSpeed');
   const minDR = 75;
+  const optimizeForCloning = document.getElementById('pygmyOptimizeForCloning')?.checked;
 
   // Build groups from open slots
   const groups = [];
   PYGMY_RESULT_CATS.forEach(cat => {
     const count = slots[cat] || 0;
     if (count === 0) return;
+    if (cat === 'A' && optimizeForCloning) return; // skip A slots when cloning
     const excluded = getPygmyExcluded(cat);
     if (cat === 'A') {
-      // Each A slot is independent/optional
       for (let i = 0; i < count; i++) {
         groups.push({cat, count:1, excluded, optional:true, slotIdx: i});
       }
@@ -2003,6 +2008,8 @@ function clearPygmyAll() {
   const hasMega  = document.getElementById('pygmyHasMega');
   if(hasPrime) hasPrime.checked = false;
   if(hasMega)  hasMega.checked  = false;
+  const cloning = document.getElementById('pygmyOptimizeForCloning');
+  if(cloning) cloning.checked = false;
   ['pygmyExcludeW','pygmyExcludeN','pygmyExcludeA','pygmyExcludeUW','pygmyExcludeU','pygmyExcludeP','pygmyExcludeM'].forEach(id => {
     const el = document.getElementById(id);
     if (el) Array.from(el.options).forEach(o => o.selected = false);
