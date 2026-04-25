@@ -679,7 +679,46 @@ body.light-mode .lb-tab.active { background: #d0d0e8; color: #000; }
 body.light-mode .lb-panel { background: #f7f7ff; border-color: #aaa; }
 body.light-mode .lb-table th { color: #555; border-color: #aaa; }
 body.light-mode .lb-table td { color: #222; border-color: #ddd; }
-body.light-mode .lb-table tr:first-child td { color: #000; }
+/* Screenshot leaderboard submit */
+.lb-screenshot-submit {
+background: #0a1a0a; border: 1px solid #007700;
+border-bottom: none; padding: 14px;
+}
+.lb-screenshot-label {
+font-size: 12px; letter-spacing: 2px; color: #007700;
+text-transform: uppercase; margin-bottom: 6px;
+}
+.lb-screenshot-hint {
+font-size: 12px; color: #005500; margin: 0 0 12px; line-height: 1.6;
+}
+.lb-upload-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lb-upload-btn {
+display: inline-block; padding: 7px 14px; font-size: 13px;
+background: #0f2a0f; border: 1px solid #007700; border-radius: 3px;
+color: #00cc00; cursor: pointer; font-family: inherit;
+transition: background 0.15s;
+}
+.lb-upload-btn:hover { background: #003300; color: #00ff41; }
+.lb-extracted-stats {
+background: #0f1a0f; border: 1px solid #005500; border-radius: 4px;
+padding: 12px 16px; display: grid;
+grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center;
+}
+.lb-extracted-stat-cell { display: flex; flex-direction: column; gap: 2px; }
+.lb-extracted-stat-label { font-size: 10px; letter-spacing: 2px; color: #007700; text-transform: uppercase; }
+.lb-extracted-stat-val { font-size: 22px; font-weight: bold; color: #00ff41; text-shadow: 0 0 8px rgba(0,255,65,0.4); }
+.lb-extracted-stat-pct { font-size: 12px; color: #00aa00; }
+.lb-spinner { display: inline-block; font-size: 13px; color: #00aa00; margin-top: 8px; }
+
+body.light-mode .lb-screenshot-submit { background: #f0f0ff; border-color: #aaa; }
+body.light-mode .lb-screenshot-label { color: #555; }
+body.light-mode .lb-screenshot-hint { color: #777; }
+body.light-mode .lb-upload-btn { background: #e0e0f0; border-color: #aaa; color: #333; }
+body.light-mode .lb-upload-btn:hover { background: #d0d0e8; }
+body.light-mode .lb-extracted-stats { background: #fff; border-color: #ccc; }
+body.light-mode .lb-extracted-stat-label { color: #777; }
+body.light-mode .lb-extracted-stat-val { color: #000; text-shadow: none; }
+body.light-mode .lb-extracted-stat-pct { color: #333; }
 
 /* ── Trait Database ── */
 #traitDbToggle {
@@ -1068,7 +1107,7 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     <label for="pygmyOptimizeForCloning" style="margin:0; cursor:pointer; color:var(--green-bright); font-size:15px;">Check here to optimize for cloning</label>
     <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Optimize for cloning will allow you to build a Pygmy with no A trait slots used, keeping them free to repair clone debuffs later — for example if your clone gets a DR debuff of 15%, you can feed it 3 A Tough traits to negate it.</span></span>
   </div>
-</div>
+</div><!-- end open slots section -->
 
 <div class="section">
   <h2>Minimum Speed <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your Pygmy to have after optimization. Enter in either field — they stay in sync. Leave blank to ignore speed entirely.</span></span></h2>
@@ -1156,18 +1195,39 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     <div class="lb-tab active" data-tab="mount">Mount Builds</div>
     <div class="lb-tab" data-tab="pygmy">Pygmy Builds</div>
   </div>
-  <div class="lb-panel active" id="lb-mount">
-    <div class="score-submit-row" style="margin-bottom:10px;">
-      <input type="text" id="mountPlayerName" placeholder="Your name..." maxlength="24">
-      <button id="mountSubmitBtn">&gt; Submit Current Mount Build</button>
+
+  <!-- Screenshot Submit UI (shared) -->
+
+  <div class="lb-screenshot-submit">
+    <div class="lb-screenshot-label">// Submit a build via in-game screenshot</div>
+    <p class="lb-screenshot-hint">Open your buff screen or Traits % screen in-game, take a screenshot, and upload it below. The planner will read your stats directly from the image.</p>
+    <div class="lb-upload-row">
+      <label class="lb-upload-btn" for="lbScreenshotInput">📷 Choose Screenshot</label>
+      <input type="file" id="lbScreenshotInput" accept="image/*" style="display:none;">
+      <span id="lbScreenshotFileName" style="font-size:12px; color:#007700;">No file chosen</span>
     </div>
+    <div id="lbScreenshotPreviewWrap" style="display:none; margin-top:10px;">
+      <img id="lbScreenshotPreview" style="max-width:100%; max-height:220px; border:1px solid #007700; border-radius:4px; display:block; margin-bottom:10px;">
+      <button id="lbAnalyzeBtn">> Analyze Screenshot</button>
+    </div>
+    <div id="lbAnalysisResult" style="display:none;">
+      <div class="lb-extracted-stats" id="lbExtractedStats"></div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:10px;">
+        <select id="lbSubmitType" style="padding:6px 8px; font-size:13px;">
+          <option value="mount">Mount</option>
+          <option value="pygmy">Pygmy</option>
+        </select>
+        <input type="text" id="lbScreenshotName" placeholder="Your name..." maxlength="24" style="width:150px; padding:6px 8px; font-size:13px;">
+        <button id="lbScreenshotSubmitBtn">> Submit to Leaderboard</button>
+      </div>
+      <div id="lbSubmitMsg" style="margin-top:6px; font-size:12px; color:#00aa00;"></div>
+    </div>
+  </div>
+
+  <div class="lb-panel active" id="lb-mount">
     <div id="lb-mount-rows"><div class="lb-empty">No scores submitted yet.</div></div>
   </div>
   <div class="lb-panel" id="lb-pygmy">
-    <div class="score-submit-row" style="margin-bottom:10px;">
-      <input type="text" id="pygmyPlayerName" placeholder="Your name..." maxlength="24">
-      <button id="pygmySubmitBtn">&gt; Submit Pygmy Build to Leaderboard</button>
-    </div>
     <div id="lb-pygmy-rows"><div class="lb-empty">No scores submitted yet.</div></div>
   </div>
 </div>
@@ -2022,6 +2082,10 @@ document.getElementById('pygmyHasMega')?.addEventListener('change', () => {
 });
 
 // ============================================================
+// CALCULATOR
+// ============================================================
+
+// ============================================================
 // SCORING ENGINE
 // ============================================================
 
@@ -2318,7 +2382,7 @@ function lbRender(entries, containerId) {
   const rows = entries.map((e, i) => `
     <tr>
       <td>${i + 1}</td>
-      <td>${escHtml(e.name)}</td>
+      <td>${escHtml(e.name)}${e.verified ? ' <span title="Verified via screenshot" style="color:#00ff41; font-size:11px;">✓</span>' : ''}</td>
       <td class="lb-grade ${gradeClass(e.grade)}">${e.grade}</td>
       <td>${e.score}</td>
       <td>${e.dmg.toFixed(1)}%</td>
@@ -2438,10 +2502,165 @@ document.getElementById('leaderboardToggle').addEventListener('click', function(
   }
 })();
 
-document.getElementById('mountSubmitBtn').addEventListener('click', () =>
-  lbSubmit(LB_KEY_MOUNT, window._lastMountScore, 'mountPlayerName', 'lb-mount-rows'));
-document.getElementById('pygmySubmitBtn').addEventListener('click', () =>
-  lbSubmit(LB_KEY_PYGMY, window._lastPygmyScore, 'pygmyPlayerName', 'lb-pygmy-rows'));
+// ============================================================
+// SCREENSHOT LEADERBOARD SUBMISSION
+// ============================================================
+
+let _lbImageBase64 = null;
+let _lbExtractedScore = null;
+
+document.getElementById('lbScreenshotInput').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  document.getElementById('lbScreenshotFileName').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    _lbImageBase64 = dataUrl.split(',')[1];
+    const preview = document.getElementById('lbScreenshotPreview');
+    preview.src = dataUrl;
+    document.getElementById('lbScreenshotPreviewWrap').style.display = 'block';
+    document.getElementById('lbAnalysisResult').style.display = 'none';
+    document.getElementById('lbSubmitMsg').textContent = '';
+    _lbExtractedScore = null;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('lbAnalyzeBtn').addEventListener('click', async function() {
+  if (!_lbImageBase64) return;
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = '> Analyzing...';
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 256,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: 'image/jpeg', data: _lbImageBase64 }
+            },
+            {
+              type: 'text',
+              text: `Look at this in-game screenshot from Dox2. Find the TRAITS % section and extract the three multiplier values shown.
+Return ONLY a JSON object with this exact structure, no other text:
+{"dmg": <number>, "dr": <number>, "spd": <number>, "type": "<mount or pygmy>"}
+
+The values will look like "Damage % = 3.31 // Damage Reduction % = 0.25 // Speed % = 1.79".
+Use those exact decimal numbers.
+For type: if you see (PP) or (PM) in the trait list, it is a pygmy. Otherwise call it mount.
+If you cannot find TRAITS % data in the image, return: {"error": "No TRAITS % data found in image"}`
+            }
+          ]
+        }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.map(c => c.text || '').join('') || '';
+
+    let parsed;
+    try {
+      const clean = text.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      throw new Error('Could not parse response from image analysis.');
+    }
+
+    if (parsed.error) throw new Error(parsed.error);
+    if (!parsed.dmg || !parsed.dr || !parsed.spd) throw new Error('Could not find all three stat values in the image.');
+
+    // Values from image are multipliers (e.g. 3.31, 0.25, 1.79)
+    // Convert to % for scoring: dmg% = (mult-1)*100, dr% = (1-mult)*100, spd% = (mult-1)*100
+    const dmgPct = (parsed.dmg - 1) * 100;
+    const drPct  = (1 - parsed.dr)  * 100;
+    const spdPct = (parsed.spd - 1) * 100;
+
+    const detectedType = parsed.type === 'pygmy' ? 'pygmy' : 'mount';
+    document.getElementById('lbSubmitType').value = detectedType;
+
+    const score = scoreBuild(dmgPct, drPct, spdPct, detectedType);
+    _lbExtractedScore = score;
+
+    // Render extracted stats panel
+    document.getElementById('lbExtractedStats').innerHTML = `
+      <div class="lb-extracted-stat-cell">
+        <div class="lb-extracted-stat-label">Damage</div>
+        <div class="lb-extracted-stat-val">${parsed.dmg.toFixed(2)}</div>
+        <div class="lb-extracted-stat-pct">${dmgPct.toFixed(1)}%</div>
+      </div>
+      <div class="lb-extracted-stat-cell">
+        <div class="lb-extracted-stat-label">DR</div>
+        <div class="lb-extracted-stat-val">${parsed.dr.toFixed(2)}</div>
+        <div class="lb-extracted-stat-pct">${drPct.toFixed(1)}%</div>
+      </div>
+      <div class="lb-extracted-stat-cell">
+        <div class="lb-extracted-stat-label">Speed</div>
+        <div class="lb-extracted-stat-val">${parsed.spd.toFixed(2)}</div>
+        <div class="lb-extracted-stat-pct">${spdPct.toFixed(1)}%</div>
+      </div>`;
+
+    document.getElementById('lbAnalysisResult').style.display = 'block';
+    document.getElementById('lbSubmitMsg').textContent = score.qualified
+      ? `✓ Detected as ${detectedType} — Grade ${score.grade}, Score ${score.score}. Enter your name and submit!`
+      : '✗ Build does not qualify — DR must be at 75% cap to appear on the leaderboard.';
+    document.getElementById('lbSubmitMsg').style.color = score.qualified ? '#00cc00' : '#ff4444';
+
+  } catch (err) {
+    document.getElementById('lbAnalysisResult').style.display = 'block';
+    document.getElementById('lbExtractedStats').innerHTML = `<div style="color:#ff4444; grid-column:1/-1; text-align:center; padding:8px;">⚠ ${err.message}</div>`;
+    document.getElementById('lbSubmitMsg').textContent = 'Please try a clearer screenshot showing the TRAITS % section.';
+    document.getElementById('lbSubmitMsg').style.color = '#ff4444';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '> Analyze Screenshot';
+  }
+});
+
+document.getElementById('lbScreenshotSubmitBtn').addEventListener('click', async function() {
+  if (!_lbExtractedScore || !_lbExtractedScore.qualified) {
+    document.getElementById('lbSubmitMsg').textContent = '✗ Build must qualify (DR at 75% cap) to be submitted.';
+    document.getElementById('lbSubmitMsg').style.color = '#ff4444';
+    return;
+  }
+  const name = (document.getElementById('lbScreenshotName').value || '').trim() || 'Anonymous';
+  const type = document.getElementById('lbSubmitType').value;
+  const key = type === 'pygmy' ? LB_KEY_PYGMY : LB_KEY_MOUNT;
+  const containerId = type === 'pygmy' ? 'lb-pygmy-rows' : 'lb-mount-rows';
+
+  const entry = {
+    name,
+    grade: _lbExtractedScore.grade,
+    score: _lbExtractedScore.score,
+    dmg:   _lbExtractedScore.dmg,
+    dr:    _lbExtractedScore.dr,
+    spd:   _lbExtractedScore.spd,
+    date:  new Date().toLocaleDateString(),
+    verified: true
+  };
+
+  const entries = await lbLoad(key);
+  entries.push(entry);
+  entries.sort((a, b) => b.score - a.score);
+  const trimmed = entries.slice(0, LB_MAX);
+  await lbSave(key, trimmed);
+  lbRender(trimmed, containerId);
+
+  // Switch to the right tab
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === type));
+  document.querySelectorAll('.lb-panel').forEach(p => p.classList.toggle('active', p.id === 'lb-' + type));
+
+  document.getElementById('lbSubmitMsg').textContent = `✓ Submitted! ${name}'s ${type} build — Grade ${entry.grade} — is now on the leaderboard.`;
+  document.getElementById('lbSubmitMsg').style.color = '#00ff41';
+  _lbExtractedScore = null;
+});
 
 function withSpinner(fn) {
   const overlay = document.getElementById('spinnerOverlay');
@@ -2468,6 +2687,8 @@ document.getElementById('toggleTheme').onclick = function(){
 
 document.getElementById('clearOptimized').onclick = clearOptimizedTraits;
 document.getElementById('clearAll').onclick = clearAll;
+
+
 
 function updateOptimizeButton() {
   const hasLegendary = !!document.getElementById('Legendary').value;
