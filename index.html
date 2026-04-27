@@ -897,6 +897,75 @@ body.light-mode .wc-card-desc { color: #333 !important; border-color: #ddd !impo
 body.light-mode .wc-tier { background: #eee !important; border-color: #ccc !important; color: #555 !important; }
 body.light-mode .wc-tier span { color: #000 !important; }
 body.light-mode .wc-no-results { color: #888 !important; }
+
+/* ── Primo Pygmy Buffs Database ── */
+#primoDbToggle {
+width: 100%; text-align: left; font-size: 18px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer;
+color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#primoDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#primoDbToggle .arrow { transition: transform 0.2s; }
+#primoDbToggle.open .arrow { transform: rotate(180deg); }
+#primoDbContent {
+display: none; background: #0a1a0a;
+border: 1px solid var(–border-color); border-top: none;
+border-radius: 0 0 4px 4px;
+padding: 16px 14px; margin-bottom: 14px;
+}
+#primoDbContent.open { display: block; }
+.primo-intro {
+font-size: 12px; color: #007700; line-height: 1.6;
+border: 1px solid #003300; background: #001a00;
+border-left: 3px solid #00ff41;
+border-radius: 3px; padding: 10px 14px; margin-bottom: 14px;
+}
+.primo-intro strong { color: #00ff41; }
+.primo-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+gap: 10px;
+}
+.primo-card {
+background: #0f1a0f; border: 1px solid #004400;
+border-radius: 4px; padding: 12px 14px;
+transition: border-color 0.15s, box-shadow 0.15s;
+display: flex; flex-direction: column; gap: 8px;
+}
+.primo-card:hover { border-color: #00aa00; box-shadow: 0 0 8px rgba(0,255,65,0.15); }
+.primo-card-name {
+font-size: 13px; font-weight: bold; color: #00ff41;
+letter-spacing: 1px; line-height: 1.2;
+}
+.primo-stats {
+display: flex; flex-direction: column; gap: 3px;
+border-top: 1px solid #002200; padding-top: 7px;
+}
+.primo-stat-row {
+display: flex; justify-content: space-between; align-items: center;
+font-size: 12px;
+}
+.primo-stat-label { color: #007700; }
+.primo-stat-val { font-weight: bold; }
+.primo-stat-val.pos { color: #00cc00; }
+.primo-stat-val.hp  { color: #00ffaa; }
+
+/* Light mode */
+body.light-mode #primoDbToggle { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode #primoDbToggle:hover { background: #d0d0e8 !important; box-shadow: none !important; }
+body.light-mode #primoDbContent { background: #f7f7ff !important; border-color: #aaa !important; }
+body.light-mode .primo-intro { background: #f0f0ff !important; border-color: #ccc !important; border-left-color: #555 !important; color: #444 !important; }
+body.light-mode .primo-intro strong { color: #000 !important; }
+body.light-mode .primo-card { background: #fff !important; border-color: #ddd !important; }
+body.light-mode .primo-card:hover { border-color: #aaa !important; box-shadow: 0 0 8px rgba(0,0,0,0.1) !important; }
+body.light-mode .primo-card-name { color: #000 !important; }
+body.light-mode .primo-stats { border-color: #ddd !important; }
+body.light-mode .primo-stat-label { color: #999 !important; }
+body.light-mode .primo-stat-val.pos { color: #006600 !important; }
+body.light-mode .primo-stat-val.hp  { color: #007755 !important; }
 </style>
 
 </head>
@@ -1310,6 +1379,17 @@ body.light-mode .wc-no-results { color: #888 !important; }
     <div class="wc-filter-chip" data-filter="breeding">🧬 Breeding</div>
   </div>
   <div class="wc-grid" id="wcGrid"></div>
+</div>
+
+<!-- Primo Pygmy Buffs -->
+
+<button id="primoDbToggle">> 🦎 Primo Pygmy Buffs <span class="arrow">▼</span></button>
+
+<div id="primoDbContent">
+  <div class="primo-intro">
+    <strong>// Primo Pygmy Buffs</strong> — Buffs granted to the rider when a Primo Pygmy is equipped. Stats shown are the flat bonuses applied on top of your existing build. All values are standardised as <strong>DMG → DR → Regen</strong> for easy comparison.
+  </div>
+  <div class="primo-grid" id="primoGrid"></div>
 </div>
 
 <!-- Leaderboard (shared) -->
@@ -3177,6 +3257,56 @@ document.getElementById('wcDbToggle').addEventListener('click', function() {
   });
 
   renderWCCards();
+})();
+
+// ============================================================
+// PRIMO PYGMY BUFFS DATABASE
+// ============================================================
+
+document.getElementById('primoDbToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('primoDbContent').classList.toggle('open');
+});
+
+(function buildPrimoDatabase() {
+
+  // All stats normalised to: dmg (%), dr (%), hpRegen (hp/s), stmRegen (stm/s)
+  const primoBuffs = [
+    { N: 'Primo Pygmy Bear',      dmg: 10,   dr: 10,   hp: 0,  stm: 0  },
+    { N: 'Primo Pygmy Doed',      dmg: 5,    dr: 15,   hp: 0,  stm: 0  },
+    { N: 'Primo Pygmy Kong',      dmg: 15,   dr: 5,    hp: 0,  stm: 0  },
+    { N: 'Primo Pygmy Manticore', dmg: 7.5,  dr: 7.5,  hp: 50, stm: 0  },
+    { N: 'Primo Pygmy Pithecus',  dmg: 20,   dr: 0,    hp: 25, stm: 0  },
+    { N: 'Primo Pygmy Rex',       dmg: 0,    dr: 20,   hp: 0,  stm: 0  },
+    { N: 'Primo Pygmy Rhynio',    dmg: 25,   dr: 5,    hp: 0,  stm: 0  },
+    { N: 'Primo Ice Titan',       dmg: 10,   dr: 5,    hp: 20, stm: 20 },
+  ];
+
+  function statRow(label, val, cls) {
+    if (!val) return '';
+    return `
+      <div class="primo-stat-row">
+        <span class="primo-stat-label">${label}</span>
+        <span class="primo-stat-val ${cls}">+${val}${cls === 'hp' ? ' /s' : '%'}</span>
+      </div>`;
+  }
+
+  const grid = document.getElementById('primoGrid');
+  grid.innerHTML = primoBuffs.map(p => {
+    const rows = [
+      statRow('Damage',    p.dmg,  'pos'),
+      statRow('Dmg Reduction', p.dr, 'pos'),
+      statRow('HP Regen',  p.hp,   'hp'),
+      statRow('Stam Regen',p.stm,  'hp'),
+    ].filter(Boolean).join('');
+
+    return `
+      <div class="primo-card">
+        <div class="primo-card-name">${p.N}</div>
+        <div class="primo-stats">${rows}</div>
+      </div>`;
+  }).join('');
+
 })();
 
 </script>
