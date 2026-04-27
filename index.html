@@ -791,6 +791,112 @@ body.light-mode .tdb-stat.neg span:last-child { color: #cc0000 !important; }
 body.light-mode .tdb-stat.zero span:last-child { color: #ccc !important; }
 body.light-mode .tdb-note { color: #888 !important; border-color: #ddd !important; }
 body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #ccc !important; }
+
+/* ── WildCard Trait Database ── */
+#wcDbToggle {
+width: 100%; text-align: left; font-size: 18px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer;
+color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#wcDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#wcDbToggle .arrow { transition: transform 0.2s; }
+#wcDbToggle.open .arrow { transform: rotate(180deg); }
+#wcDbContent {
+display: none; background: #0a1a0a;
+border: 1px solid var(–border-color); border-top: none;
+border-radius: 0 0 4px 4px;
+padding: 16px 14px; margin-bottom: 14px;
+}
+#wcDbContent.open { display: block; }
+
+/* WC search bar */
+.wc-search-wrap { margin-bottom: 14px; position: relative; }
+.wc-search-wrap input {
+width: 100%; box-sizing: border-box;
+padding: 8px 12px 8px 32px;
+background: #0f1a0f; border: 1px solid #007700; border-radius: 3px;
+color: #00ff41; font-family: ‘Share Tech Mono’, monospace; font-size: 14px;
+}
+.wc-search-wrap input:focus { outline: none; border-color: #00ff41; box-shadow: 0 0 6px rgba(0,255,65,0.3); }
+.wc-search-icon {
+position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+color: #007700; font-size: 13px; pointer-events: none;
+}
+
+/* WC filter chips */
+.wc-filters {
+display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.wc-filter-chip {
+font-family: ‘Share Tech Mono’, monospace; font-size: 11px;
+padding: 4px 10px; border-radius: 12px; cursor: pointer;
+border: 1px solid #007700; background: #0a1a0a; color: #007700;
+letter-spacing: 1px; transition: all 0.15s;
+}
+.wc-filter-chip:hover { border-color: #00cc00; color: #00cc00; }
+.wc-filter-chip.active { background: #003300; border-color: #00ff41; color: #00ff41; box-shadow: 0 0 6px rgba(0,255,65,0.2); }
+
+/* WC grid */
+.wc-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+gap: 10px;
+}
+.wc-card {
+background: #0f1a0f; border: 1px solid #004400;
+border-radius: 4px; padding: 12px 14px;
+transition: border-color 0.15s, box-shadow 0.15s;
+display: flex; flex-direction: column; gap: 6px;
+}
+.wc-card:hover { border-color: #00aa00; box-shadow: 0 0 8px rgba(0,255,65,0.15); }
+.wc-card-header {
+display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+}
+.wc-card-name {
+font-size: 14px; font-weight: bold;
+color: #00ff41; letter-spacing: 1px; line-height: 1.2;
+}
+.wc-card-copies {
+font-size: 10px; letter-spacing: 1px; color: #007700;
+background: #001a00; border: 1px solid #003300;
+border-radius: 10px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+}
+.wc-card-desc {
+font-size: 12px; color: #00aa00; line-height: 1.55;
+border-top: 1px solid #002200; padding-top: 6px;
+}
+.wc-card-tiers {
+display: flex; gap: 5px; flex-wrap: wrap; margin-top: 2px;
+}
+.wc-tier {
+font-size: 10px; letter-spacing: 1px;
+padding: 2px 7px; border-radius: 3px;
+border: 1px solid #003300; background: #001a00; color: #007700;
+}
+.wc-tier span { color: #00cc00; font-weight: bold; }
+.wc-no-results {
+color: #007700; font-size: 13px; text-align: center; padding: 20px 0; grid-column: 1/-1;
+}
+
+/* Light mode overrides */
+body.light-mode #wcDbToggle { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode #wcDbToggle:hover { background: #d0d0e8 !important; box-shadow: none !important; }
+body.light-mode #wcDbContent { background: #f7f7ff !important; border-color: #aaa !important; }
+body.light-mode .wc-search-wrap input { background: #fff !important; color: #000 !important; border-color: #aaa !important; }
+body.light-mode .wc-search-icon { color: #999 !important; }
+body.light-mode .wc-filter-chip { background: #e8e8f0 !important; border-color: #aaa !important; color: #555 !important; }
+body.light-mode .wc-filter-chip.active { background: #d0d0e8 !important; border-color: #555 !important; color: #000 !important; box-shadow: none !important; }
+body.light-mode .wc-card { background: #fff !important; border-color: #ddd !important; }
+body.light-mode .wc-card:hover { border-color: #aaa !important; box-shadow: 0 0 8px rgba(0,0,0,0.1) !important; }
+body.light-mode .wc-card-name { color: #000 !important; }
+body.light-mode .wc-card-copies { background: #eee !important; border-color: #ccc !important; color: #555 !important; }
+body.light-mode .wc-card-desc { color: #333 !important; border-color: #ddd !important; }
+body.light-mode .wc-tier { background: #eee !important; border-color: #ccc !important; color: #555 !important; }
+body.light-mode .wc-tier span { color: #000 !important; }
+body.light-mode .wc-no-results { color: #888 !important; }
 </style>
 
 </head>
@@ -1184,6 +1290,26 @@ body.light-mode .tdb-note.tdb-perk { color: #336633 !important; border-color: #c
     <div class="tdb-grid" id="tdb-L"></div>
   </div>
 
+</div>
+
+<!-- WildCard Trait Database -->
+
+<button id="wcDbToggle">> 🃏 WC Trait Database <span class="arrow">▼</span></button>
+
+<div id="wcDbContent">
+  <div class="wc-search-wrap">
+    <span class="wc-search-icon">🔍</span>
+    <input type="text" id="wcSearchInput" placeholder="Search traits by name or effect...">
+  </div>
+  <div class="wc-filters" id="wcFilters">
+    <div class="wc-filter-chip active" data-filter="all">All</div>
+    <div class="wc-filter-chip" data-filter="combat">⚔ Combat</div>
+    <div class="wc-filter-chip" data-filter="survival">🛡 Survival</div>
+    <div class="wc-filter-chip" data-filter="movement">💨 Movement</div>
+    <div class="wc-filter-chip" data-filter="utility">⚙ Utility</div>
+    <div class="wc-filter-chip" data-filter="breeding">🧬 Breeding</div>
+  </div>
+  <div class="wc-grid" id="wcGrid"></div>
 </div>
 
 <!-- Leaderboard (shared) -->
@@ -2831,6 +2957,227 @@ enforceRange('corruptInput', -25, 25);
 enforceRange('geneticValue0', 5, 10);
 enforceRange('geneticValue1', 5, 10);
 enforceRange('geneticValue2', 5, 10);
+
+// ============================================================
+// WILDCARD TRAIT DATABASE
+// ============================================================
+
+document.getElementById('wcDbToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('wcDbContent').classList.toggle('open');
+});
+
+(function buildWCDatabase() {
+
+  // Tags used for filter chips: combat, survival, movement, utility, breeding
+  const wcTraits = [
+    {
+      N: 'Aggressive', maxCopies: 2, tags: ['combat', 'movement'],
+      desc: 'Dealing damage to a non-allied target grants a Movement Speed buff for 5 seconds (refreshes on hits).',
+      tiers: ['T1: +2.5% Move Spd', 'T2: +3.75% Move Spd', 'T3: +5.0% Move Spd']
+    },
+    {
+      N: 'Angry', maxCopies: 2, tags: ['combat'],
+      desc: 'Deals increased damage scaling from 50% → 25% remaining health (linear). No bonus at full health.',
+      tiers: ['T1: up to +1.25% DMG', 'T2: up to +1.875% DMG', 'T3: up to +2.5% DMG']
+    },
+    {
+      N: 'Athletic', maxCopies: 3, tags: ['utility'],
+      desc: 'Gains HP and Stamina regen per point in Oxygen. Regen drops to base rate for 60s after taking a hit.',
+      tiers: ['T1: +0.05 HP regen / +0.05% Stam regen per Oxy', 'T2: +0.075 / +0.075%', 'T3: +0.1 / +0.1%']
+    },
+    {
+      N: 'Aquatic / Swimmer', maxCopies: 3, tags: ['movement', 'utility'],
+      desc: 'While swimming: moves faster, consumes less Oxygen, and consumes less Stamina.',
+      tiers: ['T1: +7.5% swim spd, −12.5% Oxy, −4% Stam', 'T2: +11.25%, −18.75%, −6%', 'T3: +15%, −25%, −8%']
+    },
+    {
+      N: 'Bearing / Carrier', maxCopies: 3, tags: ['utility'],
+      desc: 'Reduces inventory weight for one item category (Carcass, Cave, Desert, Exotic, Meat, Mineral, Plant, or Wastes). Effect reduced by Drag Weight on large creatures.',
+      tiers: ['T1: −15% category weight', 'T2: −22.5%', 'T3: −30%']
+    },
+    {
+      N: 'Carefree', maxCopies: 1, tags: ['movement'],
+      desc: 'Grants a bonus Move Speed that is lost for 20 seconds after dealing damage, taking damage, or gaining a rider.',
+      tiers: ['T1: +7.5% Move Spd', 'T2: +11.25%', 'T3: +15.0%']
+    },
+    {
+      N: 'Cold', maxCopies: 3, tags: ['survival'],
+      desc: 'Grants Hyperthermic Insulation and reduces the effective damage tick duration of heat/fire effects for creature and rider.',
+      tiers: ['T1: +40 Insulation, −5% fire tick duration', 'T2: +60, −7.5%', 'T3: +80, −10%']
+    },
+    {
+      N: 'Cowardly', maxCopies: 3, tags: ['movement', 'survival'],
+      desc: 'Taking damage from a non-allied target grants bonus Move Speed for 5 seconds (refreshes on hits).',
+      tiers: ['T1: +2.5% Move Spd', 'T2: +3.75%', 'T3: +5.0%']
+    },
+    {
+      N: 'Distracting', maxCopies: 1, tags: ['combat'],
+      desc: "Melee hits cause the target to deal less damage to ALL other targets for 20 seconds.",
+      tiers: ['T1: −5.0% target DMG', 'T2: −7.5%', 'T3: −10.0%']
+    },
+    {
+      N: 'Diurnal', maxCopies: 3, tags: ['utility'],
+      desc: 'Reduces Stamina consumption during daytime.',
+      tiers: ['T1: −2.5% daytime Stam', 'T2: −3.75%', 'T3: −5.0%']
+    },
+    {
+      N: 'Excitable', maxCopies: 1, tags: ['combat'],
+      desc: "Basic melee hits reduce the cooldown of this creature's other abilities.",
+      tiers: ['T1: −0.25s cooldown', 'T2: −0.375s', 'T3: −0.5s']
+    },
+    {
+      N: 'Fast Learner', maxCopies: 3, tags: ['utility'],
+      desc: 'Increases experience gain. Can be replaced on adult creatures.',
+      tiers: ['T1: +15% XP', 'T2: +22.5%', 'T3: +30.0%']
+    },
+    {
+      N: 'Fatty', maxCopies: 3, tags: ['survival'],
+      desc: 'Gains Armor per point in Food.',
+      tiers: ['T1: +0.1 Armor per Food pt', 'T2: +0.15', 'T3: +0.2']
+    },
+    {
+      N: 'Frenetic', maxCopies: 3, tags: ['survival'],
+      desc: 'Increases Torpor recovery rate.',
+      tiers: ['T1: +7.5% Torpor recovery', 'T2: +11.25%', 'T3: +15.0%']
+    },
+    {
+      N: 'Giantslaying', maxCopies: 2, tags: ['combat'],
+      desc: 'Increased damage vs large creatures (Drag Weight ≥500), but reduced damage vs small creatures (Drag Weight ≤200).',
+      tiers: ['T1: +2.5% vs large / −7.5% vs small', 'T2: +3.75% / −11.25%', 'T3: +5.0% / −15.0%']
+    },
+    {
+      N: 'Heavy-Hitting', maxCopies: 3, tags: ['combat'],
+      desc: 'Deals more melee damage but attacks slower.',
+      tiers: ['T1: +2.5% DMG / −5% attack spd', 'T2: +3.75% / −7.5%', 'T3: +5.0% / −10.0%']
+    },
+    {
+      N: 'Robust', maxCopies: 3, tags: ['breeding'],
+      desc: 'Additively increases probability that offspring inherit the higher parent value for a random stat (HP, Stam, Oxy, Food, Weight, or Melee).',
+      tiers: ['T1: +1.5% inherit chance', 'T2: +2.25%', 'T3: +3.0%']
+    },
+    {
+      N: 'Frail', maxCopies: 3, tags: ['breeding'],
+      desc: 'Additively decreases probability that offspring inherit the higher parent value for a random stat. Negative breeding trait.',
+      tiers: ['T1: −1.5% inherit chance', 'T2: −2.25%', 'T3: −3.0%']
+    },
+    {
+      N: 'Mutable', maxCopies: 3, tags: ['breeding'],
+      desc: 'Additively increases probability that offspring experience a mutation event for a random stat (HP, Stam, Oxy, Food, Weight, or Melee).',
+      tiers: ['T1: +1.0% mutation chance', 'T2: +1.5%', 'T3: +2.0%']
+    },
+    {
+      N: 'Kingslaying', maxCopies: 3, tags: ['combat'],
+      desc: 'Deals increased damage to Bosses and Alpha creatures, but reduced damage to all other targets.',
+      tiers: ['T1: +5% vs bosses/alphas / −10% vs others', 'T2: +7.5% / −15%', 'T3: +10% / −20%']
+    },
+    {
+      N: 'Nocturnal', maxCopies: 3, tags: ['utility'],
+      desc: 'Reduces Stamina consumption during nighttime.',
+      tiers: ['T1: −2.5% nighttime Stam', 'T2: −3.7%', 'T3: −5.0%']
+    },
+    {
+      N: 'Numb', maxCopies: 1, tags: ['survival'],
+      desc: 'A portion of incoming damage is converted to a 5-second damage-over-time effect that cannot be further mitigated.',
+      tiers: ['T1: 25% of DMG → DoT', 'T2: 37.5%', 'T3: 50.0%']
+    },
+    {
+      N: 'Protective', maxCopies: 2, tags: ['survival'],
+      desc: 'Reduces damage taken by the rider. Effect persists for 10 seconds after dismounting.',
+      tiers: ['T1: −15% rider DMG taken', 'T2: −22.5%', 'T3: −30.0%']
+    },
+    {
+      N: 'Quick-Hitting', maxCopies: 3, tags: ['combat'],
+      desc: 'Attacks faster but deals less melee damage.',
+      tiers: ['T1: +2.5% attack spd / −5% DMG', 'T2: +3.75% / −7.5%', 'T3: +5.0% / −10.0%']
+    },
+    {
+      N: 'Slow Metabolism', maxCopies: 3, tags: ['utility'],
+      desc: 'Reduces Food consumption, including food used to power abilities (e.g. Daedon healing).',
+      tiers: ['T1: −5.0% Food consumption', 'T2: −7.5%', 'T3: −10.0%']
+    },
+    {
+      N: 'Sprinter / High Endurance', maxCopies: 3, tags: ['movement'],
+      desc: 'Reduces Stamina consumed while sprinting.',
+      tiers: ['T1: −4% sprint Stam', 'T2: −6%', 'T3: −8%']
+    },
+    {
+      N: 'Tenacious', maxCopies: 3, tags: ['survival'],
+      desc: 'Takes reduced damage scaling from 50% → 25% remaining health (linear). No bonus at full health.',
+      tiers: ['T1: up to −12.5% DMG taken', 'T2: up to −18.75%', 'T3: up to −25.0%']
+    },
+    {
+      N: 'Vampiric', maxCopies: 1, tags: ['combat', 'survival'],
+      desc: 'Restores missing health based on damage dealt. Effect reduced 50% at Drag Weight ≥200, reduced 90% at Drag Weight ≥500.',
+      tiers: ['T1: up to +5.0% of DMG as HP', 'T2: up to +7.5%', 'T3: up to +10.0%']
+    },
+    {
+      N: 'Warm', maxCopies: 3, tags: ['survival'],
+      desc: 'Grants Hypothermic Insulation and reduces incoming cold/ice damage for creature and rider. Also reduces duration of being frozen.',
+      tiers: ['T1: +40 Insulation, −5% cold DMG', 'T2: +60, −7.5%', 'T3: +80, −10%']
+    },
+  ];
+
+  const TAG_LABELS = { all: 'All', combat: '⚔ Combat', survival: '🛡 Survival', movement: '💨 Movement', utility: '⚙ Utility', breeding: '🧬 Breeding' };
+
+  let activeFilter = 'all';
+  let searchQuery = '';
+
+  function renderWCCards() {
+    const grid = document.getElementById('wcGrid');
+    const q = searchQuery.toLowerCase();
+
+    const filtered = wcTraits.filter(t => {
+      const matchesFilter = activeFilter === 'all' || t.tags.includes(activeFilter);
+      const matchesSearch = !q ||
+        t.N.toLowerCase().includes(q) ||
+        t.desc.toLowerCase().includes(q) ||
+        t.tiers.some(tier => tier.toLowerCase().includes(q));
+      return matchesFilter && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="wc-no-results">No traits match your search.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(t => {
+      const copyLabel = t.maxCopies === 1 ? 'MAX 1 COPY' : `MAX ${t.maxCopies} COPIES`;
+      const tierHTML = t.tiers.map(tier => {
+        // Bold the numeric value portion
+        const formatted = tier.replace(/([+-][\d.]+%?[^,]*)/, '<span>$1</span>');
+        return `<div class="wc-tier">${formatted}</div>`;
+      }).join('');
+      return `
+        <div class="wc-card">
+          <div class="wc-card-header">
+            <div class="wc-card-name">${t.N}</div>
+            <div class="wc-card-copies">${copyLabel}</div>
+          </div>
+          <div class="wc-card-desc">${t.desc}</div>
+          <div class="wc-card-tiers">${tierHTML}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // Filter chip clicks
+  document.querySelectorAll('.wc-filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.wc-filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter;
+      renderWCCards();
+    });
+  });
+
+  // Search input
+  document.getElementById('wcSearchInput').addEventListener('input', function() {
+    searchQuery = this.value;
+    renderWCCards();
+  });
+
+  renderWCCards();
+})();
 
 </script>
 
