@@ -306,6 +306,17 @@ box-shadow: none !important;
 body.light-mode #pygmyPlannerContent { color: #222 !important; }
 body.light-mode #pygmySpeedContext { color: #333 !important; }
 
+/* Light mode: pygmy guide toggle + content */
+body.light-mode #guideTogglePygmy { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode #guideTogglePygmy:hover { background: #d0d0e8 !important; box-shadow: none !important; }
+body.light-mode #guideContentPygmy { background: #f7f7ff !important; border-color: #aaa !important; color: #333 !important; }
+body.light-mode #guideContentPygmy h3 { color: #111 !important; }
+body.light-mode #guideContentPygmy ol li { color: #333 !important; }
+
+/* Light mode: pygmy type checkboxes */
+body.light-mode .pygmy-type-check { background: #f0f0ff !important; border-color: #bbb !important; }
+body.light-mode .pygmy-type-check span { color: #222 !important; }
+
 /* Light mode: result spans and strong tags */
 body.light-mode strong, body.light-mode b { color: #111 !important; }
 
@@ -448,7 +459,7 @@ padding: 10px 14px; margin-bottom: 0;
 background: #0a1a0a; border: 1px solid #007700;
 border-radius: 4px; cursor: pointer;
 color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 }
 #guideToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
 #guideToggle .arrow { transition: transform 0.2s; }
@@ -473,7 +484,7 @@ padding: 10px 14px; margin-bottom: 0;
 background: #0a1a0a; border: 1px solid #007700;
 border-radius: 4px; cursor: pointer;
 color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 }
 #guideTogglePygmy:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
 #guideTogglePygmy .arrow { transition: transform 0.2s; }
@@ -639,7 +650,7 @@ padding: 10px 14px; margin-bottom: 0;
 background: #0a1a0a; border: 1px solid #007700;
 border-radius: 4px; cursor: pointer;
 color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 }
 #leaderboardToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
 #leaderboardToggle .arrow { transition: transform 0.2s; }
@@ -727,7 +738,7 @@ padding: 10px 14px; margin-bottom: 0;
 background: #0a1a0a; border: 1px solid #007700;
 border-radius: 4px; cursor: pointer;
 color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 }
 #traitDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
 #traitDbToggle .arrow { transition: transform 0.2s; }
@@ -799,7 +810,7 @@ padding: 10px 14px; margin-bottom: 0;
 background: #0a1a0a; border: 1px solid #007700;
 border-radius: 4px; cursor: pointer;
 color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 }
 #wcDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
 #wcDbToggle .arrow { transition: transform 0.2s; }
@@ -905,7 +916,7 @@ padding: 10px 14px; margin-bottom: 0;
 background: #0a1a0a; border: 1px solid #007700;
 border-radius: 4px; cursor: pointer;
 color: #00ff41 !important;
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 }
 #primoDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
 #primoDbToggle .arrow { transition: transform 0.2s; }
@@ -945,7 +956,7 @@ display: flex; flex-direction: column; gap: 3px;
 border-top: 1px solid #002200; padding-top: 7px;
 }
 .primo-stat-row {
-display: flex; justify-content: space-between; align-items: center;
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 font-size: 12px;
 }
 .primo-stat-label { color: #007700; }
@@ -966,6 +977,22 @@ body.light-mode .primo-stats { border-color: #ddd !important; }
 body.light-mode .primo-stat-label { color: #999 !important; }
 body.light-mode .primo-stat-val.pos { color: #006600 !important; }
 body.light-mode .primo-stat-val.hp  { color: #007755 !important; }
+
+/* ── Cerberus Hub Link Button ── */
+#cerberusHubBtn {
+display: flex; justify-content: flex-start; align-items: center; gap: 8px;
+width: 100%; box-sizing: border-box;
+padding: 10px 14px; margin-bottom: 14px;
+background: #0a1a0a; border: 1px solid #007700; border-radius: 4px;
+color: #00ff41 !important; text-decoration: none;
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+font-size: 18px; letter-spacing: 1px;
+transition: background 0.15s, box-shadow 0.15s;
+}
+#cerberusHubBtn:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#cerberusHubBtn .hub-arrow { font-size: 12px; opacity: 0.7; }
+body.light-mode #cerberusHubBtn { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shadow: none !important; }
 </style>
 
 </head>
@@ -1441,6 +1468,8 @@ body.light-mode .primo-stat-val.hp  { color: #007755 !important; }
     <div id="lb-pygmy-rows"><div class="lb-empty">No scores submitted yet.</div></div>
   </div>
 </div>
+
+<a href="https://hub.cerberusascended.com" target="_blank" rel="noopener" id="cerberusHubBtn">> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" ><polygon points="13,2 4,14 11,14 11,22 20,10 13,10" fill="#f5a623" stroke="#f5a623" stroke-width="1.5" stroke-linejoin="round"/></svg> Cerberus Ascended Hub <span class="hub-arrow">↗</span></a>
 
 <script>
 // ============================================================
