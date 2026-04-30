@@ -43,6 +43,11 @@ body {
     rgba(0,255,65,0.015) 4px
   );
 }
+.page-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
 h1 {
   text-align: center;
   font-size: 24px;
@@ -354,6 +359,15 @@ box-shadow: 0 0 8px rgba(0,255,65,0.2);
 .exclusions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
 .exclusions label { font-size: 14px; }
 .exclusions select { height: 100px; font-size: 14px; }
+
+/* Restore native appearance for multi-select so Firefox/Chrome allow multiple selections */
+select[multiple] {
+-webkit-appearance: listbox;
+-moz-appearance: listbox;
+appearance: listbox;
+background-image: none;
+padding-right: 7px;
+}
 
 /* Optimize buttons */
 .optimize-buttons { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
@@ -1002,6 +1016,7 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 
 <div id="spinnerOverlay"><div class="spinner"></div><p>Optimizing…</p></div>
 
+<div class="page-wrapper">
 <!-- PWA Install Banner -->
 
 <div id="pwa-install-banner" style="display:none; position:fixed; bottom:60px; left:10px; right:10px; z-index:4000; background:#0f1a0f; border:1px solid #00cc00; border-radius:4px; padding:10px 14px; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 0 16px rgba(0,255,65,0.25); font-family:'Share Tech Mono',monospace; flex-wrap:wrap;">
@@ -3343,6 +3358,8 @@ document.getElementById('primoDbToggle').addEventListener('click', function() {
 })();
 
 </script>
+
+</div><!-- end .page-wrapper -->
 
 </body>
 </html>
