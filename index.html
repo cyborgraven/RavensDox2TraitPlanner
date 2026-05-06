@@ -103,10 +103,10 @@ option {
 .sticky-header {
 position: sticky;
 top: 0;
-background: var(--sticky-bg);
+background: var(–sticky-bg);
 padding: 10px 14px;
 z-index: 999;
-border-bottom: 2px solid var(--border-color);
+border-bottom: 2px solid var(–border-color);
 box-shadow: 0 4px 12px rgba(0,255,65,0.15);
 display: flex;
 flex-direction: column;
@@ -152,14 +152,14 @@ box-shadow: 0 0 16px rgba(0,255,65,0.5);
 display: grid;
 grid-template-columns: 1fr 1fr 1fr;
 gap: 1px;
-background: var(--green-dim);
-border: 1px solid var(--green-dim);
+background: var(–green-dim);
+border: 1px solid var(–green-dim);
 border-radius: 4px;
 overflow: hidden;
 margin-top: 4px;
 }
 .stat-panel-cell {
-background: var(--result-bg);
+background: var(–result-bg);
 padding: 8px 6px;
 display: flex;
 flex-direction: column;
@@ -169,19 +169,15 @@ gap: 1px;
 .stat-panel-label {
 font-size: 10px;
 letter-spacing: 2px;
-color: var(--green-dim);
+color: var(–green-dim);
 text-transform: uppercase;
 }
 .stat-panel-mult {
-font-size: 22px;
+font-size: 26px;
 font-weight: bold;
-color: var(--green-bright);
+color: var(–green-bright);
 text-shadow: 0 0 8px rgba(0,255,65,0.5);
 line-height: 1.1;
-}
-.stat-panel-pct {
-font-size: 12px;
-color: var(--green-mid);
 }
 .stat-panel-warning {
 font-size: 10px;
@@ -193,27 +189,25 @@ color: #ffaa00;
 text-shadow: 0 0 8px rgba(255,170,0,0.5);
 }
 @media (max-width: 600px) {
-.stat-panel-mult { font-size: 17px; }
+.stat-panel-mult { font-size: 20px; }
 .stat-panel-label { font-size: 9px; letter-spacing: 1px; }
-.stat-panel-pct { font-size: 11px; }
 }
 body.light-mode .stat-panel { background: #aaa !important; border-color: #aaa !important; }
 body.light-mode .stat-panel-cell { background: #cfe0ff !important; }
 body.light-mode .stat-panel-label { color: #777 !important; }
 body.light-mode .stat-panel-mult { color: #000 !important; text-shadow: none !important; }
-body.light-mode .stat-panel-pct { color: #333 !important; }
 body.light-mode .stat-panel-warning { color: #cc0000 !important; text-shadow: none !important; }
 body.light-mode .stat-panel-cell.dr-over .stat-panel-mult { color: #cc6600 !important; text-shadow: none !important; }
 
 .result {
-background: var(--result-bg);
+background: var(–result-bg);
 padding: 10px;
 border-radius: 3px;
 margin-top: 8px;
 font-weight: bold;
 font-size: 15px;
-color: var(--green-bright);
-border: 1px solid var(--green-dim);
+color: var(–green-bright);
+border: 1px solid var(–green-dim);
 text-shadow: 0 0 6px rgba(0,255,65,0.5);
 }
 .warning { color: #ff4444; font-weight: bold; text-shadow: 0 0 6px rgba(255,68,68,0.4); }
@@ -231,7 +225,7 @@ h4 { font-size: 13px; }
 label { font-size: 13px; }
 select, input[type=number], input[type=text] { font-size: 13px; padding: 6px; }
 .optimize-buttons button { font-size: 14px; padding: 9px 14px; }
-body.light-mode {--bg-color: #f0f0f0;--section-bg: #fff;--result-bg: #cfe0ff;--sticky-bg: #e0e0ff;--text-color: #000;
+body.light-mode {–bg-color: #f0f0f0;–section-bg: #fff;–result-bg: #cfe0ff;–sticky-bg: #e0e0ff;–text-color: #000;
 background-color: #f0f0f0 !important;
 color: #000 !important;
 background-image: none !important;
@@ -402,16 +396,16 @@ padding-right: 7px;
 .tip-icon {
 display: inline-flex; align-items: center; justify-content: center;
 width: 16px; height: 16px; border-radius: 50%;
-background: #003300; border: 1px solid var(--green-dim);
-color: var(--green-bright); font-size: 11px; font-weight: bold;
+background: #003300; border: 1px solid var(–green-dim);
+color: var(–green-bright); font-size: 11px; font-weight: bold;
 cursor: pointer; user-select: none; line-height: 1;
 font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
 }
 .tip-icon:hover { background: #005500; box-shadow: 0 0 6px rgba(0,255,65,0.4); }
 .tip-box {
 display: none; position: absolute; left: 22px; top: -4px;
-width: 240px; background: #0a1a0a; border: 1px solid var(--green-dim);
-color: var(--green-mid); font-size: 12px; padding: 8px 10px;
+width: 240px; background: #0a1a0a; border: 1px solid var(–green-dim);
+color: var(–green-mid); font-size: 12px; padding: 8px 10px;
 border-radius: 4px; z-index: 500; line-height: 1.5;
 box-shadow: 0 0 12px rgba(0,255,65,0.2);
 font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
@@ -478,13 +472,13 @@ display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 #guideToggle.open .arrow { transform: rotate(180deg); }
 #guideContent {
 display: none; background: #0a1a0a;
-border: 1px solid var(--green-dim); border-top: none;
+border: 1px solid var(–green-dim); border-top: none;
 border-radius: 0 0 4px 4px;
 padding: 14px; margin-bottom: 14px;
-color: var(--green-mid); font-size: 13px; line-height: 1.7;
+color: var(–green-mid); font-size: 13px; line-height: 1.7;
 }
 #guideContent.open { display: block; }
-#guideContent h3 { color: var(--green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px; }
+#guideContent h3 { color: var(–green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px; }
 #guideContent h3:first-child { margin-top: 0; }
 #guideContent ol { margin: 0; padding-left: 20px; }
 #guideContent ol li { margin-bottom: 6px; }
@@ -503,13 +497,13 @@ display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 #guideTogglePygmy.open .arrow { transform: rotate(180deg); }
 #guideContentPygmy {
 display: none; background: #0a1a0a;
-border: 1px solid var(--green-dim); border-top: none;
+border: 1px solid var(–green-dim); border-top: none;
 border-radius: 0 0 4px 4px;
 padding: 14px; margin-bottom: 14px;
-color: var(--green-mid); font-size: 13px; line-height: 1.7;
+color: var(–green-mid); font-size: 13px; line-height: 1.7;
 }
 #guideContentPygmy.open { display: block; }
-#guideContentPygmy h3 { color: var(--green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px; }
+#guideContentPygmy h3 { color: var(–green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px; }
 #guideContentPygmy h3:first-child { margin-top: 0; }
 #guideContentPygmy ol { margin: 0; padding-left: 20px; }
 #guideContentPygmy ol li { margin-bottom: 6px; }
@@ -556,7 +550,7 @@ accent-color: #00ff41; flex-shrink: 0;
 display: none;
 position: relative; overflow: hidden;
 background: #020d02;
-border: 2px solid var(--border-color);
+border: 2px solid var(–border-color);
 border-radius: 6px;
 padding: 24px 16px 20px;
 margin: 12px 0;
@@ -584,7 +578,7 @@ animation: gradeSlam 0.5s cubic-bezier(0.22,1,0.36,1) both, gradePulse 2.5s ease
 display: block; margin-bottom: 4px;
 }
 .score-reveal-score {
-font-size: 18px; color: var(--green-bright); letter-spacing: 2px;
+font-size: 18px; color: var(–green-bright); letter-spacing: 2px;
 animation: fadeSlideUp 0.4s ease 0.25s both;
 margin-bottom: 8px;
 }
@@ -596,11 +590,11 @@ margin-bottom: 12px; width: 100%;
 }
 .score-reveal-stats .stat-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .score-reveal-stats .stat-col .stat-label { font-size: 11px; color: #007700; letter-spacing: 2px; }
-.score-reveal-stats .stat-col .stat-mult  { font-size: 15px; color: var(--green-bright); font-weight: bold; }
+.score-reveal-stats .stat-col .stat-mult  { font-size: 15px; color: var(–green-bright); font-weight: bold; }
 .score-reveal-stats .stat-col .stat-pct   { font-size: 12px; color: #00aa00; }
 .score-reveal-flavor {
 font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
-color: var(--green-bright); font-weight: bold;
+color: var(–green-bright); font-weight: bold;
 animation: fadeSlideUp 0.4s ease 0.45s both;
 text-shadow: 0 0 10px rgba(0,255,65,0.6);
 min-height: 1.4em;
@@ -634,7 +628,7 @@ body.light-mode .score-reveal.grade-D .score-reveal-grade { color: #777; }
 body.light-mode .score-reveal.grade-F .score-reveal-grade { color: #cc0000; text-shadow: none; }
 .score-box {
 display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-background: #0a2a0a; border: 1px solid var(--border-color);
+background: #0a2a0a; border: 1px solid var(–border-color);
 border-radius: 4px; padding: 10px 14px; margin-top: 10px;
 }
 .grade-badge {
@@ -648,8 +642,8 @@ text-shadow: 0 0 14px currentColor; line-height: 1;
 .grade-C     { color: #007700; }
 .grade-D     { color: #888; }
 .grade-F     { color: #ff4444; }
-.score-detail { flex: 1; font-size: 13px; color: var(--green-mid); line-height: 1.7; }
-.score-detail strong { color: var(--green-bright); }
+.score-detail { flex: 1; font-size: 13px; color: var(–green-mid); line-height: 1.7; }
+.score-detail strong { color: var(–green-bright); }
 .score-submit-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
 .score-submit-row input[type=text] { width: 160px; padding: 6px 8px; font-size: 13px; }
 .score-submit-row button { font-size: 13px; padding: 6px 14px; }
@@ -686,7 +680,7 @@ overflow-x: auto; -webkit-overflow-scrolling: touch;
 .lb-panel.active { display: block; }
 .lb-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 400px; }
 .lb-table th { color: #00aa00; text-align: left; padding: 5px 8px; border-bottom: 1px solid #007700; }
-.lb-table td { padding: 5px 8px; border-bottom: 1px solid #002200; color: var(--green-mid); }
+.lb-table td { padding: 5px 8px; border-bottom: 1px solid #002200; color: var(–green-mid); }
 .lb-table tr:first-child td { color: #00ff41; font-weight: bold; }
 .lb-table .lb-grade { font-weight: bold; text-shadow: 0 0 8px currentColor; }
 .lb-empty { color: #007700; font-size: 13px; padding: 10px 0; text-align: center; }
@@ -757,7 +751,7 @@ display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 #traitDbToggle.open .arrow { transform: rotate(180deg); }
 #traitDbContent {
 display: none; background: #0a1a0a;
-border: 1px solid var(--green-dim); border-top: none;
+border: 1px solid var(–green-dim); border-top: none;
 border-radius: 0 0 4px 4px;
 padding: 16px 14px; margin-bottom: 14px;
 }
@@ -829,7 +823,7 @@ display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 #wcDbToggle.open .arrow { transform: rotate(180deg); }
 #wcDbContent {
 display: none; background: #0a1a0a;
-border: 1px solid var(--border-color); border-top: none;
+border: 1px solid var(–border-color); border-top: none;
 border-radius: 0 0 4px 4px;
 padding: 16px 14px; margin-bottom: 14px;
 }
@@ -935,7 +929,7 @@ display: flex; justify-content: flex-start; align-items: center; gap: 8px;
 #primoDbToggle.open .arrow { transform: rotate(180deg); }
 #primoDbContent {
 display: none; background: #0a1a0a;
-border: 1px solid var(--border-color); border-top: none;
+border: 1px solid var(–border-color); border-top: none;
 border-radius: 0 0 4px 4px;
 padding: 16px 14px; margin-bottom: 14px;
 }
@@ -1069,9 +1063,9 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
     <h2>Trait Power</h2>
   </div>
   <div id="finalResult" class="stat-panel">
-    <div class="stat-panel-cell"><div class="stat-panel-label">Damage</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
-    <div class="stat-panel-cell"><div class="stat-panel-label">DR</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
-    <div class="stat-panel-cell"><div class="stat-panel-label">Speed</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">Damage</div><div class="stat-panel-mult">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">DR</div><div class="stat-panel-mult">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">Speed</div><div class="stat-panel-mult">0%</div></div>
   </div>
   <div id="mountUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
   <div class="header-bottom">
@@ -1097,17 +1091,11 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 
 <div class="section">
   <h2>Optimize Build</h2>
-  <label>Minimum Speed: <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your mount to have after optimization. Enter in either field — multiplier (e.g. 1.20) or percent (e.g. 20) — they stay in sync. Leave blank to ignore speed entirely.</span></span></label>
+  <label>Minimum Speed %: <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your mount to have after optimization. Leave blank to ignore speed entirely.</span></span></label>
   <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin: 6px 0;">
-    <label style="margin:0; display:flex; align-items:center; gap:6px;">
-      Multiplier: <input type="number" id="minSpeedMult" placeholder="e.g. 1.20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
-    </label>
-    <label style="margin:0; display:flex; align-items:center; gap:6px;">
-      Percent: <input type="number" id="minSpeed" placeholder="e.g. 20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
-    </label>
+    <input type="number" id="minSpeed" placeholder="e.g. 20" step="0.1" style="width:110px; padding:5px; font-size:14px;">
     <span id="speed-context"></span>
   </div>
-  <small id="speedHint" style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
   <p>Optimizing will prioritize DR and optimize for damage while attempting to reach the minimum required speed set.</p>
 
   <div style="display:flex; align-items:center; gap:8px; margin: 10px 0 4px;">
@@ -1229,9 +1217,9 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
     <h2>Pygmy Trait Power</h2>
   </div>
   <div id="pygmyFinalResult" class="stat-panel">
-    <div class="stat-panel-cell"><div class="stat-panel-label">Damage</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
-    <div class="stat-panel-cell"><div class="stat-panel-label">DR</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
-    <div class="stat-panel-cell"><div class="stat-panel-label">Speed</div><div class="stat-panel-mult">1.00</div><div class="stat-panel-pct">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">Damage</div><div class="stat-panel-mult">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">DR</div><div class="stat-panel-mult">0%</div></div>
+    <div class="stat-panel-cell"><div class="stat-panel-label">Speed</div><div class="stat-panel-mult">0%</div></div>
   </div>
   <div id="pygmyUnqualified" class="score-unqualified" style="display:none;">✗ BUILD UNQUALIFIED — DR must be at 75% cap to receive a grade.</div>
   <div class="header-bottom">
@@ -1259,21 +1247,18 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
     <div class="pygmy-stat-row">
       <h4>// DAMAGE</h4>
       <div class="sync-pair">
-        <label>Mult:</label><input type="number" id="pygmyDmgMult" placeholder="e.g. 1.75" step="0.001">
         <label>%:</label><input type="number" id="pygmyDmgPct" placeholder="e.g. 75" step="0.1">
       </div>
     </div>
     <div class="pygmy-stat-row">
       <h4>// DAMAGE REDUCTION</h4>
       <div class="sync-pair">
-        <label>Mult:</label><input type="number" id="pygmyDRMult" placeholder="e.g. 0.50" step="0.001">
         <label>%:</label><input type="number" id="pygmyDRPct" placeholder="e.g. 50" step="0.1">
       </div>
     </div>
     <div class="pygmy-stat-row">
       <h4>// SPEED</h4>
       <div class="sync-pair">
-        <label>Mult:</label><input type="number" id="pygmySpdMult" placeholder="e.g. 1.20" step="0.001">
         <label>%:</label><input type="number" id="pygmySpdPct" placeholder="e.g. 20" step="0.1">
       </div>
     </div>
@@ -1329,17 +1314,11 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 </div><!-- end open slots section -->
 
 <div class="section">
-  <h2>Minimum Speed <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your Pygmy to have after optimization. Enter in either field — they stay in sync. Leave blank to ignore speed entirely.</span></span></h2>
+  <h2>Minimum Speed % <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">The lowest Speed % you want your Pygmy to have after optimization. Leave blank to ignore speed entirely.</span></span></h2>
   <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin: 6px 0;">
-    <label style="margin:0; display:flex; align-items:center; gap:6px;">
-      Multiplier: <input type="number" id="pygmyMinSpeedMult" placeholder="e.g. 1.20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
-    </label>
-    <label style="margin:0; display:flex; align-items:center; gap:6px;">
-      Percent: <input type="number" id="pygmyMinSpeed" placeholder="e.g. 20" step="0.01" style="width:90px; padding:5px; font-size:14px;">
-    </label>
+    <input type="number" id="pygmyMinSpeed" placeholder="e.g. 20" step="0.1" style="width:110px; padding:5px; font-size:14px;">
     <span id="pygmySpeedContext"></span>
   </div>
-  <small style="display:block; color:#888; margin-top:3px;">Enter speed in either format — both fields stay in sync.</small>
 </div>
 
 <div class="section">
@@ -1649,20 +1628,6 @@ function parseMinSpeed(fieldId) {
   return isNaN(v) ? 0 : v;
 }
 
-// Sync the two speed inputs when either changes
-function syncSpeedInputs(changed, multId, pctId) {
-  const v = parseFloat(changed.value);
-  if (isNaN(v) || changed.value === '') {
-    document.getElementById(changed.id === multId ? pctId : multId).value = '';
-    return;
-  }
-  if (changed.id === multId) {
-    document.getElementById(pctId).value = ((v - 1) * 100).toFixed(2).replace(/\.?0+$/, '');
-  } else {
-    document.getElementById(multId).value = (1 + v / 100).toFixed(3).replace(/\.?0+$/, '');
-  }
-}
-
 function formatResult(total, prefix) {
   let drPercent = total.DR;
   let drOver = false;
@@ -1672,29 +1637,22 @@ function formatResult(total, prefix) {
     drPercent = 75;
     drOver = true;
   }
-  const dmgMult = (1 + total.Damage / 100).toFixed(2);
-  const drMult  = (1 - drPercent / 100).toFixed(2);
-  const spdMult = (1 + total.Speed / 100).toFixed(2);
-
   const drWarning = drOver
     ? `<div class="stat-panel-warning">+${drOverAmt.toFixed(1)}% over cap</div>` : '';
 
   return `
     <div class="stat-panel-cell">
       <div class="stat-panel-label">Damage</div>
-      <div class="stat-panel-mult">${dmgMult}</div>
-      <div class="stat-panel-pct">${total.Damage.toFixed(1)}%</div>
+      <div class="stat-panel-mult">${total.Damage.toFixed(1)}%</div>
     </div>
     <div class="stat-panel-cell${drOver ? ' dr-over' : ''}">
       <div class="stat-panel-label">DR</div>
-      <div class="stat-panel-mult">${drMult}</div>
-      <div class="stat-panel-pct">${drPercent.toFixed(1)}%</div>
+      <div class="stat-panel-mult">${drPercent.toFixed(1)}%</div>
       ${drWarning}
     </div>
     <div class="stat-panel-cell">
       <div class="stat-panel-label">Speed</div>
-      <div class="stat-panel-mult">${spdMult}</div>
-      <div class="stat-panel-pct">${total.Speed.toFixed(1)}%</div>
+      <div class="stat-panel-mult">${total.Speed.toFixed(1)}%</div>
     </div>`;
 }
 
@@ -1930,7 +1888,7 @@ function clearOptimizedTraits() {
 
 function clearAll() {
   MAIN_GROUPS.forEach(g => g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }));
-  ['corruptStat','corruptInput','targetHP','minSpeed','minSpeedMult'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['corruptStat','corruptInput','targetHP','minSpeed'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   for (let i=0;i<3;i++) { document.getElementById('geneticStat'+i).value=''; document.getElementById('geneticValue'+i).value=''; }
   for (const cat in traitData) { const el=document.getElementById(`exclude${cat}`); if(el) Array.from(el.options).forEach(o=>o.selected=false); }
   document.getElementById('speed-context').innerHTML='';
@@ -2009,31 +1967,10 @@ populatePygmyExclusions();
 // DR:  mult = 1 - pct/100  (e.g. 50% = 0.50x reduction remaining — but we track as % reduced)
 // SPD: mult = 1 + pct/100
 
-function syncPygmyStat(changedId, multId, pctId, isDR) {
-  const el = document.getElementById(changedId);
-  const v = parseFloat(el.value);
-  if (isNaN(v) || el.value === '') {
-    document.getElementById(changedId === multId ? pctId : multId).value = '';
-    return;
-  }
-  if (changedId === multId) {
-    // Convert mult -> pct
-    const pct = isDR ? ((1 - v) * 100) : ((v - 1) * 100);
-    document.getElementById(pctId).value = pct.toFixed(2).replace(/\.?0+$/, '');
-  } else {
-    // Convert pct -> mult
-    const mult = isDR ? (1 - v / 100) : (1 + v / 100);
-    document.getElementById(multId).value = mult.toFixed(3).replace(/\.?0+$/, '');
-  }
-  calculatePygmyFinalStats();
-}
-
-document.getElementById('pygmyDmgMult').addEventListener('input', function(){ syncPygmyStat('pygmyDmgMult','pygmyDmgMult','pygmyDmgPct',false); });
-document.getElementById('pygmyDmgPct').addEventListener('input',  function(){ syncPygmyStat('pygmyDmgPct', 'pygmyDmgMult','pygmyDmgPct',false); });
-document.getElementById('pygmyDRMult').addEventListener('input',  function(){ syncPygmyStat('pygmyDRMult', 'pygmyDRMult', 'pygmyDRPct', true);  });
-document.getElementById('pygmyDRPct').addEventListener('input',   function(){ syncPygmyStat('pygmyDRPct',  'pygmyDRMult', 'pygmyDRPct', true);  });
-document.getElementById('pygmySpdMult').addEventListener('input', function(){ syncPygmyStat('pygmySpdMult','pygmySpdMult','pygmySpdPct',false); });
-document.getElementById('pygmySpdPct').addEventListener('input',  function(){ syncPygmyStat('pygmySpdPct', 'pygmySpdMult','pygmySpdPct',false); });
+// Pygmy stat inputs — simple % fields, just recalculate on change
+document.getElementById('pygmyDmgPct').addEventListener('input', calculatePygmyFinalStats);
+document.getElementById('pygmyDRPct').addEventListener('input',  calculatePygmyFinalStats);
+document.getElementById('pygmySpdPct').addEventListener('input', calculatePygmyFinalStats);
 
 // Read pygmy current totals from the synced inputs (as %)
 function getPygmyStartingTotals() {
@@ -2234,8 +2171,7 @@ function clearPygmyOptimized() {
 }
 
 function clearPygmyAll() {
-  ['pygmyDmgMult','pygmyDmgPct','pygmyDRMult','pygmyDRPct','pygmySpdMult','pygmySpdPct',
-   'pygmyMinSpeed','pygmyMinSpeedMult'].forEach(id => {
+  ['pygmyDmgPct','pygmyDRPct','pygmySpdPct','pygmyMinSpeed'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   ['pygmyOpenW','pygmyOpenN','pygmyOpenA','pygmyOpenUW','pygmyOpenU'].forEach(id => {
@@ -3052,13 +2988,6 @@ document.getElementById('guideToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('guideContent').classList.toggle('open');
 });
-
-// Sync speed inputs both ways (mount)
-document.getElementById('minSpeedMult').addEventListener('input', function(){ syncSpeedInputs(this, 'minSpeedMult', 'minSpeed'); });
-document.getElementById('minSpeed').addEventListener('input', function(){ syncSpeedInputs(this, 'minSpeedMult', 'minSpeed'); });
-// Sync pygmy min speed inputs
-document.getElementById('pygmyMinSpeedMult').addEventListener('input', function(){ syncSpeedInputs(this, 'pygmyMinSpeedMult', 'pygmyMinSpeed'); });
-document.getElementById('pygmyMinSpeed').addEventListener('input', function(){ syncSpeedInputs(this, 'pygmyMinSpeedMult', 'pygmyMinSpeed'); });
 
 // Mount select/input listeners — use 'change' to avoid double-counting on keystroke
 document.querySelectorAll('#mountModePanel select:not([id^="exclude"])').forEach(el=>{
