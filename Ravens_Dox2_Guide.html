@@ -319,6 +319,21 @@ body.theme-amber .milestone-title { color: #ffcc44 !important; }
 body.theme-amber .milestone-desc { color: #cc9900 !important; }
 body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; }
 
+body.theme-midnight #returnBtn { background: #1a2040 !important; color: #aabbee !important; border-color: #445588 !important; }
+body.theme-amber #returnBtn { background: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; }
+body.light-mode #returnBtn { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+/* Default terminal return button */
+#returnBtn { background: #0a2a0a; color: #00ff41; border: 1px solid #007700; }
+/* Theme select in guide header */
+body.theme-midnight #themeSelectGuide { background: #1a2040 !important; color: #aabbee !important; border-color: #445588 !important; }
+body.theme-midnight label[for=themeSelectGuide] { color: #445588 !important; }
+body.theme-amber #themeSelectGuide { background: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; }
+body.theme-amber label[for=themeSelectGuide] { color: #886600 !important; }
+body.light-mode #themeSelectGuide { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode label[for=themeSelectGuide] { color: #555 !important; }
+/* Nav home link per theme */
+body.theme-midnight .guide-nav a.home { color: #aabbee !important; background: #1a2040 !important; border-color: #445588 !important; }
+body.theme-amber .guide-nav a.home { color: #ffcc44 !important; background: #2a1e05 !important; border-color: #886600 !important; }
 </style>
 
 </head>
@@ -340,7 +355,7 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
 </div>
 
 <nav class="guide-nav">
-  <a href="index.html" style="color:#00ff41 !important; border-color:#007700; background:#0a2a0a;">⚔ Trait Planner</a>
+  <a href="index.html" class="home">⚔ Trait Planner</a>
   <a href="#overview">Overview</a>
   <a href="#hunter-xp">Hunter XP</a>
   <a href="#survival">Survival & Base</a>
@@ -379,7 +394,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>Hunter XP is a completely separate progression system from your character's normal ARK leveling. It is the currency of DOX2 — you will spend it on taming creatures and re-rolling enhanced armor at the Dox Shrine.</p>
 
-```
   <h3>How You Earn It</h3>
   <p>Hunter XP is earned by killing creatures, either on foot or while mounted on a tame. The amount earned scales with how dangerous the creature is — weak passive creatures award very little, while large aggressive creatures award significantly more. As you grow stronger, prioritize hunting larger and more dangerous targets to build your pool faster.</p>
 
@@ -398,7 +412,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <strong>Tip:</strong> The Dox Shrine requires the Dox Bench to craft, so initially your only protection against death is being careful. Until you have a Shrine or Orbs available, never carry more Hunter XP than you're willing to lose.
   </div>
 </div>
-```
 
   </div>
 
@@ -412,7 +425,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>Your first goal is simple: don't die, gather resources, level up, and find somewhere safe to call home. In DOX2 this is harder than it sounds because the threats are more aggressive and significantly more dangerous than vanilla ARK.</p>
 
-```
   <h3>Finding a Base Location</h3>
   <p>Your choice of base location matters more in DOX2 than in most mods. The ideal early base has two qualities:</p>
   <ul>
@@ -433,7 +445,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <li>Level up your character to unlock more advanced structures and items to help you progress more efficiently</li>
   </ol>
 </div>
-```
 
   </div>
 
@@ -447,7 +458,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>The Overlord is the mod's final boss — a massive creature that periodically traverses the entire map. He is not a creature you will fight early. He is a force of nature you will learn to survive.</p>
 
-```
   <h3>How a Flyby Works</h3>
   <p>At random intervals, the Overlord will appear at the edge of the map and fly across it in one direction before disappearing off the other side. His speed varies — sometimes he crosses quickly, sometimes he lingers. You will know he is coming from both a visual cue and an audio cue. Pay attention to both.</p>
 
@@ -466,7 +476,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
   <h3>Why You Eventually Want Them</h3>
   <p>Once you have capable tames, Empowered creatures become your most reliable early source of <strong>Artifact Fragments</strong> — the key ingredient for crafting your Dox Bench. They almost always drop them. At that point the Overlord's flyby becomes an opportunity, not a threat to hide from.</p>
 </div>
-```
 
   </div>
 
@@ -480,7 +489,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>The Dox Bench is the central crafting station of the mod. Most of the important DOX2 items are crafted there. Getting your first Dox Bench is your most important early milestone.</p>
 
-```
   <h3>What You Need</h3>
   <p>The Dox Bench requires <strong>Artifact Fragments</strong> to craft. These drop from some of the weaker boss-type creatures in the mod. You have several sources:</p>
   <ul>
@@ -495,7 +503,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
   <h3>What the Dox Bench Unlocks</h3>
   <p>Once built, the Dox Bench opens up the full DOX2 progression including Hunter XP Orbs to protect your XP from death, enhanced crafting, and access to the deeper systems the mod offers. Getting here is the end of the beginning.</p>
 </div>
-```
 
   </div>
 
@@ -509,7 +516,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>Taming in DOX2 is very different from vanilla ARK. While kibble is still used as preferred food for many creatures, the knockout-and-narcotics approach is largely gone. Taming costs <strong>Hunter XP</strong> and requires reading each creature individually before you approach it.</p>
 
-```
   <h3>Get a Modded Spyglass First <span class="tag tag-important">Do This Immediately</span></h3>
   <p>Before you attempt to tame anything, craft either the <strong>Awesome Spyglass</strong> or <strong>Nanoh's Spyglass</strong>. These show you critical information when you look at a creature:</p>
   <ul>
@@ -548,7 +554,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <strong>Early Taming Tip:</strong> Start with passive herbivores and non-aggressive creatures using hand feeding. They cost the least Hunter XP, pose the lowest risk during the tame, and give you practice with the system before you attempt anything dangerous.
   </div>
 </div>
-```
 
   </div>
 
@@ -562,7 +567,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>Once you have tames, the next goal is establishing breeding groups. Up to five creatures of the same species can be grouped together and set to breed. This is a core survival strategy in DOX2.</p>
 
-```
   <h3>Why Pairs, Not Singles</h3>
   <p>A single tamed creature is not a safe investment. The content in DOX2 is designed to kill your mounts. If you lose your only tame you're back to hunting on foot. Breeding pairs act as a backup system — your babies are replaceable copies of your mounts that you can raise and field in combat while keeping your breeders safely at home.</p>
 
@@ -584,7 +588,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <strong>Tip:</strong> Once you're ready to optimize your mounts and maximize their trait power, check out the Trait Planner on this site. It will calculate the best combination of traits to feed your creatures and grade your build.
   </div>
 </div>
-```
 
   </div>
 
@@ -598,7 +601,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <div class="guide-section-body">
       <p>Use this as a rough progression roadmap. Steps don't have to be completed in perfect order, but this sequence will give you the smoothest path through the early game.</p>
 
-```
   <ul class="milestones">
     <li class="milestone">
       <div class="milestone-num">1</div>
@@ -655,7 +657,6 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
     <strong>You've completed one of the hardest steps in your progression — congratulations.</strong> Now the real work begins. Craft Hunter XP Orbs to protect your stash, learn how traits work, and push into harder content to get the materials you need to grow your power. This guide will continue to evolve and hopefully help you on your journey. Return to it anytime, and be sure to use the Trait Planner and available databases when you're ready.
   </div>
 </div>
-```
 
   </div>
 
@@ -663,7 +664,7 @@ body.theme-amber button { background: #2a1e05 !important; color: #ffcc44 !import
 
 <div style="text-align:center; padding: 20px 20px 0;">
   <a href="index.html" style="display:inline-block; text-decoration:none;">
-    <button style="font-size:15px; padding:12px 28px; background:#0a2a0a; color:#00ff41 !important; border:1px solid #007700; border-radius:4px; cursor:pointer; letter-spacing:1px;">⚔ Return to Raven's Trait Planner</button>
+    <button id="returnBtn" style="font-size:15px; padding:12px 28px; border-radius:4px; cursor:pointer; letter-spacing:1px; font-family:'Share Tech Mono',monospace; -webkit-appearance:none; appearance:none;">⚔ Return to Raven's Trait Planner</button>
   </a>
 </div>
 
@@ -686,7 +687,7 @@ document.getElementById('themeSelectGuide').addEventListener('change', function(
   applyGuideTheme(this.value);
 });
 const savedGuideTheme = localStorage.getItem('guideTheme');
-if (savedGuideTheme && GUIDE_THEMES.includes(savedGuideTheme)) applyGuideTheme(savedGuideTheme);
+applyGuideTheme(savedGuideTheme && GUIDE_THEMES.includes(savedGuideTheme) ? savedGuideTheme : 'terminal');
 </script>
 
 </body>
