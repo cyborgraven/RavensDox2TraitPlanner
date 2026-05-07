@@ -225,7 +225,7 @@ h4 { font-size: 13px; }
 label { font-size: 13px; }
 select, input[type=number], input[type=text] { font-size: 13px; padding: 6px; }
 .optimize-buttons button { font-size: 14px; padding: 9px 14px; }
-body.light-mode {
+body.light-mode {–bg-color: #f0f0f0;–section-bg: #fff;–result-bg: #cfe0ff;–sticky-bg: #e0e0ff;–text-color: #000;
 background-color: #f0f0f0 !important;
 color: #000 !important;
 background-image: none !important;
@@ -234,12 +234,7 @@ body.light-mode .section, body.light-mode .sticky-header { background-color: #ff
 body.light-mode .result { background-color: #cfe0ff !important; color: #000 !important; border-color: #99b !important; text-shadow: none !important; }
 body.light-mode h1 { color: #333 !important; text-shadow: none !important; }
 body.light-mode h2, body.light-mode h3, body.light-mode h4 { color: #333 !important; }
-body.light-mode p, body.light-mode small { color: #333 !important; }
-body.light-mode label { color: #222 !important; }
-body.light-mode span { color: #000 !important; }
-body.light-mode li, body.light-mode ol, body.light-mode ul { color: #333 !important; }
-body.light-mode strong, body.light-mode b { color: #000 !important; }
-body.light-mode a { color: #0044cc !important; }
+body.light-mode label, body.light-mode p, body.light-mode small, body.light-mode span { color: #000 !important; }
 body.light-mode select,
 body.light-mode input[type=number],
 body.light-mode input[type=text] {
@@ -251,20 +246,9 @@ body.light-mode select {
 background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23333’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”) !important;
 }
 body.light-mode button { background-color: #6c757d !important; color: #fff !important; border-color: #555 !important; }
-body.light-mode .header-bottom .clear-buttons button { background-color: #e0e0ff !important; color: #333 !important; border-color: #aaa !important; }
+body.light-mode .header-bottom .clear-buttons button,
 body.light-mode .sticky-header { background-color: #e0e0ff !important; }
 body.light-mode .warning { color: #cc0000 !important; text-shadow: none !important; }
-body.light-mode .combined-section, body.light-mode .flex-row { color: #222 !important; }
-body.light-mode .exclusions label { color: #333 !important; }
-body.light-mode #speed-context, body.light-mode #pygmySpeedContext { color: #333 !important; }
-body.light-mode #mountResultArea, body.light-mode #pygmyResultArea { background: #f7f7ff !important; border-color: #ccc !important; }
-body.light-mode #mountResultArea h2, body.light-mode #pygmyResultArea h2 { color: #333 !important; }
-body.light-mode #mountResultArea div, body.light-mode #pygmyResultArea div { color: #333 !important; }
-body.light-mode .pygmy-slots .pygmy-slot-group label { color: #333 !important; }
-body.light-mode .pygmy-slot-group input[type=number] { background: #fff !important; color: #000 !important; border-color: #aaa !important; }
-body.light-mode .pygmy-type-check { background: #f0f0ff !important; border-color: #aaa !important; }
-body.light-mode .pygmy-type-check span { color: #222 !important; }
-body.light-mode #pygmySlotNote { color: #555 !important; }
 
 /* Light mode: guide content */
 body.light-mode #guideContent {
@@ -348,20 +332,109 @@ background-color: #003300;
 color: #00ff41 !important;
 box-shadow: 0 0 8px rgba(0,255,65,0.35);
 }
-#toggleTheme {
-font-size: 14px;
-padding: 9px 18px;
-border-radius: 4px;
-cursor: pointer;
-background-color: #003300;
-color: #00ff41 !important;
-border: 1px solid #00cc00;
-margin-bottom: 14px;
-font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
-text-shadow: 0 0 6px rgba(0,255,65,0.5);
-box-shadow: 0 0 8px rgba(0,255,65,0.2);
+/* ── Theme Selector ── */
+.theme-selector-wrap {
+display: flex; align-items: center; justify-content: center;
+gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
 }
-#toggleTheme:hover { box-shadow: 0 0 14px rgba(0,255,65,0.5); }
+.theme-selector-wrap label {
+font-size: 12px; letter-spacing: 2px;
+text-transform: uppercase; margin: 0 !important;
+}
+#themeSelect {
+font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
+font-size: 13px; padding: 7px 28px 7px 12px;
+background: #003300; color: #00ff41;
+border: 1px solid #007700; border-radius: 4px;
+cursor: pointer; -webkit-appearance: none; appearance: none;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘6’ viewBox=‘0 0 10 6’%3E%3Cpath fill=’%2300cc00’ d=‘M5 6L0 0h10z’/%3E%3C/svg%3E”);
+background-repeat: no-repeat; background-position: right 10px center;
+}
+#themeSelect:focus { outline: none; border-color: #00ff41; }
+
+/* ── THEME: Midnight ── */
+body.theme-midnight { background-color: #0a0c14 !important; color: #8899cc !important; }
+body.theme-midnight .section { background-color: #0f1220 !important; border-color: #1e2540 !important; }
+body.theme-midnight .sticky-header { background-color: #080b18 !important; border-color: #1e2540 !important; box-shadow: 0 4px 12px rgba(100,130,220,0.1) !important; }
+body.theme-midnight h1 { color: #aabbee !important; text-shadow: 0 0 20px rgba(150,180,255,0.3) !important; }
+body.theme-midnight h2, body.theme-midnight h3, body.theme-midnight h4 { color: #99aadd !important; }
+body.theme-midnight p, body.theme-midnight small, body.theme-midnight li { color: #8899cc !important; }
+body.theme-midnight label, body.theme-midnight span { color: #8899cc !important; }
+body.theme-midnight strong, body.theme-midnight b { color: #aabbee !important; }
+body.theme-midnight button { background-color: #1a2040 !important; color: #aabbee !important; border-color: #445588 !important; }
+body.theme-midnight button:hover { background-color: #222a50 !important; box-shadow: 0 0 8px rgba(100,130,220,0.3) !important; }
+body.theme-midnight select, body.theme-midnight input[type=number], body.theme-midnight input[type=text] { background: #0c1020 !important; color: #aabbee !important; border-color: #2a3560 !important; }
+body.theme-midnight .stat-panel { background: #1e2540 !important; border-color: #1e2540 !important; }
+body.theme-midnight .stat-panel-cell { background: #0e1428 !important; }
+body.theme-midnight .stat-panel-label { color: #445588 !important; }
+body.theme-midnight .stat-panel-mult { color: #aabbee !important; text-shadow: 0 0 8px rgba(150,180,255,0.4) !important; }
+body.theme-midnight .stat-panel-cell.dr-over .stat-panel-mult { color: #ffaa00 !important; }
+body.theme-midnight .mode-switch { border-color: #445588 !important; }
+body.theme-midnight .mode-switch button { background: #0a0c14 !important; color: #8899cc !important; border-color: #445588 !important; }
+body.theme-midnight .mode-switch button.active { background: #1a2040 !important; color: #aabbee !important; }
+body.theme-midnight .tdb-card, body.theme-midnight .armor-card, body.theme-midnight .wc-card, body.theme-midnight .primo-card { background: #0f1220 !important; border-color: #1e2540 !important; }
+body.theme-midnight .tdb-card-name, body.theme-midnight .armor-card-name, body.theme-midnight .wc-card-name, body.theme-midnight .primo-card-name { color: #aabbee !important; }
+body.theme-midnight .score-reveal { background: #0f1220 !important; border-color: #1e2540 !important; }
+body.theme-midnight .exclusions label { color: #8899cc !important; }
+body.theme-midnight .tdb-stat.pos span:last-child { color: #aabbee !important; }
+body.theme-midnight .tdb-stat.neg span:last-child { color: #ff6666 !important; }
+body.theme-midnight .tdb-category-title { color: #445588 !important; }
+body.theme-midnight .tdb-category-title span { color: #aabbee !important; }
+body.theme-midnight .armor-card-header { background: #0d1020 !important; }
+body.theme-midnight .armor-bonus-tier { background: #0a0c18 !important; color: #445588 !important; border-color: #1e2540 !important; }
+body.theme-midnight .armor-pieces-table th { color: #445588 !important; }
+body.theme-midnight .armor-pieces-table td { color: #8899cc !important; }
+body.theme-midnight .armor-max-row td { color: #aabbee !important; background: #0d1020 !important; }
+body.theme-midnight .pygmy-stat-row { background: #0f1220 !important; border-color: #1e2540 !important; }
+body.theme-midnight .pygmy-stat-row h4 { color: #aabbee !important; }
+body.theme-midnight .score-reveal-score, body.theme-midnight .score-reveal-stats { color: #8899cc !important; }
+body.theme-midnight .lb-panel, body.theme-midnight .lb-screenshot-submit { background: #0f1220 !important; border-color: #1e2540 !important; }
+body.theme-midnight .lb-table th { color: #445588 !important; }
+body.theme-midnight .lb-table td { color: #8899cc !important; }
+body.theme-midnight .lb-extracted-stats { background: #0e1428 !important; border-color: #1e2540 !important; }
+body.theme-midnight .lb-extracted-stat-val { color: #aabbee !important; text-shadow: none !important; }
+
+/* ── THEME: Amber ── */
+body.theme-amber { background-color: #0f0c07 !important; color: #cc9900 !important; }
+body.theme-amber .section { background-color: #1a1408 !important; border-color: #3a2c10 !important; }
+body.theme-amber .sticky-header { background-color: #0c0a05 !important; border-color: #3a2c10 !important; box-shadow: 0 4px 12px rgba(200,150,0,0.1) !important; }
+body.theme-amber h1 { color: #ffcc44 !important; text-shadow: 0 0 20px rgba(255,180,0,0.3) !important; }
+body.theme-amber h2, body.theme-amber h3, body.theme-amber h4 { color: #ddaa33 !important; }
+body.theme-amber p, body.theme-amber small, body.theme-amber li { color: #cc9900 !important; }
+body.theme-amber label, body.theme-amber span { color: #cc9900 !important; }
+body.theme-amber strong, body.theme-amber b { color: #ffcc44 !important; }
+body.theme-amber button { background-color: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; }
+body.theme-amber button:hover { background-color: #3a2c0a !important; box-shadow: 0 0 8px rgba(200,150,0,0.3) !important; }
+body.theme-amber select, body.theme-amber input[type=number], body.theme-amber input[type=text] { background: #120f06 !important; color: #ffcc44 !important; border-color: #553f00 !important; }
+body.theme-amber .stat-panel { background: #3a2c10 !important; border-color: #3a2c10 !important; }
+body.theme-amber .stat-panel-cell { background: #1a1408 !important; }
+body.theme-amber .stat-panel-label { color: #886600 !important; }
+body.theme-amber .stat-panel-mult { color: #ffcc44 !important; text-shadow: 0 0 8px rgba(255,180,0,0.4) !important; }
+body.theme-amber .stat-panel-cell.dr-over .stat-panel-mult { color: #ff6644 !important; }
+body.theme-amber .mode-switch { border-color: #886600 !important; }
+body.theme-amber .mode-switch button { background: #0f0c07 !important; color: #cc9900 !important; border-color: #886600 !important; }
+body.theme-amber .mode-switch button.active { background: #2a1e05 !important; color: #ffcc44 !important; }
+body.theme-amber .tdb-card, body.theme-amber .armor-card, body.theme-amber .wc-card, body.theme-amber .primo-card { background: #1a1408 !important; border-color: #3a2c10 !important; }
+body.theme-amber .tdb-card-name, body.theme-amber .armor-card-name, body.theme-amber .wc-card-name, body.theme-amber .primo-card-name { color: #ffcc44 !important; }
+body.theme-amber .score-reveal { background: #1a1408 !important; border-color: #3a2c10 !important; }
+body.theme-amber .exclusions label { color: #cc9900 !important; }
+body.theme-amber .tdb-stat.pos span:last-child { color: #ffcc44 !important; }
+body.theme-amber .tdb-stat.neg span:last-child { color: #ff4444 !important; }
+body.theme-amber .tdb-category-title { color: #886600 !important; }
+body.theme-amber .tdb-category-title span { color: #ffcc44 !important; }
+body.theme-amber .armor-card-header { background: #140f04 !important; }
+body.theme-amber .armor-bonus-tier { background: #0f0c07 !important; color: #886600 !important; border-color: #3a2c10 !important; }
+body.theme-amber .armor-pieces-table th { color: #886600 !important; }
+body.theme-amber .armor-pieces-table td { color: #cc9900 !important; }
+body.theme-amber .armor-max-row td { color: #ffcc44 !important; background: #140f04 !important; }
+body.theme-amber .pygmy-stat-row { background: #1a1408 !important; border-color: #3a2c10 !important; }
+body.theme-amber .pygmy-stat-row h4 { color: #ffcc44 !important; }
+body.theme-amber .score-reveal-score, body.theme-amber .score-reveal-stats { color: #cc9900 !important; }
+body.theme-amber .lb-panel, body.theme-amber .lb-screenshot-submit { background: #1a1408 !important; border-color: #3a2c10 !important; }
+body.theme-amber .lb-table th { color: #886600 !important; }
+body.theme-amber .lb-table td { color: #cc9900 !important; }
+body.theme-amber .lb-extracted-stats { background: #140f04 !important; border-color: #3a2c10 !important; }
+body.theme-amber .lb-extracted-stat-val { color: #ffcc44 !important; text-shadow: none !important; }
 
 /* Exclusions */
 .exclusions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
@@ -1145,7 +1218,15 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 </div>
 
 <h1>Raven's Dox2 Trait Planner</h1>
-<div style="text-align:center;"><button id="toggleTheme">&gt; Switch to Light Mode</button></div>
+<div class="theme-selector-wrap">
+  <label for="themeSelect">// Theme:</label>
+  <select id="themeSelect">
+    <option value="terminal">⚡ Terminal</option>
+    <option value="midnight">🌙 Midnight</option>
+    <option value="amber">🔥 Amber</option>
+    <option value="light">☀ Light</option>
+  </select>
+</div>
 
 <!-- Mode Switch -->
 
@@ -3261,16 +3342,22 @@ populateDropdowns();
 calculateFinalStats();
 calculatePygmyFinalStats();
 
-document.getElementById('toggleTheme').onclick = function(){
-  document.body.classList.toggle('light-mode');
-  this.textContent = document.body.classList.contains('light-mode') ? '> Switch to Dark Mode' : '> Switch to Light Mode';
-  localStorage.setItem('plannerTheme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-};
-// Restore theme on load
-if (localStorage.getItem('plannerTheme') === 'light') {
-  document.body.classList.add('light-mode');
-  document.getElementById('toggleTheme').textContent = '> Switch to Dark Mode';
+// ── Theme Switcher ──
+const THEMES = ['terminal', 'midnight', 'amber', 'light'];
+function applyTheme(theme) {
+  document.body.classList.remove('light-mode', 'theme-midnight', 'theme-amber');
+  if (theme === 'light')    document.body.classList.add('light-mode');
+  if (theme === 'midnight') document.body.classList.add('theme-midnight');
+  if (theme === 'amber')    document.body.classList.add('theme-amber');
+  const sel = document.getElementById('themeSelect');
+  if (sel) sel.value = theme;
+  localStorage.setItem('plannerTheme', theme);
 }
+document.getElementById('themeSelect').addEventListener('change', function() {
+  applyTheme(this.value);
+});
+const savedTheme = localStorage.getItem('plannerTheme');
+if (savedTheme && THEMES.includes(savedTheme)) applyTheme(savedTheme);
 
 
 
