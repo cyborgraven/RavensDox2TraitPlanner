@@ -1151,14 +1151,14 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 
   <h3>// Recommended Workflow</h3>
   <ol>
-    <li><b>Set your minimum speed.</b> Decide the lowest Speed % you're willing to accept on your mount and enter it in the Minimum Speed field. The optimizer will always try to meet this before maximizing damage.</li>
+    <li><b>Feed your Corrupt and Greater Strings first (optional).</b> Do this in-game before entering anything here. Then check your mount's buff screen or pick it up to see the current trait power totals.</li>
+    <li><b>Enter your Current Trait Power.</b> Type your mount's current DMG, DR, and Speed % into the Current Trait Power section. The optimizer will build on top of these numbers.</li>
+    <li><b>Set your minimum speed.</b> Decide the lowest Speed % you're willing to accept and enter it in the Minimum Speed field. The optimizer will always try to meet this before maximizing damage.</li>
     <li><b>Set exclusions.</b> If you don't own certain traits yet, select them in the Exclusions section so the optimizer won't suggest them.</li>
-    <li><b>Feed the Corrupt String (optional).</b> If you choose to use a Corrupt String, select which stat it affected and enter the bonus % it gave. Be aware — this carries risk in-game.</li>
-    <li><b>Feed the Greater Strings (optional).</b> Enter the stat and bonus % for up to 3 Greater Strings you've fed your creature.</li>
     <li><b>Select a Mega Trait (optional).</b> Mega traits have powerful secondary effects beyond their raw stat bonus and are often a major build decision. Choose yours before optimizing so the planner accounts for it.</li>
     <li><b>Select a Legendary Trait (optional).</b> Legendary traits are powerful but come with negative modifiers — feed it early so later traits can offset the downsides. Select it here if you plan to use one.</li>
     <li><b>Hit Optimize.</b> The planner will fill your remaining slots with the best combination of traits to hit 75% DR first, then meet your speed requirement, then maximize damage.</li>
-    <li><b>Use the newly generated Recommended Traits section to feed the listed traits in order, and your optimized build is done.</b> Keep in mind you will need paragon 4 and 7 to feed the prime and mega traits.</li>
+    <li><b>Feed the traits listed in the Recommended Traits section.</b> Keep in mind you will need Paragon 4 and 7 to feed Prime and Mega traits.</li>
   </ol>
 
   <h3>// Reading the Results</h3>
@@ -1226,24 +1226,29 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
   </div>
 </div>
 
-<div class="section combined-section">
-  <div>
-    <h2>Corrupt and Greaters <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Feed your creature the Corrupt String and up to 3 Greater Strings before adding regular traits. Enter the stat each one boosted and the % bonus it gave so the planner can account for them.</span></span></h2>
-    <div class="flex-row">
-      <label>Corrupt String Stat: <select id="corruptStat"></select></label>
-      <label>Bonus (%): <input type="number" id="corruptInput" min="-25" max="25" placeholder="Enter -25 to 25%"></label>
+<div class="section">
+  <h2>Current Trait Power</h2>
+  <div class="pygmy-note" style="margin-bottom:12px;">
+    <strong>Feed your Corrupt and Greater Strings first</strong> before entering values here. Then check your mount's buff screen or pick it up to see the current trait power totals and enter them below.
+  </div>
+  <div class="pygmy-stat-inputs">
+    <div class="pygmy-stat-row">
+      <h4>// DAMAGE</h4>
+      <div class="sync-pair">
+        <label>%:</label><input type="number" id="mountDmgPct" placeholder="e.g. 75" step="0.1">
+      </div>
     </div>
-    <div class="flex-row">
-      <label>Greater String 1 Stat: <select id="geneticStat0"></select></label>
-      <label>Bonus (%): <input type="number" id="geneticValue0" min="5" max="10" placeholder="Enter 5-10%"></label>
+    <div class="pygmy-stat-row">
+      <h4>// DR</h4>
+      <div class="sync-pair">
+        <label>%:</label><input type="number" id="mountDRPct" placeholder="e.g. 50" step="0.1">
+      </div>
     </div>
-    <div class="flex-row">
-      <label>Greater String 2 Stat: <select id="geneticStat1"></select></label>
-      <label>Bonus (%): <input type="number" id="geneticValue1" min="5" max="10" placeholder="Enter 5-10%"></label>
-    </div>
-    <div class="flex-row">
-      <label>Greater String 3 Stat: <select id="geneticStat2"></select></label>
-      <label>Bonus (%): <input type="number" id="geneticValue2" min="5" max="10" placeholder="Enter 5-10%"></label>
+    <div class="pygmy-stat-row">
+      <h4>// SPEED</h4>
+      <div class="sync-pair">
+        <label>%:</label><input type="number" id="mountSpdPct" placeholder="e.g. 20" step="0.1">
+      </div>
     </div>
   </div>
 </div>
@@ -1682,9 +1687,8 @@ function populateDropdowns() {
     });
   }
 
-  const statOpts = '<option value="">--Select Stat--</option><option value="Damage">Damage</option><option value="DR">DR</option><option value="Speed">Speed</option>';
-  for (let i = 0; i < 3; i++) document.getElementById('geneticStat' + i).innerHTML = statOpts;
-  document.getElementById('corruptStat').innerHTML = statOpts;
+  const statOpts = ''; // legacy — corrupt/greater stat selects removed
+  void statOpts; // suppress unused warning
 
   for (const cat in traitData) {
     const el = document.getElementById(`exclude${cat}`);
@@ -1701,30 +1705,6 @@ function populateDropdowns() {
 // ============================================================
 const BUILD_IDS = ['W1','W2','W3','N1','N2','N3','A1','A2','A3','UW','U','Prime','Mega','Legendary'];
 
-function getStringBonus() {
-  let d=0, dr=0, s=0;
-  const corruptStat = document.getElementById('corruptStat').value;
-  // FIX: clamp corrupt to its valid range before using
-  const corruptRaw = parseFloat(document.getElementById('corruptInput').value);
-  const corruptVal = isNaN(corruptRaw) ? 0 : Math.min(25, Math.max(-25, corruptRaw));
-  if (corruptStat === 'Damage') d += corruptVal;
-  else if (corruptStat === 'DR') dr += corruptVal;
-  else if (corruptStat === 'Speed') s += corruptVal;
-
-  for (let i = 0; i < 3; i++) {
-    const stat = document.getElementById('geneticStat' + i).value;
-    // FIX: clamp greater string values to 5-10 range before computing
-    const rawVal = parseFloat(document.getElementById('geneticValue' + i).value);
-    const val = isNaN(rawVal) ? 0 : Math.min(10, Math.max(5, rawVal));
-    // Only apply if a value was actually entered (don't apply the min-clamp of 5 to empty fields)
-    const actualVal = isNaN(parseFloat(document.getElementById('geneticValue' + i).value)) ? 0 : val;
-    if (stat === 'Damage') d += actualVal;
-    else if (stat === 'DR') dr += actualVal;
-    else if (stat === 'Speed') s += actualVal;
-  }
-  return {d, dr, s};
-}
-
 function getTraitTotalsFromIds(ids) {
   let d=0, dr=0, s=0;
   for (const id of ids) {
@@ -1738,10 +1718,17 @@ function getTraitTotalsFromIds(ids) {
   return {d, dr, s};
 }
 
+function getMountStartingTotals() {
+  const d  = parseFloat(document.getElementById('mountDmgPct').value) || 0;
+  const dr = parseFloat(document.getElementById('mountDRPct').value)  || 0;
+  const s  = parseFloat(document.getElementById('mountSpdPct').value) || 0;
+  return {d, dr, s};
+}
+
 function getCurrentTotals() {
   const traits = getTraitTotalsFromIds(BUILD_IDS);
-  const strings = getStringBonus();
-  return { Damage: traits.d + strings.d, DR: traits.dr + strings.dr, Speed: traits.s + strings.s };
+  const base = getMountStartingTotals();
+  return { Damage: traits.d + base.d, DR: traits.dr + base.dr, Speed: traits.s + base.s };
 }
 
 // ============================================================
@@ -1828,8 +1815,8 @@ function optimize(mode, withLegendary = false) {
   const userMinS = parseMinSpeed('minSpeed');
 
   let fixedD = 0, fixedDR = 0, fixedS = 0;
-  const sb = getStringBonus();
-  fixedD += sb.d; fixedDR += sb.dr; fixedS += sb.s;
+  const base = getMountStartingTotals();
+  fixedD += base.d; fixedDR += base.dr; fixedS += base.s;
 
   const optimizeForCloning = document.getElementById('optimizeForCloning')?.checked;
 
@@ -2016,8 +2003,7 @@ function clearOptimizedTraits() {
 
 function clearAll() {
   MAIN_GROUPS.forEach(g => g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }));
-  ['corruptStat','corruptInput','targetHP','minSpeed'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  for (let i=0;i<3;i++) { document.getElementById('geneticStat'+i).value=''; document.getElementById('geneticValue'+i).value=''; }
+  ['mountDmgPct','mountDRPct','mountSpdPct','targetHP','minSpeed'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   for (const cat in traitData) { const el=document.getElementById(`exclude${cat}`); if(el) Array.from(el.options).forEach(o=>o.selected=false); }
   document.getElementById('speed-context').innerHTML='';
   window._mountOptimized = false;
@@ -3360,10 +3346,10 @@ function enforceRange(id, min, max){
     }
   });
 }
-enforceRange('corruptInput', -25, 25);
-enforceRange('geneticValue0', 5, 10);
-enforceRange('geneticValue1', 5, 10);
-enforceRange('geneticValue2', 5, 10);
+// Mount current trait power inputs — recalculate on change
+['mountDmgPct','mountDRPct','mountSpdPct'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', calculateFinalStats);
+});
 
 // ============================================================
 // WILDCARD TRAIT DATABASE
