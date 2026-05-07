@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOX2 Beginner Guide — Raven's Compendium</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+background: #060e06 !important;
+color: #00cc00 !important;
+font-family: ‘Share Tech Mono’, ‘Courier New’, monospace;
+line-height: 1.7;
+padding: 0 0 60px;
+}
+
+/* ── Header ── */
+.guide-header {
+background: #040c04;
+border-bottom: 2px solid #007700;
+padding: 28px 24px 20px;
+text-align: center;
+box-shadow: 0 4px 20px rgba(0,255,65,0.1);
+}
+.guide-header .subtitle {
+font-size: 11px; letter-spacing: 4px; color: #007700;
+text-transform: uppercase; margin-bottom: 8px;
+}
+.guide-header h1 {
+font-size: 28px; color: #00ff41;
+text-shadow: 0 0 20px rgba(0,255,65,0.5);
+letter-spacing: 2px; margin-bottom: 8px;
+}
+.guide-header .tagline {
+font-size: 13px; color: #00aa00;
+}
+
+/* ── Navigation ── */
+.guide-nav {
+background: #070f07;
+border-bottom: 1px solid #005500;
+padding: 12px 24px;
+display: -webkit-flex; display: flex; gap: 6px; -webkit-flex-wrap: wrap; flex-wrap: wrap;
+}
+.guide-nav a {
+color: #007700 !important; text-decoration: none;
+font-size: 12px; padding: 4px 10px;
+border: 1px solid #003300; border-radius: 3px;
+transition: all 0.15s;
+}
+.guide-nav a:hover {
+color: #00ff41; border-color: #007700;
+background: #0a1a0a;
+}
+
+/* ── Container ── */
+.guide-container {
+max-width: 860px; margin: 0 auto; padding: 0 20px;
+}
+
+/* ── Sections ── */
+.guide-section {
+display: block;
+margin: 28px 0;
+background: #0a140a;
+border: 1px solid #005500;
+border-radius: 5px;
+overflow: hidden;
+-webkit-border-radius: 5px;
+}
+.guide-section-header {
+display: -webkit-flex;
+display: flex;
+-webkit-align-items: center;
+align-items: center;
+gap: 12px;
+background: #0a2a0a;
+border-bottom: 1px solid #005500;
+padding: 14px 20px;
+}
+.guide-section-icon { font-size: 20px; }
+.guide-section-header h2 {
+font-size: 17px; color: #00ff41;
+letter-spacing: 2px; text-transform: uppercase;
+}
+.guide-section-body { display: block; padding: 20px; background: #0a140a; }
+
+/* ── Typography ── */
+p { margin-bottom: 14px; font-size: 14px; color: #00bb00 !important; }
+p:last-child { margin-bottom: 0; }
+
+h3 {
+font-size: 14px; color: #00ff41;
+letter-spacing: 1px; margin: 20px 0 8px;
+padding-bottom: 4px; border-bottom: 1px solid #002200;
+}
+h3:first-child { margin-top: 0; }
+
+ul, ol {
+padding-left: 22px; margin-bottom: 14px;
+}
+li {
+font-size: 14px; color: #00bb00 !important;
+margin-bottom: 6px; line-height: 1.6;
+}
+li:last-child { margin-bottom: 0; }
+li strong { color: #00ff41; }
+
+/* ── Callout boxes ── */
+.callout {
+border-radius: 4px; padding: 12px 16px;
+margin: 16px 0; font-size: 13px; line-height: 1.7;
+}
+.callout-warn {
+background: #1a1200; border: 1px solid #554400;
+border-left: 4px solid #ffaa00; color: #ccaa00;
+}
+.callout-warn strong { color: #ffaa00; }
+.callout-tip {
+background: #001a1a; border: 1px solid #005555;
+border-left: 4px solid #00aaff; color: #00aacc;
+}
+.callout-tip strong { color: #00aaff; }
+.callout-key {
+background: #001a00; border: 1px solid #005500;
+border-left: 4px solid #00ff41; color: #00aa00;
+}
+.callout-key strong { color: #00ff41; }
+
+/* ── Milestone tracker ── */
+.milestones { list-style: none; padding: 0; }
+.milestone {
+display: flex; gap: 14px; align-items: flex-start;
+padding: 12px 0; border-bottom: 1px solid #002200;
+}
+.milestone:last-child { border-bottom: none; }
+.milestone-num {
+background: #002200; border: 1px solid #004400;
+color: #00ff41; font-size: 13px; font-weight: bold;
+min-width: 28px; height: 28px; border-radius: 3px;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0; margin-top: 1px;
+}
+.milestone-content { flex: 1; }
+.milestone-title {
+font-size: 14px; color: #00ff41;
+margin-bottom: 4px; font-weight: bold;
+}
+.milestone-desc { font-size: 13px; color: #009900; line-height: 1.6; }
+
+/* ── Taming method cards ── */
+.taming-methods {
+display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 12px; margin: 12px 0;
+}
+.taming-card {
+background: #0a1a0a; border: 1px solid #004400;
+border-radius: 4px; padding: 12px 14px;
+}
+.taming-card-title {
+font-size: 13px; font-weight: bold;
+color: #00ff41; margin-bottom: 6px;
+letter-spacing: 1px;
+}
+.taming-card p { font-size: 12px; color: #008800; margin: 0; }
+
+/* ── Hunter XP table ── */
+.hxp-table {
+width: 100%; border-collapse: collapse; font-size: 13px;
+margin: 12px 0;
+}
+.hxp-table th {
+background: #0a2a0a; color: #007700;
+font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+padding: 8px 12px; text-align: left;
+border-bottom: 1px solid #005500;
+}
+.hxp-table td {
+padding: 8px 12px; color: #00bb00;
+border-bottom: 1px solid #002200;
+}
+.hxp-table tr:last-child td { border-bottom: none; }
+.hxp-table td:first-child { color: #00cc00; }
+
+/* ── Priority tags ── */
+.tag {
+display: inline-block; font-size: 10px; letter-spacing: 1px;
+padding: 2px 6px; border-radius: 2px;
+text-transform: uppercase; vertical-align: middle;
+margin-left: 6px;
+}
+.tag-critical { background: #330000; color: #ff4444; border: 1px solid #660000; }
+.tag-important { background: #332200; color: #ffaa00; border: 1px solid #554400; }
+.tag-tip { background: #001133; color: #00aaff; border: 1px solid #003366; }
+
+/* ── Footer ── */
+.guide-footer {
+text-align: center; margin-top: 40px;
+font-size: 12px; color: #004400; padding: 20px;
+border-top: 1px solid #002200;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+.guide-header h1 { font-size: 20px; }
+.guide-section-body { padding: 14px; }
+.taming-methods { grid-template-columns: 1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="guide-header">
+  <div class="subtitle">// Raven's Compendium</div>
+  <h1>DOX2 Beginner Guide</h1>
+  <div class="tagline">You died. It's fine. Everyone dies. Here's what you actually need to know.</div>
+</div>
+
+<nav class="guide-nav">
+  <a href="#overview">Overview</a>
+  <a href="#hunter-xp">Hunter XP</a>
+  <a href="#survival">Survival & Base</a>
+  <a href="#overlord">The Overlord</a>
+  <a href="#artifacts">Artifacts & Dox Bench</a>
+  <a href="#taming">Taming</a>
+  <a href="#breeding">Breeding Strategy</a>
+  <a href="#milestones">Milestone Checklist</a>
+</nav>
+
+<div class="guide-container">
+
+  <!-- OVERVIEW -->
+
+  <div class="guide-section" id="overview">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">⚔</span>
+      <h2>What is DOX2?</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>DOX2 is deliberately one of the hardest mods available for ARK. If you feel like everything is trying to kill you and succeeding — that's DOX2. This guide will help you understand why, and what to do about it.</p>
+      <p>This guide assumes you are comfortable with base ARK. It won't explain how to punch trees or make a campfire. What it will do is explain the DOX2-specific systems that nobody told you about — the ones that are probably responsible for your deaths so far.</p>
+      <div class="callout callout-key">
+        <strong>The core loop in one sentence:</strong> Survive long enough to accumulate Hunter XP → use Hunter XP to tame creatures → use those creatures to kill harder things → unlock the Dox Bench → everything opens up from there.
+      </div>
+    </div>
+  </div>
+
+  <!-- HUNTER XP -->
+
+  <div class="guide-section" id="hunter-xp">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">⚡</span>
+      <h2>Hunter XP</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>Hunter XP is a completely separate progression system from your character's normal ARK leveling. It is the currency of DOX2 — you will spend it on taming creatures and re-rolling enhanced armor at the Dox Shrine.</p>
+
+```
+  <h3>How You Earn It</h3>
+  <p>Hunter XP is earned by killing creatures, either on foot or while mounted on a tame. The amount earned scales with how dangerous the creature is — weak passive creatures award very little, while large aggressive creatures award significantly more. As you grow stronger, prioritize hunting larger and more dangerous targets to build your pool faster.</p>
+
+  <h3>Death = Total Loss <span class="tag tag-critical">Critical</span></h3>
+  <div class="callout callout-warn">
+    <strong>If you die, you lose ALL of your accumulated Hunter XP.</strong> This is not a small penalty. A single careless death can erase hours of grinding. This is intentional — death has real consequences in DOX2.
+  </div>
+
+  <h3>How to Protect It</h3>
+  <p>There are two ways to bank your Hunter XP so death cannot take it:</p>
+  <ul>
+    <li><strong>Hunter XP Orbs</strong> — crafted at the Dox Bench once you have one. Converts your Hunter XP into a physical item you can store in a box. Make these regularly.</li>
+    <li><strong>The Dox Shrine</strong> — acts as a bank with no deposit limit. You can deposit your Hunter XP at any time and withdraw it whenever you need it. This is the safest long-term storage available.</li>
+  </ul>
+  <div class="callout callout-tip">
+    <strong>Tip:</strong> The Dox Shrine requires the Dox Bench to craft, so initially your only protection against death is being careful. Until you have a Shrine or Orbs available, never carry more Hunter XP than you're willing to lose.
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- SURVIVAL & BASE -->
+
+  <div class="guide-section" id="survival">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">🏠</span>
+      <h2>Survival & Building Your Base</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>Your first goal is simple: don't die, gather resources, level up, and find somewhere safe to call home. In DOX2 this is harder than it sounds because the threats are more aggressive and significantly more dangerous than vanilla ARK.</p>
+
+```
+  <h3>Finding a Base Location</h3>
+  <p>Your choice of base location matters more in DOX2 than in most mods. The ideal early base has two qualities:</p>
+  <ul>
+    <li><strong>Fully enclosed</strong> — no creature should be able to see inside from any angle. If they can't see you or your tames they're much less likely to aggro. Metal walls will stop Empowered creatures, Seekers, and Primes from entering — but they offer no reliable protection against Megas and stronger. Against those, avoidance and terrain are your best tools. Build walls, build a roof, seal every gap.</li>
+    <li><strong>Inside a cave if possible</strong> — cave terrain creates natural chokepoints and cover that dramatically improves your ability to avoid or escape threats. The rock walls do the work your structures cannot.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <strong>A note on base defenses:</strong> Boss-type creatures in DOX2 can destroy structures very quickly, and external defenses may draw aggro from powerful enemies that they cannot meaningfully damage in return. Many experienced players find that an enclosed, hidden base outperforms a defended one — if enemies never see your base, they never engage it. Weigh this when deciding how to build yours.
+  </div>
+
+  <h3>Early Priorities</h3>
+  <ol>
+    <li>Find a safe, enclosed location — cave interiors are ideal</li>
+    <li>Build basic shelter with no visual gaps to the outside</li>
+    <li>Craft a <strong>Modded Spyglass</strong> as soon as possible (see Taming section) — the vanilla spyglass does not show taming information</li>
+    <li>Kill creatures carefully and intentionally — every death costs Hunter XP</li>
+    <li>Level up your character to unlock more advanced structures and items to help you progress more efficiently</li>
+  </ol>
+</div>
+```
+
+  </div>
+
+  <!-- THE OVERLORD -->
+
+  <div class="guide-section" id="overlord">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">👁</span>
+      <h2>The Overlord</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>The Overlord is the mod's final boss — a massive creature that periodically traverses the entire map. He is not a creature you will fight early. He is a force of nature you will learn to survive.</p>
+
+```
+  <h3>How a Flyby Works</h3>
+  <p>At random intervals, the Overlord will appear at the edge of the map and fly across it in one direction before disappearing off the other side. His speed varies — sometimes he crosses quickly, sometimes he lingers. You will know he is coming from both a visual cue and an audio cue. Pay attention to both.</p>
+
+  <h3>Empowered Creatures <span class="tag tag-critical">Immediate Threat</span></h3>
+  <p>When the Overlord appears, random creatures near players across the map begin to become <strong>Empowered</strong>. You will recognize them by their yellowish glow and smoky aura. Empowered creatures are dramatically more dangerous than their normal versions:</p>
+  <ul>
+    <li>Instantly aggressive — they will aggro on you from very long distances</li>
+    <li>Increased damage, damage reduction, and speed</li>
+    <li>Will not stop chasing you the way normal creatures might</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <strong>As a new player, you cannot fight Empowered creatures.</strong> Do not try. Get inside your fully enclosed base and wait it out. Empowered creatures despawn roughly 5 to 7 minutes after the Overlord leaves the map. Stay hidden until they are gone.
+  </div>
+
+  <h3>Why You Eventually Want Them</h3>
+  <p>Once you have capable tames, Empowered creatures become your most reliable early source of <strong>Artifact Fragments</strong> — the key ingredient for crafting your Dox Bench. They almost always drop them. At that point the Overlord's flyby becomes an opportunity, not a threat to hide from.</p>
+</div>
+```
+
+  </div>
+
+  <!-- ARTIFACTS & DOX BENCH -->
+
+  <div class="guide-section" id="artifacts">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">🔧</span>
+      <h2>Artifact Fragments & the Dox Bench</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>The Dox Bench is the central crafting station of the mod. Most of the important DOX2 items are crafted there. Getting your first Dox Bench is your most important early milestone.</p>
+
+```
+  <h3>What You Need</h3>
+  <p>The Dox Bench requires <strong>Artifact Fragments</strong> to craft. These drop from some of the weaker boss-type creatures in the mod. You have several sources:</p>
+  <ul>
+    <li><strong>Empowered creatures</strong> — your best early option. Almost always drop fragments and are the weakest of the fragment sources. Target these first.</li>
+    <li><strong>Other boss-type creatures</strong> (Primes, Megas, Seekers) — all drop fragments, though these are significantly more dangerous and unlikely to be your first source</li>
+  </ul>
+
+  <div class="callout callout-key">
+    <strong>Strategy:</strong> Your first fragments will almost certainly come from Empowered creatures during an Overlord flyby. This means your path to the Dox Bench runs through having a tame capable of killing Empowered creatures — which means taming is your immediate priority once you have a stable base.
+  </div>
+
+  <h3>What the Dox Bench Unlocks</h3>
+  <p>Once built, the Dox Bench opens up the full DOX2 progression including Hunter XP Orbs to protect your XP from death, enhanced crafting, and access to the deeper systems the mod offers. Getting here is the end of the beginning.</p>
+</div>
+```
+
+  </div>
+
+  <!-- TAMING -->
+
+  <div class="guide-section" id="taming">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">🦎</span>
+      <h2>Taming</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>Taming in DOX2 is very different from vanilla ARK. While kibble is still used as preferred food for many creatures, the knockout-and-narcotics approach is largely gone. Taming costs <strong>Hunter XP</strong> and requires reading each creature individually before you approach it.</p>
+
+```
+  <h3>Get a Modded Spyglass First <span class="tag tag-important">Do This Immediately</span></h3>
+  <p>Before you attempt to tame anything, craft either the <strong>Awesome Spyglass</strong> or <strong>Nanoh's Spyglass</strong>. These show you critical information when you look at a creature:</p>
+  <ul>
+    <li>How much Hunter XP each feeding will cost</li>
+    <li>What food the creature prefers</li>
+    <li>Whether the creature has a debuff currently preventing taming</li>
+    <li>Whether the creature requires a special or vanilla taming method</li>
+  </ul>
+  <p>Never approach a tame blind. The spyglass tells you everything you need to know and will save you wasted Hunter XP constantly.</p>
+
+  <h3>The Three Taming Methods</h3>
+  <div class="taming-methods">
+    <div class="taming-card">
+      <div class="taming-card-title">// Hand Feeding</div>
+      <p>Put the preferred food in your last hotbar slot, walk up to the creature and press the interact button, then feed it at intervals as prompted. Uses the least food overall — best for passive or non-aggressive creatures early on. Takes longer but costs less Hunter XP total.</p>
+    </div>
+    <div class="taming-card">
+      <div class="taming-card-title">// The Drop Method</div>
+      <p>Drop the preferred food on the ground within 30 meters and wait for the creature to eat it automatically until tamed. Faster but uses more food. Clear the area of other creatures first — anything nearby can eat the food and waste your Hunter XP.</p>
+    </div>
+    <div class="taming-card">
+      <div class="taming-card-title">// Special Method</div>
+      <p>Some creatures have unique taming mechanics — mini-games, specific interactions, or even vanilla taming mechanics specific to that creature type. The spyglass should let you know when a creature may require a special taming method, or may display "Vanilla" in the spyglass view — indicating you need to use whatever the vanilla taming method is for that specific creature.</p>
+    </div>
+  </div>
+
+  <h3>Important Taming Rules</h3>
+  <ul>
+    <li><strong>Any damage resets taming progress to zero.</strong> Protect your tame during the process — clear the area before starting.</li>
+    <li><strong>A creature that has recently made a kill receives a taming lockout debuff.</strong> This temporarily prevents it from being tamed for a short countdown period. The spyglass will show this when you look at the creature. Wait for the timer to expire before attempting to tame it.</li>
+    <li><strong>Some creatures have temporary debuffs</strong> that block taming regardless of what you do. Check the spyglass — if it's debuffed, come back later.</li>
+    <li><strong>Hunter XP is consumed per feeding</strong> — you need enough Hunter XP for the full tame before you start, not just the first feeding. If you need to leave a tame in progress, you have roughly 10 minutes before the taming resets. Returning within that window is generally safe; any longer and you risk losing your progress.</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <strong>Early Taming Tip:</strong> Start with passive herbivores and non-aggressive creatures using hand feeding. They cost the least Hunter XP, pose the lowest risk during the tame, and give you practice with the system before you attempt anything dangerous.
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- BREEDING STRATEGY -->
+
+  <div class="guide-section" id="breeding">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">🥚</span>
+      <h2>Breeding Strategy</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>Once you have tames, the next goal is establishing breeding groups. Up to five creatures of the same species can be grouped together and set to breed. This is a core survival strategy in DOX2.</p>
+
+```
+  <h3>Why Pairs, Not Singles</h3>
+  <p>A single tamed creature is not a safe investment. The content in DOX2 is designed to kill your mounts. If you lose your only tame you're back to hunting on foot. Breeding pairs act as a backup system — your babies are replaceable copies of your mounts that you can raise and field in combat while keeping your breeders safely at home.</p>
+
+  <div class="callout callout-key">
+    <strong>Think of it this way:</strong> your breeding pair stays in base. Their offspring go to war. When a fighter dies, you hatch another. Your breeding pair is your most valuable asset — protect them accordingly.
+  </div>
+
+  <h3>Getting Your First Pairs</h3>
+  <p>There are two main approaches players use:</p>
+  <ul>
+    <li><strong>Tame two of the same species</strong> — straightforward but costs double the Hunter XP. Worth it for the security.</li>
+    <li><strong>Use the Finder Mod to locate wild babies</strong> — find a baby in the wild, kill the parents, then claim the baby and raise it yourself. This is a popular strategy for getting breeding stock without spending as much Hunter XP on taming.</li>
+  </ul>
+
+  <h3>What to Breed Toward</h3>
+  <p>Early on you want reliable fighters that can handle Empowered creatures during Overlord flybys — those are your ticket to Artifact Fragments and your Dox Bench. Once you have your bench and Hunter XP Orbs, you can start the deeper work of building optimized base stats, mutating your bloodlines, and then working on traits for your mounts and Pygmys. Note that traits are not passed to offspring — only base stats are — so mutation work and trait feeding are separate phases of progression.</p>
+
+  <div class="callout callout-tip">
+    <strong>Tip:</strong> Once you're ready to optimize your mounts and maximize their trait power, check out the Trait Planner on this site. It will calculate the best combination of traits to feed your creatures and grade your build.
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- MILESTONE CHECKLIST -->
+
+  <div class="guide-section" id="milestones">
+    <div class="guide-section-header">
+      <span class="guide-section-icon">✓</span>
+      <h2>Early Game Milestone Checklist</h2>
+    </div>
+    <div class="guide-section-body">
+      <p>Use this as a rough progression roadmap. Steps don't have to be completed in perfect order, but this sequence will give you the smoothest path through the early game.</p>
+
+```
+  <ul class="milestones">
+    <li class="milestone">
+      <div class="milestone-num">1</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Find and secure a base location</div>
+        <div class="milestone-desc">Ideally inside a cave. Build a fully enclosed structure with no visual gaps — nothing should be able to see inside. No turrets or external defenses.</div>
+      </div>
+    </li>
+    <li class="milestone">
+      <div class="milestone-num">2</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Craft a modded spyglass</div>
+        <div class="milestone-desc">Awesome Spyglass or Nanoh's Spyglass. Do not attempt taming without one. This is non-negotiable.</div>
+      </div>
+    </li>
+    <li class="milestone">
+      <div class="milestone-num">3</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Accumulate Hunter XP and tame your first breeding group</div>
+        <div class="milestone-desc">Target passive or non-aggressive creatures first using hand feeding. Use the spyglass to check costs before committing. Also search for wild babies using the Finder Mod — claiming a baby requires no Hunter XP or kibble and is one of the easiest ways to start building breeding stock.</div>
+      </div>
+    </li>
+    <li class="milestone">
+      <div class="milestone-num">4</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Survive your first Overlord flyby</div>
+        <div class="milestone-desc">Stay alert for the Overlord's presence. When he appears, get to safety quickly and stay hidden if possible — Empowered creatures will rob you of your Hunter XP swiftly if you fail to react in time.</div>
+      </div>
+    </li>
+    <li class="milestone">
+      <div class="milestone-num">5</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Build up your tames and establish breeding</div>
+        <div class="milestone-desc">Get at least one breeding pair established and producing offspring. Your breeders stay in base — their babies fight.</div>
+      </div>
+    </li>
+    <li class="milestone">
+      <div class="milestone-num">6</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Collect Artifact Fragments from Empowered creatures</div>
+        <div class="milestone-desc">Once your fighters are capable, use Overlord flybys as an opportunity to hunt Empowered creatures. Keep your breeders safely in base and field only your fighters. It will likely take several flybys before your mounts are strong enough — that's normal. They almost always drop Artifact Fragments when killed.</div>
+      </div>
+    </li>
+    <li class="milestone">
+      <div class="milestone-num">7</div>
+      <div class="milestone-content">
+        <div class="milestone-title">Craft your Dox Bench</div>
+        <div class="milestone-desc">This is the end of the beginning. Craft Hunter XP Orbs immediately — your accumulated Hunter XP is now safe from death for the first time.</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="callout callout-key" style="margin-top:20px;">
+    <strong>You've completed one of the hardest steps in your progression — congratulations.</strong> Now the real work begins. Craft Hunter XP Orbs to protect your stash, learn how traits work, and push into harder content to get the materials you need to grow your power. This guide will continue to evolve and hopefully help you on your journey. Return to it anytime, and be sure to use the Trait Planner and available databases when you're ready.
+  </div>
+</div>
+```
+
+  </div>
+
+</div><!-- end guide-container -->
+
+<div class="guide-footer">
+  // Raven's DOX2 Compendium &nbsp;·&nbsp; Guide content based on community knowledge &nbsp;·&nbsp; Values subject to change with mod updates
+</div>
+
+</body>
+</html>
