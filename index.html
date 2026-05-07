@@ -225,7 +225,7 @@ h4 { font-size: 13px; }
 label { font-size: 13px; }
 select, input[type=number], input[type=text] { font-size: 13px; padding: 6px; }
 .optimize-buttons button { font-size: 14px; padding: 9px 14px; }
-body.light-mode {–bg-color: #f0f0f0;–section-bg: #fff;–result-bg: #cfe0ff;–sticky-bg: #e0e0ff;–text-color: #000;
+body.light-mode {
 background-color: #f0f0f0 !important;
 color: #000 !important;
 background-image: none !important;
@@ -234,7 +234,12 @@ body.light-mode .section, body.light-mode .sticky-header { background-color: #ff
 body.light-mode .result { background-color: #cfe0ff !important; color: #000 !important; border-color: #99b !important; text-shadow: none !important; }
 body.light-mode h1 { color: #333 !important; text-shadow: none !important; }
 body.light-mode h2, body.light-mode h3, body.light-mode h4 { color: #333 !important; }
-body.light-mode label, body.light-mode p, body.light-mode small, body.light-mode span { color: #000 !important; }
+body.light-mode p, body.light-mode small { color: #333 !important; }
+body.light-mode label { color: #222 !important; }
+body.light-mode span { color: #000 !important; }
+body.light-mode li, body.light-mode ol, body.light-mode ul { color: #333 !important; }
+body.light-mode strong, body.light-mode b { color: #000 !important; }
+body.light-mode a { color: #0044cc !important; }
 body.light-mode select,
 body.light-mode input[type=number],
 body.light-mode input[type=text] {
@@ -246,9 +251,20 @@ body.light-mode select {
 background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath fill=’%23333’ d=‘M6 8L0 0h12z’/%3E%3C/svg%3E”) !important;
 }
 body.light-mode button { background-color: #6c757d !important; color: #fff !important; border-color: #555 !important; }
-body.light-mode .header-bottom .clear-buttons button,
+body.light-mode .header-bottom .clear-buttons button { background-color: #e0e0ff !important; color: #333 !important; border-color: #aaa !important; }
 body.light-mode .sticky-header { background-color: #e0e0ff !important; }
 body.light-mode .warning { color: #cc0000 !important; text-shadow: none !important; }
+body.light-mode .combined-section, body.light-mode .flex-row { color: #222 !important; }
+body.light-mode .exclusions label { color: #333 !important; }
+body.light-mode #speed-context, body.light-mode #pygmySpeedContext { color: #333 !important; }
+body.light-mode #mountResultArea, body.light-mode #pygmyResultArea { background: #f7f7ff !important; border-color: #ccc !important; }
+body.light-mode #mountResultArea h2, body.light-mode #pygmyResultArea h2 { color: #333 !important; }
+body.light-mode #mountResultArea div, body.light-mode #pygmyResultArea div { color: #333 !important; }
+body.light-mode .pygmy-slots .pygmy-slot-group label { color: #333 !important; }
+body.light-mode .pygmy-slot-group input[type=number] { background: #fff !important; color: #000 !important; border-color: #aaa !important; }
+body.light-mode .pygmy-type-check { background: #f0f0ff !important; border-color: #aaa !important; }
+body.light-mode .pygmy-type-check span { color: #222 !important; }
+body.light-mode #pygmySlotNote { color: #555 !important; }
 
 /* Light mode: guide content */
 body.light-mode #guideContent {
@@ -1151,14 +1167,14 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 
   <h3>// Recommended Workflow</h3>
   <ol>
-    <li><b>Feed your Corrupt and Greater Strings first (optional).</b> Do this in-game before entering anything here. Then check your mount's buff screen or pick it up to see the current trait power totals.</li>
-    <li><b>Enter your Current Trait Power.</b> Type your mount's current DMG, DR, and Speed % into the Current Trait Power section. The optimizer will build on top of these numbers.</li>
-    <li><b>Set your minimum speed.</b> Decide the lowest Speed % you're willing to accept and enter it in the Minimum Speed field. The optimizer will always try to meet this before maximizing damage.</li>
+    <li><b>Set your minimum speed.</b> Decide the lowest Speed % you're willing to accept on your mount and enter it in the Minimum Speed field. The optimizer will always try to meet this before maximizing damage.</li>
     <li><b>Set exclusions.</b> If you don't own certain traits yet, select them in the Exclusions section so the optimizer won't suggest them.</li>
+    <li><b>Feed the Corrupt String (optional).</b> If you choose to use a Corrupt String, select which stat it affected and enter the bonus % it gave. Be aware — this carries risk in-game.</li>
+    <li><b>Feed the Greater Strings (optional).</b> Enter the stat and bonus % for up to 3 Greater Strings you've fed your creature.</li>
     <li><b>Select a Mega Trait (optional).</b> Mega traits have powerful secondary effects beyond their raw stat bonus and are often a major build decision. Choose yours before optimizing so the planner accounts for it.</li>
     <li><b>Select a Legendary Trait (optional).</b> Legendary traits are powerful but come with negative modifiers — feed it early so later traits can offset the downsides. Select it here if you plan to use one.</li>
     <li><b>Hit Optimize.</b> The planner will fill your remaining slots with the best combination of traits to hit 75% DR first, then meet your speed requirement, then maximize damage.</li>
-    <li><b>Feed the traits listed in the Recommended Traits section.</b> Keep in mind you will need Paragon 4 and 7 to feed Prime and Mega traits.</li>
+    <li><b>Use the newly generated Recommended Traits section to feed the listed traits in order, and your optimized build is done.</b> Keep in mind you will need paragon 4 and 7 to feed the prime and mega traits.</li>
   </ol>
 
   <h3>// Reading the Results</h3>
@@ -1226,29 +1242,24 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
   </div>
 </div>
 
-<div class="section">
-  <h2>Current Trait Power</h2>
-  <div class="pygmy-note" style="margin-bottom:12px;">
-    <strong>Feed your Corrupt and Greater Strings first</strong> before entering values here. Then check your mount's buff screen or pick it up to see the current trait power totals and enter them below.
-  </div>
-  <div class="pygmy-stat-inputs">
-    <div class="pygmy-stat-row">
-      <h4>// DAMAGE</h4>
-      <div class="sync-pair">
-        <label>%:</label><input type="number" id="mountDmgPct" placeholder="e.g. 75" step="0.1">
-      </div>
+<div class="section combined-section">
+  <div>
+    <h2>Corrupt and Greaters <span class="tip-wrap"><span class="tip-icon">?</span><span class="tip-box">Feed your creature the Corrupt String and up to 3 Greater Strings before adding regular traits. Enter the stat each one boosted and the % bonus it gave so the planner can account for them.</span></span></h2>
+    <div class="flex-row">
+      <label>Corrupt String Stat: <select id="corruptStat"></select></label>
+      <label>Bonus (%): <input type="number" id="corruptInput" min="-25" max="25" placeholder="Enter -25 to 25%"></label>
     </div>
-    <div class="pygmy-stat-row">
-      <h4>// DR</h4>
-      <div class="sync-pair">
-        <label>%:</label><input type="number" id="mountDRPct" placeholder="e.g. 50" step="0.1">
-      </div>
+    <div class="flex-row">
+      <label>Greater String 1 Stat: <select id="geneticStat0"></select></label>
+      <label>Bonus (%): <input type="number" id="geneticValue0" min="5" max="10" placeholder="Enter 5-10%"></label>
     </div>
-    <div class="pygmy-stat-row">
-      <h4>// SPEED</h4>
-      <div class="sync-pair">
-        <label>%:</label><input type="number" id="mountSpdPct" placeholder="e.g. 20" step="0.1">
-      </div>
+    <div class="flex-row">
+      <label>Greater String 2 Stat: <select id="geneticStat1"></select></label>
+      <label>Bonus (%): <input type="number" id="geneticValue1" min="5" max="10" placeholder="Enter 5-10%"></label>
+    </div>
+    <div class="flex-row">
+      <label>Greater String 3 Stat: <select id="geneticStat2"></select></label>
+      <label>Bonus (%): <input type="number" id="geneticValue2" min="5" max="10" placeholder="Enter 5-10%"></label>
     </div>
   </div>
 </div>
@@ -1687,8 +1698,9 @@ function populateDropdowns() {
     });
   }
 
-  const statOpts = ''; // legacy — corrupt/greater stat selects removed
-  void statOpts; // suppress unused warning
+  const statOpts = '<option value="">--Select Stat--</option><option value="Damage">Damage</option><option value="DR">DR</option><option value="Speed">Speed</option>';
+  for (let i = 0; i < 3; i++) document.getElementById('geneticStat' + i).innerHTML = statOpts;
+  document.getElementById('corruptStat').innerHTML = statOpts;
 
   for (const cat in traitData) {
     const el = document.getElementById(`exclude${cat}`);
@@ -1705,6 +1717,30 @@ function populateDropdowns() {
 // ============================================================
 const BUILD_IDS = ['W1','W2','W3','N1','N2','N3','A1','A2','A3','UW','U','Prime','Mega','Legendary'];
 
+function getStringBonus() {
+  let d=0, dr=0, s=0;
+  const corruptStat = document.getElementById('corruptStat').value;
+  // FIX: clamp corrupt to its valid range before using
+  const corruptRaw = parseFloat(document.getElementById('corruptInput').value);
+  const corruptVal = isNaN(corruptRaw) ? 0 : Math.min(25, Math.max(-25, corruptRaw));
+  if (corruptStat === 'Damage') d += corruptVal;
+  else if (corruptStat === 'DR') dr += corruptVal;
+  else if (corruptStat === 'Speed') s += corruptVal;
+
+  for (let i = 0; i < 3; i++) {
+    const stat = document.getElementById('geneticStat' + i).value;
+    // FIX: clamp greater string values to 5-10 range before computing
+    const rawVal = parseFloat(document.getElementById('geneticValue' + i).value);
+    const val = isNaN(rawVal) ? 0 : Math.min(10, Math.max(5, rawVal));
+    // Only apply if a value was actually entered (don't apply the min-clamp of 5 to empty fields)
+    const actualVal = isNaN(parseFloat(document.getElementById('geneticValue' + i).value)) ? 0 : val;
+    if (stat === 'Damage') d += actualVal;
+    else if (stat === 'DR') dr += actualVal;
+    else if (stat === 'Speed') s += actualVal;
+  }
+  return {d, dr, s};
+}
+
 function getTraitTotalsFromIds(ids) {
   let d=0, dr=0, s=0;
   for (const id of ids) {
@@ -1718,17 +1754,10 @@ function getTraitTotalsFromIds(ids) {
   return {d, dr, s};
 }
 
-function getMountStartingTotals() {
-  const d  = parseFloat(document.getElementById('mountDmgPct').value) || 0;
-  const dr = parseFloat(document.getElementById('mountDRPct').value)  || 0;
-  const s  = parseFloat(document.getElementById('mountSpdPct').value) || 0;
-  return {d, dr, s};
-}
-
 function getCurrentTotals() {
   const traits = getTraitTotalsFromIds(BUILD_IDS);
-  const base = getMountStartingTotals();
-  return { Damage: traits.d + base.d, DR: traits.dr + base.dr, Speed: traits.s + base.s };
+  const strings = getStringBonus();
+  return { Damage: traits.d + strings.d, DR: traits.dr + strings.dr, Speed: traits.s + strings.s };
 }
 
 // ============================================================
@@ -1815,8 +1844,8 @@ function optimize(mode, withLegendary = false) {
   const userMinS = parseMinSpeed('minSpeed');
 
   let fixedD = 0, fixedDR = 0, fixedS = 0;
-  const base = getMountStartingTotals();
-  fixedD += base.d; fixedDR += base.dr; fixedS += base.s;
+  const sb = getStringBonus();
+  fixedD += sb.d; fixedDR += sb.dr; fixedS += sb.s;
 
   const optimizeForCloning = document.getElementById('optimizeForCloning')?.checked;
 
@@ -2003,7 +2032,8 @@ function clearOptimizedTraits() {
 
 function clearAll() {
   MAIN_GROUPS.forEach(g => g.slots.forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }));
-  ['mountDmgPct','mountDRPct','mountSpdPct','targetHP','minSpeed'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['corruptStat','corruptInput','targetHP','minSpeed'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  for (let i=0;i<3;i++) { document.getElementById('geneticStat'+i).value=''; document.getElementById('geneticValue'+i).value=''; }
   for (const cat in traitData) { const el=document.getElementById(`exclude${cat}`); if(el) Array.from(el.options).forEach(o=>o.selected=false); }
   document.getElementById('speed-context').innerHTML='';
   window._mountOptimized = false;
@@ -3234,7 +3264,13 @@ calculatePygmyFinalStats();
 document.getElementById('toggleTheme').onclick = function(){
   document.body.classList.toggle('light-mode');
   this.textContent = document.body.classList.contains('light-mode') ? '> Switch to Dark Mode' : '> Switch to Light Mode';
+  localStorage.setItem('plannerTheme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
 };
+// Restore theme on load
+if (localStorage.getItem('plannerTheme') === 'light') {
+  document.body.classList.add('light-mode');
+  document.getElementById('toggleTheme').textContent = '> Switch to Dark Mode';
+}
 
 
 
@@ -3346,10 +3382,10 @@ function enforceRange(id, min, max){
     }
   });
 }
-// Mount current trait power inputs — recalculate on change
-['mountDmgPct','mountDRPct','mountSpdPct'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', calculateFinalStats);
-});
+enforceRange('corruptInput', -25, 25);
+enforceRange('geneticValue0', 5, 10);
+enforceRange('geneticValue1', 5, 10);
+enforceRange('geneticValue2', 5, 10);
 
 // ============================================================
 // WILDCARD TRAIT DATABASE
