@@ -343,12 +343,13 @@ text-transform: uppercase; margin: 0 !important;
 }
 #themeSelect {
 font-family: ‘Share Tech Mono’, ‘Courier New’, Courier, monospace;
-font-size: 13px; padding: 7px 28px 7px 12px;
+font-size: 12px; padding: 5px 28px 5px 12px;
 background: #003300; color: #00ff41;
-border: 1px solid #007700; border-radius: 4px;
+border: 1px solid #007700; border-radius: 3px;
 cursor: pointer; -webkit-appearance: none; appearance: none;
 background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘6’ viewBox=‘0 0 10 6’%3E%3Cpath fill=’%2300cc00’ d=‘M5 6L0 0h10z’/%3E%3C/svg%3E”);
-background-repeat: no-repeat; background-position: right 10px center;
+background-repeat: no-repeat; background-position: right 8px center;
+width: auto; max-width: 160px;
 }
 #themeSelect:focus { outline: none; border-color: #00ff41; }
 
@@ -847,6 +848,82 @@ body.light-mode .armor-pieces-table td:first-child { color: #555 !important; }
 body.light-mode .armor-max-row td { color: #000 !important; background: #e8e8ff !important; }
 body.light-mode .armor-max-row td:first-child { color: #777 !important; }
 
+body.theme-midnight #themeSelect { background: #1a2040 !important; color: #aabbee !important; border-color: #445588 !important; }
+body.theme-midnight .theme-selector-wrap label { color: #445588 !important; }
+body.theme-midnight #guideToggle, body.theme-midnight #guideTogglePygmy,
+body.theme-midnight #traitDbToggle, body.theme-midnight #wcDbToggle,
+body.theme-midnight #primoDbToggle, body.theme-midnight #armorDbToggle,
+body.theme-midnight #leaderboardToggle, body.theme-midnight #cerberusHubBtn,
+body.theme-midnight #guideLink button { background: #0f1220 !important; color: #8899cc !important; border-color: #1e2540 !important; }
+body.theme-midnight #guideToggle:hover, body.theme-midnight #guideTogglePygmy:hover,
+body.theme-midnight #traitDbToggle:hover, body.theme-midnight #wcDbToggle:hover,
+body.theme-midnight #primoDbToggle:hover, body.theme-midnight #armorDbToggle:hover,
+body.theme-midnight #leaderboardToggle:hover { background: #1a2040 !important; color: #aabbee !important; }
+body.theme-midnight .header-bottom .clear-buttons button { background: #1a2040 !important; color: #8899cc !important; border-color: #2a3560 !important; }
+body.theme-midnight .header-optimize button { background: #1a2040 !important; color: #aabbee !important; border-color: #445588 !important; box-shadow: 0 0 10px rgba(100,130,220,0.2) !important; }
+body.theme-midnight input[type=checkbox] { accent-color: #aabbee !important; }
+body.theme-midnight .tip-icon { background: #1a2040 !important; border-color: #2a3560 !important; color: #8899cc !important; }
+body.theme-midnight .tip-box { background: #0f1220 !important; border-color: #2a3560 !important; color: #8899cc !important; }
+body.theme-midnight .score-unqualified { color: #ff6666 !important; }
+body.theme-midnight .lb-upload-btn { background: #1a2040 !important; border-color: #445588 !important; color: #8899cc !important; }
+body.theme-midnight #lbAnalyzeBtn, body.theme-midnight #lbScreenshotSubmitBtn { background: #1a2040 !important; color: #aabbee !important; border-color: #445588 !important; }
+body.theme-midnight .pygmy-note { background: #0f1220 !important; border-color: #1e2540 !important; color: #8899cc !important; }
+body.theme-midnight .pygmy-slot-group label { color: #8899cc !important; }
+body.theme-midnight #pygmySlotNote { color: #445588 !important; }
+body.theme-midnight .lb-screenshot-hint { color: #445588 !important; }
+body.theme-midnight .lb-screenshot-label { color: #445588 !important; }
+body.theme-midnight .wc-search-wrap input { background: #0c1020 !important; color: #aabbee !important; border-color: #2a3560 !important; }
+body.theme-midnight .wc-filter-chip { background: #1a2040 !important; border-color: #2a3560 !important; color: #8899cc !important; }
+body.theme-midnight .wc-filter-chip.active { background: #2a3560 !important; color: #aabbee !important; }
+body.theme-midnight .armor-bonus-row { color: #8899cc !important; }
+body.theme-midnight .armor-bonus-special { color: #8899cc !important; border-color: #1e2540 !important; }
+body.theme-midnight .armor-card-resist { color: #445588 !important; }
+body.theme-midnight .armor-section-title { color: #445588 !important; }
+body.theme-midnight .sw-box.strengths { background: #0a0f1a !important; border-color: #1e2540 !important; }
+body.theme-midnight .sw-box.weaknesses { background: #140a0a !important; border-color: #2a1010 !important; }
+body.theme-midnight .sw-box.strengths .sw-item { color: #8899cc !important; }
+body.theme-midnight .primo-intro { background: #0d1020 !important; border-color: #1e2540 !important; color: #8899cc !important; }
+body.theme-midnight .primo-stat-val.pos { color: #aabbee !important; }
+body.theme-midnight .score-reveal-grade { text-shadow: none !important; }
+
+body.theme-amber #themeSelect { background: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; }
+body.theme-amber .theme-selector-wrap label { color: #886600 !important; }
+body.theme-amber #guideToggle, body.theme-amber #guideTogglePygmy,
+body.theme-amber #traitDbToggle, body.theme-amber #wcDbToggle,
+body.theme-amber #primoDbToggle, body.theme-amber #armorDbToggle,
+body.theme-amber #leaderboardToggle, body.theme-amber #cerberusHubBtn,
+body.theme-amber #guideLink button { background: #1a1408 !important; color: #cc9900 !important; border-color: #3a2c10 !important; }
+body.theme-amber #guideToggle:hover, body.theme-amber #guideTogglePygmy:hover,
+body.theme-amber #traitDbToggle:hover, body.theme-amber #wcDbToggle:hover,
+body.theme-amber #primoDbToggle:hover, body.theme-amber #armorDbToggle:hover,
+body.theme-amber #leaderboardToggle:hover { background: #2a1e05 !important; color: #ffcc44 !important; }
+body.theme-amber .header-bottom .clear-buttons button { background: #2a1e05 !important; color: #cc9900 !important; border-color: #553f00 !important; }
+body.theme-amber .header-optimize button { background: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; box-shadow: 0 0 10px rgba(200,150,0,0.2) !important; }
+body.theme-amber input[type=checkbox] { accent-color: #ffcc44 !important; }
+body.theme-amber .tip-icon { background: #2a1e05 !important; border-color: #553f00 !important; color: #cc9900 !important; }
+body.theme-amber .tip-box { background: #1a1408 !important; border-color: #553f00 !important; color: #cc9900 !important; }
+body.theme-amber .score-unqualified { color: #ff6644 !important; }
+body.theme-amber .lb-upload-btn { background: #2a1e05 !important; border-color: #886600 !important; color: #cc9900 !important; }
+body.theme-amber #lbAnalyzeBtn, body.theme-amber #lbScreenshotSubmitBtn { background: #2a1e05 !important; color: #ffcc44 !important; border-color: #886600 !important; }
+body.theme-amber .pygmy-note { background: #1a1408 !important; border-color: #3a2c10 !important; color: #cc9900 !important; }
+body.theme-amber .pygmy-slot-group label { color: #cc9900 !important; }
+body.theme-amber #pygmySlotNote { color: #886600 !important; }
+body.theme-amber .lb-screenshot-hint { color: #886600 !important; }
+body.theme-amber .lb-screenshot-label { color: #886600 !important; }
+body.theme-amber .wc-search-wrap input { background: #120f06 !important; color: #ffcc44 !important; border-color: #553f00 !important; }
+body.theme-amber .wc-filter-chip { background: #2a1e05 !important; border-color: #553f00 !important; color: #cc9900 !important; }
+body.theme-amber .wc-filter-chip.active { background: #3a2c0a !important; color: #ffcc44 !important; }
+body.theme-amber .armor-bonus-row { color: #cc9900 !important; }
+body.theme-amber .armor-bonus-special { color: #cc9900 !important; border-color: #3a2c10 !important; }
+body.theme-amber .armor-card-resist { color: #886600 !important; }
+body.theme-amber .armor-section-title { color: #886600 !important; }
+body.theme-amber .sw-box.strengths { background: #0f0c04 !important; border-color: #3a2c10 !important; }
+body.theme-amber .sw-box.weaknesses { background: #140707 !important; border-color: #2a1010 !important; }
+body.theme-amber .sw-box.strengths .sw-item { color: #cc9900 !important; }
+body.theme-amber .primo-intro { background: #140f04 !important; border-color: #3a2c10 !important; color: #cc9900 !important; }
+body.theme-amber .primo-stat-val.pos { color: #ffcc44 !important; }
+body.theme-amber .score-reveal-grade { text-shadow: none !important; }
+
 /* ── Leaderboard ── */
 #leaderboardToggle {
 width: 100%; text-align: left; font-size: 18px;
@@ -1218,9 +1295,9 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
 </div>
 
 <h1>Raven's Dox2 Trait Planner</h1>
-<div class="theme-selector-wrap">
-  <label for="themeSelect">// Theme:</label>
+<div style="text-align:center; margin-bottom:10px;">
   <select id="themeSelect">
+    <option value="" disabled>// Theme</option>
     <option value="terminal">⚡ Terminal</option>
     <option value="midnight">🌙 Midnight</option>
     <option value="amber">🔥 Amber</option>
@@ -3357,7 +3434,7 @@ document.getElementById('themeSelect').addEventListener('change', function() {
   applyTheme(this.value);
 });
 const savedTheme = localStorage.getItem('plannerTheme');
-if (savedTheme && THEMES.includes(savedTheme)) applyTheme(savedTheme);
+applyTheme(savedTheme && THEMES.includes(savedTheme) ? savedTheme : 'terminal');
 
 
 
