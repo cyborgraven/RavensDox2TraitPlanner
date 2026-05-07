@@ -211,12 +211,57 @@ border-top: 1px solid #002200;
 .guide-section-body { padding: 14px; }
 .taming-methods { grid-template-columns: 1fr; }
 }
+/* ── Light Mode ── */
+body.light-mode {
+background: #f0f0f0 !important;
+color: #222 !important;
+}
+body.light-mode .guide-header {
+background: #e8e8f0 !important;
+border-color: #ccc !important;
+}
+body.light-mode .guide-header::after { background: linear-gradient(90deg, transparent, #555, transparent) !important; }
+body.light-mode .guide-header .subtitle { color: #777 !important; }
+body.light-mode .guide-header h1 { color: #222 !important; text-shadow: none !important; }
+body.light-mode .guide-header .tagline { color: #555 !important; }
+body.light-mode .guide-nav { background: #e0e0e8 !important; border-color: #ccc !important; }
+body.light-mode .guide-nav a { color: #444 !important; border-color: #bbb !important; background: #f0f0f8 !important; }
+body.light-mode .guide-nav a:hover, body.light-mode .guide-nav a.active { color: #000 !important; border-color: #888 !important; background: #ddd !important; }
+body.light-mode .guide-nav a.home { color: #000 !important; border-color: #888 !important; background: #d8d8e8 !important; }
+body.light-mode #themeToggleGuide { background: #ddd !important; color: #333 !important; border-color: #aaa !important; }
+body.light-mode .guide-section { background: #fff !important; border-color: #ccc !important; }
+body.light-mode .guide-section-header { background: #eaeaf5 !important; border-color: #ccc !important; }
+body.light-mode .guide-section-header h2 { color: #222 !important; }
+body.light-mode .guide-section-body { background: #fff !important; }
+body.light-mode p { color: #333 !important; }
+body.light-mode h3 { color: #222 !important; border-color: #ddd !important; }
+body.light-mode li, body.light-mode ol, body.light-mode ul { color: #333 !important; }
+body.light-mode strong, body.light-mode b { color: #000 !important; }
+body.light-mode .callout-warn { background: #fff8e8 !important; border-color: #ccaa55 !important; color: #7a5500 !important; }
+body.light-mode .callout-warn strong { color: #7a5500 !important; }
+body.light-mode .callout-tip { background: #f0f8ff !important; border-color: #88aacc !important; color: #003366 !important; }
+body.light-mode .callout-tip strong { color: #003366 !important; }
+body.light-mode .callout-key { background: #f0fff0 !important; border-color: #88bb88 !important; color: #224422 !important; }
+body.light-mode .callout-key strong { color: #003300 !important; }
+body.light-mode .taming-methods .taming-card { background: #f5f5ff !important; border-color: #ccc !important; }
+body.light-mode .taming-card-title { color: #222 !important; }
+body.light-mode .taming-card p { color: #444 !important; }
+body.light-mode .milestone { border-color: #ddd !important; }
+body.light-mode .milestone-num { background: #e8e8f8 !important; border-color: #ccc !important; color: #333 !important; }
+body.light-mode .milestone-title { color: #000 !important; }
+body.light-mode .milestone-desc { color: #444 !important; }
+body.light-mode .guide-footer { color: #888 !important; border-color: #ddd !important; }
+body.light-mode button { background: #ddd !important; color: #222 !important; border-color: #aaa !important; -webkit-appearance: none !important; appearance: none !important; }
+
 </style>
 
 </head>
 <body>
 
 <div class="guide-header">
+  <div style="text-align:right; padding: 0 0 8px;">
+    <button id="themeToggleGuide" style="font-size:12px; padding:5px 12px; cursor:pointer; font-family:'Share Tech Mono',monospace; border-radius:3px; background:#003300; color:#00ff41; border:1px solid #007700;">> Switch to Light Mode</button>
+  </div>
   <div class="subtitle">// Raven's Compendium</div>
   <h1>DOX2 Beginner Guide</h1>
   <div class="tagline">You died. It's fine. Everyone dies. Here's what you actually need to know.</div>
@@ -553,6 +598,23 @@ border-top: 1px solid #002200;
 <div class="guide-footer">
   // Raven's DOX2 Compendium &nbsp;·&nbsp; Guide content based on community knowledge &nbsp;·&nbsp; Values subject to change with mod updates
 </div>
+
+<script>
+const btn = document.getElementById('themeToggleGuide');
+btn.addEventListener('click', function() {
+  document.body.classList.toggle('light-mode');
+  this.textContent = document.body.classList.contains('light-mode')
+    ? '> Switch to Dark Mode'
+    : '> Switch to Light Mode';
+  // Persist preference
+  localStorage.setItem('guideTheme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+});
+// Restore preference on load
+if (localStorage.getItem('guideTheme') === 'light') {
+  document.body.classList.add('light-mode');
+  btn.textContent = '> Switch to Dark Mode';
+}
+</script>
 
 </body>
 </html>
