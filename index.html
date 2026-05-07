@@ -649,6 +649,115 @@ text-shadow: 0 0 14px currentColor; line-height: 1;
 .score-submit-row button { font-size: 13px; padding: 6px 14px; }
 .score-unqualified { color: #ff4444; font-size: 14px; font-weight: bold; margin-top: 8px; text-shadow: 0 0 6px rgba(255,68,68,0.4); }
 
+/* ── Enhanced Armor Database ── */
+#armorDbToggle {
+width: 100%; text-align: left; font-size: 18px;
+padding: 10px 14px; margin-bottom: 0;
+background: #0a1a0a; border: 1px solid #007700;
+border-radius: 4px; cursor: pointer; color: #00ff41 !important;
+display: flex; justify-content: space-between; align-items: center;
+}
+#armorDbToggle:hover { background: #003300; box-shadow: 0 0 8px rgba(0,255,65,0.2); }
+#armorDbToggle .arrow { transition: transform 0.2s; }
+#armorDbToggle.open .arrow { transform: rotate(180deg); }
+#armorDbContent {
+display: none; background: #0a1a0a;
+border: 1px solid var(–green-dim); border-top: none;
+border-radius: 0 0 4px 4px; padding: 16px 14px; margin-bottom: 14px;
+}
+#armorDbContent.open { display: block; }
+.armor-db-note {
+font-size: 12px; color: #007700; line-height: 1.7;
+border-left: 3px solid #005500; padding: 8px 12px;
+margin-bottom: 16px;
+}
+.armor-db-note strong { color: #00aa00; }
+.armor-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+gap: 14px;
+}
+.armor-card {
+background: #0f1a0f; border: 1px solid #004400;
+border-radius: 5px; overflow: hidden;
+transition: border-color 0.15s;
+}
+.armor-card:hover { border-color: #00aa00; box-shadow: 0 0 10px rgba(0,255,65,0.1); }
+.armor-card-header {
+background: #0a2a0a; border-bottom: 1px solid #005500;
+padding: 10px 14px;
+}
+.armor-card-name {
+font-size: 15px; font-weight: bold;
+color: #00ff41; letter-spacing: 1px;
+}
+.armor-card-resist {
+font-size: 11px; color: #00aa00; margin-top: 3px; font-style: italic;
+}
+.armor-card-body { padding: 12px 14px; }
+.armor-section-title {
+font-size: 10px; letter-spacing: 2px; color: #005500;
+text-transform: uppercase; margin: 10px 0 5px;
+}
+.armor-section-title:first-child { margin-top: 0; }
+.armor-bonus-row {
+display: flex; gap: 6px; align-items: baseline;
+font-size: 13px; margin: 3px 0; color: #00cc00;
+}
+.armor-bonus-tier {
+font-size: 11px; background: #002200; color: #007700;
+border: 1px solid #004400; border-radius: 3px;
+padding: 1px 5px; white-space: nowrap; flex-shrink: 0;
+}
+.armor-bonus-special {
+font-size: 11px; color: #00aa00; font-style: italic;
+margin: 4px 0 8px; line-height: 1.5;
+border-left: 2px solid #004400; padding-left: 8px;
+}
+.armor-pieces-table {
+width: 100%; border-collapse: collapse; font-size: 12px;
+margin-top: 4px;
+}
+.armor-pieces-table th {
+color: #007700; font-size: 10px; letter-spacing: 1px;
+text-transform: uppercase; padding: 3px 6px;
+border-bottom: 1px solid #003300; text-align: right;
+}
+.armor-pieces-table th:first-child { text-align: left; }
+.armor-pieces-table td {
+padding: 4px 6px; color: #00cc00; text-align: right;
+border-bottom: 1px solid #001a00;
+}
+.armor-pieces-table td:first-child { color: #00aa00; text-align: left; }
+.armor-pieces-table tr:last-child td { border-bottom: none; }
+.armor-max-row td {
+color: #00ff41 !important; font-weight: bold;
+border-top: 1px solid #005500 !important;
+border-bottom: none !important;
+background: #0a2a0a;
+}
+.armor-max-row td:first-child { color: #007700 !important; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+body.light-mode #armorDbToggle { background: #e0e0f0 !important; color: #222 !important; border-color: #aaa !important; }
+body.light-mode #armorDbToggle:hover { background: #d0d0e8 !important; box-shadow: none !important; }
+body.light-mode #armorDbContent { background: #f7f7ff !important; border-color: #aaa !important; }
+body.light-mode .armor-db-note { color: #555 !important; border-color: #aaa !important; }
+body.light-mode .armor-db-note strong { color: #333 !important; }
+body.light-mode .armor-card { background: #fff !important; border-color: #ddd !important; }
+body.light-mode .armor-card:hover { border-color: #aaa !important; }
+body.light-mode .armor-card-header { background: #f0f0ff !important; border-color: #ddd !important; }
+body.light-mode .armor-card-name { color: #000 !important; }
+body.light-mode .armor-card-resist { color: #444 !important; }
+body.light-mode .armor-section-title { color: #999 !important; }
+body.light-mode .armor-bonus-row { color: #222 !important; }
+body.light-mode .armor-bonus-tier { background: #eee !important; color: #555 !important; border-color: #ccc !important; }
+body.light-mode .armor-bonus-special { color: #444 !important; border-color: #ccc !important; }
+body.light-mode .armor-pieces-table th { color: #777 !important; border-color: #ddd !important; }
+body.light-mode .armor-pieces-table td { color: #333 !important; border-color: #eee !important; }
+body.light-mode .armor-pieces-table td:first-child { color: #555 !important; }
+body.light-mode .armor-max-row td { color: #000 !important; background: #e8e8ff !important; }
+body.light-mode .armor-max-row td:first-child { color: #777 !important; }
+
 /* ── Leaderboard ── */
 #leaderboardToggle {
 width: 100%; text-align: left; font-size: 18px;
@@ -1414,6 +1523,25 @@ body.light-mode #cerberusHubBtn:hover { background: #d0d0e8 !important; box-shad
   </div>
   <div class="primo-grid" id="primoGrid"></div>
 </div>
+
+<!-- Enhanced Armor Database -->
+
+<button id="armorDbToggle">> 🛡 Enhanced Armor Database <span class="arrow">▼</span></button>
+
+<div id="armorDbContent">
+
+  <div class="armor-db-note">
+    All stats shown are <strong>max roll values</strong>. Individual pieces roll randomly — use these as your target.
+    Set bonuses only apply when riding a tamed dino. Sets can be mixed and matched — you can hold bonuses from multiple sets simultaneously.
+    All complete 5-piece sets grant full radiation/gas/environment poison resistance and 100% rider protection.
+  </div>
+
+  <div class="armor-grid" id="armorGrid"></div>
+</div>
+
+<a href="Ravens_Dox2_Guide.html" target="_blank" style="display:block; text-decoration:none;">
+  <button id="guideLink" style="width:100%; text-align:left; font-size:18px; padding:10px 14px; margin-bottom:0; justify-content:space-between; display:flex; align-items:center;">> 📜 DOX2 Beginner Guide <span style="font-size:14px; color:#007700;">↗</span></button>
+</a>
 
 <!-- Leaderboard (shared) -->
 
@@ -2631,6 +2759,230 @@ document.getElementById('traitDbToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('traitDbContent').classList.toggle('open');
 });
+
+// Armor database toggle
+document.getElementById('armorDbToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('armorDbContent').classList.toggle('open');
+});
+
+(function buildArmorDatabase() {
+  const armorSets = [
+    {
+      name: 'Chitin',
+      resist: 'Poison & Torpidity Resistance — 25%',
+      bonuses: [
+        { tier: '(2)', text: '+12.5% DR' },
+        { tier: '(3)', text: '+7.5% DMG' },
+        { tier: '(5)', text: '+25 HP per sec' },
+      ],
+      special: 'Immune to most common burning % DoT effects.',
+      pieces: [
+        { name: 'Boots',  d: 7.5,  dr: 5,   s: 10  },
+        { name: 'Gloves', d: 10,   dr: 5,   s: 5   },
+        { name: 'Helm',   d: 5,    dr: 10,  s: 5   },
+        { name: 'Pants',  d: 5,    dr: 10,  s: 10  },
+        { name: 'Chest',  d: 7.5,  dr: 10,  s: 7.5 },
+      ]
+    },
+    {
+      name: 'Cloth',
+      resist: 'Small Dino Resistance — 25%',
+      bonuses: [
+        { tier: '(2)', text: '+15% Stamina' },
+        { tier: '(3)', text: '+15 HP' },
+        { tier: '(5)', text: '+30% DR / +25% Craft Quality' },
+      ],
+      special: 'When damaged: 17% chance to restore 7.5% Max HP (5s CD) → 20% chance for 3.75% Max HP (3.75s CD) → 33% chance for 2.25% Max HP (3s CD). Combined 55% total trigger chance. Damage counted once per 0.55s.',
+      pieces: [
+        { name: 'Boots',  d: 7.5,  dr: 0,   s: 15  },
+        { name: 'Gloves', d: 12.5, dr: 0,   s: 7.5 },
+        { name: 'Helm',   d: 5,    dr: 0,   s: 15  },
+        { name: 'Pants',  d: 10,   dr: 2.5, s: 12.5},
+        { name: 'Chest',  d: 10,   dr: 5,   s: 10  },
+      ]
+    },
+    {
+      name: 'Desert',
+      resist: 'Fire Resistance — 35% / Lightning Resistance — 25%',
+      bonuses: [
+        { tier: '(2)', text: '+10 HP' },
+        { tier: '(3)', text: '+20% DR' },
+        { tier: '(5)', text: '+25% Stamina' },
+      ],
+      special: 'Grants the Elusive ability (same as M Runner perk — does not stack with M Runner).',
+      pieces: [
+        { name: 'Boots',  d: 10,   dr: 0,   s: 12.5},
+        { name: 'Gloves', d: 12.5, dr: 0,   s: 7.5 },
+        { name: 'Helm',   d: 5,    dr: 5,   s: 10  },
+        { name: 'Pants',  d: 10,   dr: 0,   s: 15  },
+        { name: 'Chest',  d: 10,   dr: 5,   s: 10  },
+      ]
+    },
+    {
+      name: 'Flak',
+      resist: 'Small / Medium / Large Dino Resistance — 25%',
+      bonuses: [
+        { tier: '(2)', text: '+15% DR' },
+        { tier: '(3)', text: '+15% Stamina' },
+        { tier: '(5)', text: '+15% Speed' },
+      ],
+      special: null,
+      pieces: [
+        { name: 'Boots',  d: 15,   dr: 5,   s: 0 },
+        { name: 'Gloves', d: 15,   dr: 5,   s: 0 },
+        { name: 'Helm',   d: 5,    dr: 15,  s: 0 },
+        { name: 'Pants',  d: 12.5, dr: 15,  s: 0 },
+        { name: 'Chest',  d: 10,   dr: 15,  s: 0 },
+      ]
+    },
+    {
+      name: 'Fur',
+      resist: 'Small Dino Resistance — 35%',
+      bonuses: [
+        { tier: '(2)', text: '+20 HP' },
+        { tier: '(3)', text: '+10% DR' },
+        { tier: '(5)', text: '+20% DMG' },
+      ],
+      special: null,
+      pieces: [
+        { name: 'Boots',  d: 7.5, dr: 5,   s: 10  },
+        { name: 'Gloves', d: 7.5, dr: 7.5, s: 7.5 },
+        { name: 'Helm',   d: 5,   dr: 5,   s: 10  },
+        { name: 'Pants',  d: 5,   dr: 7.5, s: 10  },
+        { name: 'Chest',  d: 10,  dr: 7.5, s: 7.5 },
+      ]
+    },
+    {
+      name: 'Ghillie',
+      resist: 'Fire & Lightning Resistance — 35%',
+      bonuses: [
+        { tier: '(2)', text: '+10 HP' },
+        { tier: '(3)', text: '+15% DMG' },
+        { tier: '(5)', text: '+25% Stamina' },
+      ],
+      special: null,
+      pieces: [
+        { name: 'Boots',  d: 7.5, dr: 7.5,  s: 7.5 },
+        { name: 'Gloves', d: 7.5, dr: 7.5,  s: 7.5 },
+        { name: 'Helm',   d: 5,   dr: 7.5,  s: 7.5 },
+        { name: 'Pants',  d: 5,   dr: 12.5, s: 5   },
+        { name: 'Chest',  d: 10,  dr: 12.5, s: 5   },
+      ]
+    },
+    {
+      name: 'Hide',
+      resist: 'Small & Medium Dino Resistance — 25%',
+      bonuses: [
+        { tier: '(2)', text: '+25% Stamina' },
+        { tier: '(3)', text: '+25 HP' },
+        { tier: '(5)', text: '+10% DMG / +10% DR / x2 Carry Weight' },
+      ],
+      special: null,
+      pieces: [
+        { name: 'Boots',  d: 10,  dr: 5,   s: 7.5 },
+        { name: 'Gloves', d: 10,  dr: 5,   s: 7.5 },
+        { name: 'Helm',   d: 5,   dr: 5,   s: 7.5 },
+        { name: 'Pants',  d: 7.5, dr: 10,  s: 5   },
+        { name: 'Chest',  d: 7.5, dr: 15,  s: 5   },
+      ]
+    },
+    {
+      name: 'Riot',
+      resist: 'Small & Medium Dino Resistance — 40%',
+      bonuses: [
+        { tier: '(2)', text: '+25 HP' },
+        { tier: '(3)', text: '+15% DR' },
+        { tier: '(5)', text: '+10% Speed' },
+      ],
+      special: null,
+      pieces: [
+        { name: 'Boots',  d: 12.5, dr: 5,    s: 2.5 },
+        { name: 'Gloves', d: 12.5, dr: 5,    s: 2.5 },
+        { name: 'Helm',   d: 5,    dr: 15,   s: 2.5 },
+        { name: 'Pants',  d: 7.5,  dr: 12.5, s: 2.5 },
+        { name: 'Chest',  d: 10,   dr: 15,   s: 2.5 },
+      ]
+    },
+    {
+      name: 'Tek',
+      resist: 'Includes all vanilla Tek features — Element not required',
+      bonuses: [
+        { tier: '(2)', text: '+50 HP' },
+        { tier: '(3)', text: '+15% DMG' },
+        { tier: '(5)', text: '+15% DR' },
+      ],
+      special: null,
+      pieces: [
+        { name: 'Boots',  d: 7.5,  dr: 15, s: 5   },
+        { name: 'Gloves', d: 17.5, dr: 10, s: 2.5 },
+        { name: 'Helm',   d: 12.5, dr: 15, s: 2.5 },
+        { name: 'Pants',  d: 12.5, dr: 15, s: 5   },
+        { name: 'Chest',  d: 12.5, dr: 15, s: 2.5 },
+      ]
+    },
+  ];
+
+  function fmt(v) { return v % 1 === 0 ? v + '%' : v + '%'; }
+
+  function buildCard(set) {
+    const totalD  = set.pieces.reduce((a, p) => a + p.d,  0);
+    const totalDR = set.pieces.reduce((a, p) => a + p.dr, 0);
+    const totalS  = set.pieces.reduce((a, p) => a + p.s,  0);
+
+    const bonusRows = set.bonuses.map(b => `
+      <div class="armor-bonus-row">
+        <span class="armor-bonus-tier">${b.tier}</span>
+        <span>${b.text}</span>
+      </div>`).join('');
+
+    const specialHTML = set.special
+      ? `<div class="armor-bonus-special">✦ ${set.special}</div>` : '';
+
+    const pieceRows = set.pieces.map(p => `
+      <tr>
+        <td>${p.name}</td>
+        <td>${fmt(p.d)}</td>
+        <td>${fmt(p.dr)}</td>
+        <td>${fmt(p.s)}</td>
+      </tr>`).join('');
+
+    return `
+      <div class="armor-card">
+        <div class="armor-card-header">
+          <div class="armor-card-name">Enhanced ${set.name}</div>
+          <div class="armor-card-resist">${set.resist}</div>
+        </div>
+        <div class="armor-card-body">
+          <div class="armor-section-title">Set Bonuses</div>
+          ${bonusRows}
+          ${specialHTML}
+          <div class="armor-section-title">Piece Stats (Max Roll)</div>
+          <table class="armor-pieces-table">
+            <thead>
+              <tr>
+                <th>Piece</th>
+                <th>DMG</th>
+                <th>DR</th>
+                <th>SPD</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${pieceRows}
+              <tr class="armor-max-row">
+                <td>5-piece max</td>
+                <td>${fmt(totalD)}</td>
+                <td>${fmt(totalDR)}</td>
+                <td>${fmt(totalS)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('armorGrid').innerHTML = armorSets.map(buildCard).join('');
+})();
 
 // Leaderboard toggle
 document.getElementById('leaderboardToggle').addEventListener('click', function() {
