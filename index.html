@@ -362,6 +362,147 @@ body.theme-amber .score-unqualified { color: #ff6644; }
 body.theme-amber .stat-panel-cell.dr-over .stat-panel-mult { color: #ff6644; }
 body.theme-amber .score-reveal { box-shadow: 0 0 30px rgba(200,150,0,0.1), inset 0 0 30px rgba(200,150,0,0.03); }
 
+/* ── Tooltip ── */
+.tip-wrap { position: relative; display: inline-block; margin-left: 6px; vertical-align: middle; }
+.tip-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--green-dark); border: 1px solid var(--green-dim);
+  color: var(--green-bright); font-size: 11px; font-weight: bold;
+  cursor: pointer; user-select: none; line-height: 1;
+  font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+}
+.tip-icon:hover { background: var(--card-border); box-shadow: 0 0 6px rgba(0,0,0,0.3); }
+.tip-box {
+  display: none; position: absolute; left: 22px; top: -4px;
+  width: 240px; background: var(--input-bg); border: 1px solid var(--green-dim);
+  color: var(--green-mid); font-size: 12px; padding: 8px 10px;
+  border-radius: 4px; z-index: 500; line-height: 1.5;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+  text-align: left;
+}
+.tip-wrap:hover .tip-box,
+.tip-wrap.open .tip-box { display: block; }
+@media (max-width: 600px) {
+  .tip-box { left: auto; right: 0; top: 22px; width: 220px; }
+}
+
+/* ── How to Use Guide ── */
+#guideToggle, #guideTogglePygmy {
+  width: 100%; text-align: left; font-size: 15px;
+  padding: 10px 14px; margin-bottom: 0;
+  background: var(--input-bg); border: 1px solid var(--green-dim);
+  border-radius: 4px; cursor: pointer;
+  color: var(--green-bright);
+  display: flex; justify-content: flex-start; align-items: center; gap: 8px;
+}
+#guideToggle:hover, #guideTogglePygmy:hover {
+  background: var(--green-dark);
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+#guideToggle .arrow, #guideTogglePygmy .arrow { transition: transform 0.2s; margin-left: auto; }
+#guideToggle.open .arrow, #guideTogglePygmy.open .arrow { transform: rotate(180deg); }
+#guideContent, #guideContentPygmy {
+  display: none;
+  background: var(--input-bg);
+  border: 1px solid var(--green-dim); border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 14px; margin-bottom: 14px;
+  color: var(--green-mid); font-size: 13px; line-height: 1.7;
+}
+#guideContent.open, #guideContentPygmy.open { display: block; }
+#guideContent h3, #guideContentPygmy h3 {
+  color: var(--green-bright); margin: 14px 0 6px; font-size: 14px; letter-spacing: 1px;
+}
+#guideContent h3:first-child, #guideContentPygmy h3:first-child { margin-top: 0; }
+#guideContent ol, #guideContentPygmy ol { margin: 0; padding-left: 20px; }
+#guideContent ol li, #guideContentPygmy ol li { margin-bottom: 6px; }
+#guideContent .note, #guideContentPygmy .note { color: var(--green-mid); font-style: italic; margin-top: 10px; }
+#guideContent b, #guideContentPygmy b { color: var(--green-bright); }
+
+/* ── Enhanced Armor Database ── */
+#armorDbToggle {
+  width: 100%; text-align: left; font-size: 18px;
+  padding: 10px 14px; margin-bottom: 0;
+  background: var(--input-bg); border: 1px solid var(--green-dim);
+  border-radius: 4px; cursor: pointer; color: var(--green-bright);
+  display: flex; justify-content: flex-start; align-items: center; gap: 8px;
+}
+#armorDbToggle:hover { background: var(--green-dark); box-shadow: 0 0 8px rgba(0,0,0,0.2); }
+#armorDbToggle .arrow { transition: transform 0.2s; margin-left: auto; }
+#armorDbToggle.open .arrow { transform: rotate(180deg); }
+#armorDbContent {
+  display: none; background: var(--input-bg);
+  border: 1px solid var(--green-dim); border-top: none;
+  border-radius: 0 0 4px 4px; padding: 16px 14px; margin-bottom: 14px;
+}
+#armorDbContent.open { display: block; }
+.armor-db-note {
+  font-size: 12px; color: var(--green-mid); line-height: 1.7;
+  margin-bottom: 12px; font-style: italic;
+}
+.armor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 900px) and (min-width: 601px) {
+  .armor-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .armor-grid { grid-template-columns: 1fr; }
+}
+.armor-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 5px; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.armor-card:hover { border-color: var(--border-color); box-shadow: 0 0 8px rgba(0,0,0,0.2); }
+.armor-card-header {
+  padding: 10px 12px; background: var(--result-bg);
+  border-bottom: 1px solid var(--card-border);
+}
+.armor-card-name {
+  font-size: 14px; font-weight: bold;
+  color: var(--green-bright); letter-spacing: 1px;
+}
+.armor-card-resist {
+  font-size: 11px; color: var(--green-mid);
+  margin-top: 3px; font-style: italic; line-height: 1.4;
+}
+.armor-card-body { padding: 8px 12px; flex: 1; }
+.armor-section-title {
+  font-size: 9px; letter-spacing: 2px; color: var(--green-dim);
+  text-transform: uppercase; margin: 4px 0 4px;
+}
+.armor-bonus-row {
+  display: flex; gap: 6px; align-items: baseline;
+  font-size: 12px; margin: 2px 0; color: var(--green-mid); line-height: 1.4;
+}
+.armor-bonus-tier {
+  font-size: 10px; background: var(--result-bg); color: var(--green-dim);
+  border: 1px solid var(--card-border); border-radius: 3px;
+  padding: 1px 5px; white-space: nowrap; flex-shrink: 0;
+}
+.armor-bonus-special {
+  font-size: 11px; color: var(--green-mid); font-style: italic;
+  margin: 6px 0 4px; line-height: 1.5;
+  border-left: 2px solid var(--card-border); padding-left: 8px;
+}
+.armor-card-footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--card-border);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;
+}
+.armor-stat-cell { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.armor-stat-label { font-size: 9px; letter-spacing: 1px; color: var(--green-dim); text-transform: uppercase; }
+.armor-stat-value { font-size: 13px; font-weight: bold; color: var(--green-bright); }
+body.light-mode .armor-stat-value { color: #006600; }
+body.theme-midnight .armor-stat-value { color: #88bbff; }
+body.theme-amber .armor-stat-value { color: #ffcc44; }
+
 /* ── Leaderboard ── */
 #leaderboardToggle {
 width: 100%; text-align: left; font-size: 18px;
@@ -2549,15 +2690,7 @@ document.getElementById('armorDbToggle').addEventListener('click', function() {
       </div>`).join('');
 
     const specialHTML = set.special
-      ? `<div class="armor-bonus-special">✦ ${set.special}</div>` : '';
-
-    const pieceRows = set.pieces.map(p => `
-      <tr>
-        <td>${p.name}</td>
-        <td>${fmt(p.d)}</td>
-        <td>${fmt(p.dr)}</td>
-        <td>${fmt(p.s)}</td>
-      </tr>`).join('');
+      ? `<div class="armor-bonus-special">${set.special}</div>` : '';
 
     return `
       <div class="armor-card">
@@ -2569,26 +2702,20 @@ document.getElementById('armorDbToggle').addEventListener('click', function() {
           <div class="armor-section-title">Set Bonuses</div>
           ${bonusRows}
           ${specialHTML}
-          <div class="armor-section-title">Piece Stats (Max Roll)</div>
-          <table class="armor-pieces-table">
-            <thead>
-              <tr>
-                <th>Piece</th>
-                <th>DMG</th>
-                <th>DR</th>
-                <th>SPD</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${pieceRows}
-              <tr class="armor-max-row">
-                <td>5-piece max</td>
-                <td>${fmt(totalD)}</td>
-                <td>${fmt(totalDR)}</td>
-                <td>${fmt(totalS)}</td>
-              </tr>
-            </tbody>
-          </table>
+        </div>
+        <div class="armor-card-footer">
+          <div class="armor-stat-cell">
+            <span class="armor-stat-label">DMG</span>
+            <span class="armor-stat-value">${fmt(totalD)}</span>
+          </div>
+          <div class="armor-stat-cell">
+            <span class="armor-stat-label">DR</span>
+            <span class="armor-stat-value">${fmt(totalDR)}</span>
+          </div>
+          <div class="armor-stat-cell">
+            <span class="armor-stat-label">SPD</span>
+            <span class="armor-stat-value">${fmt(totalS)}</span>
+          </div>
         </div>
       </div>`;
   }
